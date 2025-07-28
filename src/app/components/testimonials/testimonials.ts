@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-testimonials',
   imports: [CommonModule],
   templateUrl: './testimonials.html',
-  styleUrl: './testimonials.css'
+  styleUrls: ['./testimonials.css']
 })
-export class Testimonials {
+export class TestimonialsComponent {
   testimonials = [
     {
       name: 'James Smith',

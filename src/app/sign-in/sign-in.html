@@ -1,0 +1,141 @@
+<div class="min-h-screen flex flex-col relative bg-[#0D0D0D] auth-section">
+  <!-- Background decorations -->
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+    <div class="absolute top-1/4 -left-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-1/3 -right-40 w-96 h-96 bg-[#C400FF]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute -bottom-20 left-1/4 w-64 h-64 bg-[#B03EFF]/10 rounded-full blur-[80px]"></div>
+  </div>
+
+  <!-- Back Button -->
+  <div class="absolute top-6 left-6 z-20">
+    <a routerLink="/" class="flex items-center text-[#F1F1F1] hover:text-[#B03EFF] transition-colors font-medium">
+      <svg class="h-5 w-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Back
+    </a>
+  </div>
+
+  <div class="flex flex-col items-center justify-center flex-grow p-4 relative z-10">
+    <!-- Main Card -->
+    <div class="auth-card card-border-glow w-full max-w-md relative">
+      <!-- Decorative elements -->
+      <div class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/40 to-[#C400FF]/40 rounded-xl blur-xl opacity-70 transition-all duration-300"></div>
+      <div class="absolute -inset-2 bg-gradient-to-r from-transparent via-[#B03EFF]/20 to-transparent rounded-lg"></div>
+
+      <!-- Card Content -->
+      <div class="relative bg-[#0D0D0D] border border-[#B03EFF]/30 shadow-lg shadow-[#B03EFF]/10 text-[#F1F1F1] rounded-xl" style="backdrop-filter: blur(20px);">
+        
+        <!-- Header -->
+        <div class="space-y-1 text-center pb-6 pt-8 px-8">
+          <div class="flex items-center justify-center mb-2">
+            <div class="w-12 h-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full card-decoration"></div>
+          </div>
+          <h1 class="auth-title text-4xl font-bold bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-transparent bg-clip-text">
+            Welcome back
+          </h1>
+          <p class="text-sm text-[#A7A7A7]">
+            Sign in to your account to continue
+          </p>
+        </div>
+
+        <!-- Form Content -->
+        <div class="px-8 pb-6">
+          <!-- Error Message -->
+          <div class="bg-[#1A1A1A] border border-red-500/30 text-red-400 text-sm p-4 rounded-lg mb-4 flex items-start" style="display: none;" id="error-message">
+            <span class="font-medium" id="error-text"></span>
+          </div>
+
+          <form (ngSubmit)="handleSubmit($event)" class="space-y-5">
+            <!-- Email Field -->
+            <div class="space-y-2">
+              <label for="email" class="text-sm font-medium text-[#F1F1F1]">
+                Email address
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                required
+                [(ngModel)]="email"
+                name="email"
+                [disabled]="isLoading"
+                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+              />
+            </div>
+
+            <!-- Password Field -->
+            <div class="space-y-2">
+              <label for="password" class="text-sm font-medium text-[#F1F1F1]">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                [(ngModel)]="password"
+                name="password"
+                [disabled]="isLoading"
+                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+              />
+            </div>
+
+            <!-- Remember Me & Forgot Password -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="remember"
+                  [(ngModel)]="rememberMe"
+                  name="remember"
+                  class="mt-1 w-4 h-4 rounded border-[#B03EFF]/30 bg-[#1A1A1A] text-[#B03EFF] focus:ring-[#B03EFF]/20 focus:ring-2 transition-all"
+                />
+                <label for="remember" class="text-sm text-[#A7A7A7]">
+                  Remember me
+                </label>
+              </div>
+              <a href="#" class="text-sm text-[#B03EFF] hover:text-[#C400FF] hover:underline transition-colors">
+                Forgot password?
+              </a>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              [disabled]="isLoading"
+              class="gradient-button w-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:opacity-90 text-[#F1F1F1] font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+            >
+              <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-[1.05] opacity-0 group-hover:opacity-100 duration-300"></span>
+              <span class="relative">
+                {{ isLoading ? "Signing in..." : "Sign in" }}
+              </span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex justify-center border-t border-[#B03EFF]/10 p-6">
+          <a routerLink="/sign-up" class="text-sm text-[#B03EFF] hover:text-[#C400FF] hover:underline font-medium transition-colors">
+            Don't have an account? Sign up
+          </a>
+        </div>
+
+        <!-- Bottom glow effect -->
+        <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-[1px] w-4/5 bg-gradient-to-r from-transparent via-[#B03EFF]/50 to-transparent blur-sm"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Decorative Section -->
+    <div class="mt-8 text-center">
+      <div class="flex items-center justify-center space-x-2 mb-3">
+        <div class="w-8 h-1 bg-gradient-to-r from-[#7F00FF]/30 to-[#C400FF]/30 rounded-full card-decoration"></div>
+        <div class="w-2 h-2 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full card-decoration"></div>
+        <div class="w-8 h-1 bg-gradient-to-r from-[#C400FF]/30 to-[#7F00FF]/30 rounded-full card-decoration"></div>
+      </div>
+      <p class="text-sm text-[#A7A7A7]">
+        Build and manage your professional resume
+      </p>
+    </div>
+  </div>
+</div>

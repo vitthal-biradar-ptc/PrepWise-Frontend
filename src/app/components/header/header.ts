@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 
 interface NavItem {
   title: string;
@@ -12,7 +13,7 @@ interface NavItem {
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule]
 })
 export class HeaderComponent implements OnInit {
   mobileMenuOpen = false;
@@ -25,7 +26,7 @@ export class HeaderComponent implements OnInit {
     { title: 'How It Works', href: '#how-it-works', icon: 'help' }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -50,5 +51,9 @@ export class HeaderComponent implements OnInit {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  }
+
+  navigateToSignUp(): void {
+    this.router.navigate(['/sign-up']);
   }
 }

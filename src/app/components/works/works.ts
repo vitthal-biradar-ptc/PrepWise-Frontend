@@ -8,6 +8,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './works.html',
   styleUrl: './works.css'
 })
-export class Works {
+export class WorksComponent {
   // Add any methods or properties needed for the component here
 }
