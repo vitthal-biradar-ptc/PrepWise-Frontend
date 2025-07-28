@@ -1,0 +1,70 @@
+
+
+.header-scrolled > div {
+  background: rgba(26, 26, 26, 0.95);
+  border-color: rgba(176, 62, 255, 0.4);
+  box-shadow: 0 25px 50px -12px rgba(127, 0, 255, 0.25);
+}
+
+/* Navigation link hover effects */
+.nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(176, 62, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.nav-link:hover::before {
+  left: 100%;
+}
+
+/* Mobile menu animations */
+.mobile-menu {
+  max-height: 0;
+  opacity: 0;
+}
+
+.mobile-menu-open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+/* Custom backdrop blur fallback */
+@supports not (backdrop-filter: blur(12px)) {
+  .backdrop-blur-md {
+    background: rgba(26, 26, 26, 0.9);
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states for accessibility */
+.nav-link:focus,
+button:focus,
+a:focus {
+  outline: 2px solid rgba(176, 62, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Loading animation for the logo */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(127, 0, 255, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(196, 0, 255, 0.5); }
+}
+
+header a:first-child div {
+  animation: pulse-glow 3s ease-in-out infinite;
+}

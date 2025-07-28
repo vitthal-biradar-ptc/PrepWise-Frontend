@@ -1,0 +1,74 @@
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .text-3xl {
+    font-size: 2rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+}
+
+/* Enhanced hover animations */
+.group:hover .w-14 {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.group:hover h3 {
+  color: #F5F5DC;
+}
+
+/* Background pattern animation */
+.bg-gradient-to-b:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(176, 62, 255, 0.1), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.group:hover .bg-gradient-to-b:before {
+  opacity: 1;
+}
+
+/* Smooth transitions for all interactive elements */
+.transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Additional glow effect on hover */
+.group:hover {
+  box-shadow: 0 10px 40px rgba(176, 62, 255, 0.15);
+}
+
+/* Add animation for heading text */
+h2 span.text-transparent {
+  position: relative;
+}
+
+h2 span.text-transparent::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(127, 0, 255, 0.2), rgba(196, 0, 255, 0.8) 50%, rgba(127, 0, 255, 0.2));
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.5s ease;
+}
+
+section:hover h2 span.text-transparent::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}

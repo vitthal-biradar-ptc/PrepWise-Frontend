@@ -1,0 +1,192 @@
+<header 
+  class="fixed top-4 z-50 left-1/2 transform -translate-x-1/2 w-11/12 max-w-6xl transition-all duration-300"
+  [class.header-scrolled]="isScrolled"
+>
+  <div class="bg-[#1A1A1A]/90 backdrop-blur-md border border-[#B03EFF]/30 px-4 lg:px-6 h-16 flex items-center shadow-xl rounded-3xl relative overflow-hidden">
+    <!-- Background gradient effect -->
+    <div class="absolute inset-0 bg-gradient-to-r from-[#7F00FF]/5 via-transparent to-[#C400FF]/5 pointer-events-none"></div>
+    
+    <!-- Logo -->
+    <a href="/" class="flex items-center justify-center relative z-10">
+      <div class="h-8 w-8 bg-gradient-to-br from-[#7F00FF] to-[#C400FF] rounded-lg flex items-center justify-center mr-3 shadow-lg">
+        <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#F1F1F1] to-[#F5F5DC]">
+        PrepWise
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="ml-auto hidden md:flex gap-2 relative z-10">
+      <a 
+        *ngFor="let item of navItems" 
+        [href]="item.href"
+        (click)="navigateToSection(item.href); $event.preventDefault()"
+        class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
+      >
+        <!-- Icons for each nav item -->
+        <svg 
+          *ngIf="item.icon === 'layout'" 
+          class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+        </svg>
+        
+        <svg 
+          *ngIf="item.icon === 'interviews'" 
+          class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        
+        <svg 
+          *ngIf="item.icon === 'book'" 
+          class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        
+        <svg 
+          *ngIf="item.icon === 'help'" 
+          class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+          xmlns="http://www.w3.org/2000/svg" 
+          fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        
+        {{ item.title }}
+      </a>
+    </nav>
+
+    <!-- Get Started Button (Desktop) -->
+    <a 
+      href="/home" 
+      class="hidden md:inline-flex ml-6 group h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-2 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30 relative z-10 overflow-hidden"
+    >
+      <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
+      <span class="relative">Get Started</span>
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button 
+      (click)="toggleMobileMenu()"
+      class="ml-auto md:hidden relative z-10 p-2 rounded-lg text-[#F1F1F1] hover:bg-[#B03EFF]/10 transition-colors duration-200"
+      [attr.aria-expanded]="mobileMenuOpen"
+      aria-label="Toggle mobile menu"
+    >
+      <svg 
+        *ngIf="!mobileMenuOpen" 
+        class="h-6 w-6" 
+        xmlns="http://www.w3.org/2000/svg" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg 
+        *ngIf="mobileMenuOpen" 
+        class="h-6 w-6" 
+        xmlns="http://www.w3.org/2000/svg" 
+        fill="none" 
+        viewBox="0 0 24 24" 
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div 
+    class="mobile-menu md:hidden overflow-hidden transition-all duration-300 ease-in-out"
+    [class.mobile-menu-open]="mobileMenuOpen"
+  >
+    <div class="mt-2 bg-[#1A1A1A]/95 backdrop-blur-md border border-[#B03EFF]/30 shadow-xl rounded-3xl p-4 relative overflow-hidden">
+      <!-- Background effect -->
+      <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5 pointer-events-none"></div>
+      
+      <div class="space-y-2 relative z-10">
+        <a 
+          *ngFor="let item of navItems" 
+          [href]="item.href"
+          (click)="navigateToSection(item.href); $event.preventDefault()"
+          class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
+        >
+          <!-- Mobile Icons -->
+          <svg 
+            *ngIf="item.icon === 'layout'" 
+            class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+          </svg>
+          
+          <svg 
+            *ngIf="item.icon === 'interviews'" 
+            class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          
+          <svg 
+            *ngIf="item.icon === 'book'" 
+            class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+          
+          <svg 
+            *ngIf="item.icon === 'help'" 
+            class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          
+          {{ item.title }}
+        </a>
+        
+        <!-- Mobile Get Started Button -->
+        <a 
+          href="/home" 
+          class="w-full mt-4 group flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-3 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 relative overflow-hidden"
+        >
+          <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
+          <span class="relative">Get Started</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>

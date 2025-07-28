@@ -1,0 +1,56 @@
+<section id="testimonials" class="py-28 bg-[#0D0D0D] relative">
+  <!-- Background decorations -->
+  <div class="absolute top-0 right-0 w-1/3 h-1/3 bg-[#C400FF]/5 blur-[100px] rounded-full"></div>
+  <div class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#7F00FF]/5 blur-[100px] rounded-full"></div>
+
+  <div class="container mx-auto px-6 relative z-10">
+    <div class="text-center mb-20">
+      <div class="flex justify-center">
+        <p class="inline-block px-4 py-1 bg-[#B03EFF]/10 text-[#B03EFF] font-medium mb-4 tracking-wider rounded-full border border-[#B03EFF]/20">
+          SUCCESS STORIES
+        </p>
+      </div>
+      <h2 class="text-3xl md:text-5xl font-bold mb-4 relative inline-block">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#7F00FF] to-[#C400FF]">
+          What Users Are Saying
+        </span>
+        <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full"></div>
+      </h2>
+      <p class="text-xl text-[#A7A7A7] max-w-2xl mx-auto mt-6">
+        Join thousands of satisfied professionals who landed their dream jobs
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <div 
+        *ngFor="let testimonial of testimonials" 
+        class="testimonial-card bg-[#1A1A1A] p-8 rounded-xl shadow-lg border border-[#B03EFF]/10 hover:border-[#B03EFF]/30 transition-all group hover:transform hover:translate-y-[-5px] duration-300 relative"
+      >
+        <div class="flex items-center mb-6">
+          <div class="w-12 h-12 bg-gradient-to-br from-[#7F00FF]/20 to-[#C400FF]/20 rounded-full flex items-center justify-center text-[#B03EFF] font-bold">
+            {{ testimonial.initials }}
+          </div>
+          <div class="ml-4">
+            <h4 class="font-bold text-[#F1F1F1]">{{ testimonial.name }}</h4>
+            <p class="text-sm text-[#A7A7A7]">{{ testimonial.role }}</p>
+          </div>
+        </div>
+        <div class="mb-4">
+          <span 
+            *ngFor="let star of getStars(testimonial.rating)" 
+            class="text-[#F5F5DC] inline-block mr-1"
+          >
+            ★
+          </span>
+        </div>
+        <p class="text-[#A7A7A7]">
+          "{{ testimonial.content }}"
+        </p>
+
+        <div class="absolute bottom-0 left-0 right-0 h-1 rounded-b-xl overflow-hidden">
+          <div class="testimonial-gradient w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

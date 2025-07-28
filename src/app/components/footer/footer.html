@@ -1,0 +1,26 @@
+<footer class="bg-[#0D0D0D] py-6 text-[#A7A7A7] border-t border-[#B03EFF]/10">
+  <div class="container mx-auto px-6">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="flex items-center space-x-3 mb-4 md:mb-0">
+        <div class="h-8 w-8 bg-gradient-to-br from-[#7F00FF]/20 to-[#C400FF]/20 rounded-lg flex items-center justify-center">
+          <svg class="h-4 w-4 text-[#B03EFF]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <span class="font-bold text-lg text-[#F1F1F1]">
+          PrepWise
+        </span>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+        <a
+          *ngFor="let link of navigationLinks"
+          [href]="link.href"
+          class="footer-link hover:text-[#B03EFF] transition-colors text-lg"
+        >
+          {{ link.name }}
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

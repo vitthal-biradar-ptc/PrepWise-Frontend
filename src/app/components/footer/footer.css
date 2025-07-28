@@ -1,0 +1,41 @@
+.footer-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #B03EFF;
+  text-shadow: 0 0 8px rgba(176, 62, 255, 0.3);
+}
+
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #7F00FF, #C400FF);
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover::after {
+  width: 100%;
+}
+
+/* Enhanced logo hover effect */
+.footer-logo-container:hover .footer-logo-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 8px rgba(176, 62, 255, 0.4));
+}
+
+.footer-logo-icon {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer-link {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,48 @@
+
+.hover-card:hover .hover-effect {
+  opacity: 0.9;
+}
+
+.hover-card:hover .hover-effect-2 {
+  transform: translateZ(20px);
+}
+
+.hover-card:hover .hover-card-inner {
+  transform: rotateX(5deg) rotateY(5deg) translateZ(10px);
+}
+
+.hover-card:hover .hover-element {
+  transform: translateZ(25px);
+}
+
+.hover-card:hover .hover-element-2 {
+  transform: translateZ(20px);
+}
+
+.hover-card:hover .hover-element-3 {
+  transform: translateZ(15px);
+}
+
+.hover-card:hover .hover-element-4 {
+  transform: translateZ(20px);
+}
+
+.hover-card:hover .hover-element-5 {
+  transform: translateZ(25px);
+}
+
+.hover-card:hover .hover-glow {
+  opacity: 1;
+  width: 90%;
+}
+
+.hover-effect, .hover-effect-2, .hover-card-inner, .hover-element, 
+.hover-element-2, .hover-element-3, .hover-element-4, 
+.hover-element-5, .hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow {
+  opacity: 0.5;
+  width: 80%;
+}

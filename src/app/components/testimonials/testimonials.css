@@ -1,0 +1,48 @@
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 20px 25px -5px rgba(176, 62, 255, 0.1), 0 10px 10px -5px rgba(176, 62, 255, 0.04);
+}
+
+.testimonial-gradient {
+  transform-origin: left;
+}
+
+/* Enhanced hover effects for better visual feedback */
+.testimonial-card:hover .testimonial-gradient {
+  transform: scaleX(1);
+}
+
+/* Additional glow effect on hover */
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #7F00FF, #C400FF, #B03EFF);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(10px);
+}
+
+.testimonial-card:hover::before {
+  opacity: 0.3;
+}
+
+/* Smooth transitions for all interactive elements */
+.testimonial-card * {
+  transition: all 0.3s ease;
+}
+
+/* Star rating hover effect */
+.testimonial-card:hover span {
+  color: #F5F5DC;
+  text-shadow: 0 0 10px rgba(245, 245, 220, 0.3);
+}
