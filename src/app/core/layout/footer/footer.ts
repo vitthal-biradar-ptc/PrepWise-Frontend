@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-footer',
   imports: [CommonModule],
   templateUrl: './footer.html',
-  styleUrl: './footer.css'
+  styleUrls: ['./footer.css']
 })
-export class Footer {
+export class FooterComponent {
   navigationLinks = [
     { name: 'Features', href: '#features' },
     { name: 'How It Works', href: '#how-it-works' },

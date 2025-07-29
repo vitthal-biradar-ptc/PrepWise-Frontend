@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { SignUp } from './sign-up/sign-up'; // Correct import path for SignUp
-import { LandingPageComponent } from './landing-page/landing-page';
-import { SignIn } from './sign-in/sign-in';
+import { SignUp } from './features/auth/sign-up/sign-up'; // Correct import path for SignUp
+import { SignIn } from './features/auth/sign-in/sign-in';
+import { LandingPageComponent } from './features/landing/home/landing-page';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, pathMatch: 'full' }, // Default route
