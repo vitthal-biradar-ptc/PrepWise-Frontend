@@ -7,11 +7,11 @@ import { FooterComponent } from '../../../core/layout/footer/footer';
 import { HeaderComponent } from '../../../core/layout/header/header';
 
 @Component({
-  selector: 'app-landing-page',
+  selector: 'home',
   standalone: true, 
   imports: [HeroComponent, FeaturesComponent, WorksComponent, TestimonialsComponent, HeaderComponent, FooterComponent],
-  templateUrl: './landing-page.html',
-  styleUrls: ['./landing-page.css']
+  templateUrl: './home.html',
+  styleUrls: ['./home.css']
 })
 export class LandingPageComponent  {
 
