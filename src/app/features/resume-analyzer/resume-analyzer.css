@@ -1,0 +1,730 @@
+.resume-analyzer-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.analyzer-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.analyzer-header h1 {
+  color: #2c3e50;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 10px;
+}
+
+.analyzer-header p {
+  color: #7f8c8d;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+.analyzer-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  min-height: 750px;
+}
+
+/* Upload Section */
+.upload-section {
+  position: relative;
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border: 2px dashed #e9ecef;
+}
+
+.tab-buttons {
+  display: flex;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px 20px;
+  background: #0A0A0A;
+  color: #A7A7A7;
+  border: 1px solid #B03EFF/30;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: #B03EFF/10;
+  color: #F1F1F1;
+  border-color: #B03EFF/50;
+}
+
+.tab-btn.active {
+  background: linear-gradient(to right, #7F00FF, #C400FF);
+  color: #F1F1F1;
+  border-color: #B03EFF;
+}
+
+.tab-btn:first-child {
+  border-right: none;
+}
+
+.file-drop-zone {
+  border: 2px dashed #ced4da;
+  border-radius: 8px;
+  padding: clamp(15px, 3vw, 40px) clamp(10px, 2vw, 20px);
+  text-align: center;
+  transition: all 0.3s ease;
+  background: white;
+  min-height: min(450px, 60vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-drop-zone:hover {
+  border-color: #007bff;
+  background: #f8f9ff;
+}
+
+.file-drop-zone.has-file {
+  border-color: #28a745;
+  background: rgba(40, 167, 69, 0.1);
+}
+
+/* Add drag-active class for visual feedback during file dragging */
+.file-drop-zone.drag-active {
+  border-color: #B03EFF;
+  background: rgba(176, 62, 255, 0.1);
+  transform: scale(1.01);
+  box-shadow: 0 0 15px rgba(176, 62, 255, 0.3);
+}
+
+.drop-zone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.drop-text {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.or-text {
+  color: #6c757d;
+  margin: 15px 0;
+}
+
+.file-input-label {
+  background: #007bff;
+  color: white;
+  padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.file-input-label:hover {
+  background: #0056b3;
+}
+
+.file-info {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #28a745;
+}
+
+.file-icon {
+  font-size: 2rem;
+  margin-right: 15px;
+}
+
+.file-details {
+  flex: 1;
+}
+
+.file-name {
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.file-size {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.remove-file-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.text-input-area {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.resume-text-input {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 15px;
+  font-size: 1rem;
+  resize: vertical;
+  min-height: 400px;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin: 15px 0;
+  border: 1px solid #f5c6cb;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.analyze-btn {
+  flex: 1;
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(127, 0, 255, 0.3);
+}
+
+.analyze-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.clear-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-btn:hover {
+  background: #2A2A2A;
+  transform: translateY(-2px);
+}
+
+/* Results Section */
+.results-section {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-results {
+  text-align: center;
+  color: #6c757d;
+  padding: 80px 20px;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.no-results h3 {
+  margin-bottom: 15px;
+  color: #495057;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #495057;
+}
+
+.loading-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+.loading-state h3 {
+  color: #007bff;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.loading-state p {
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+.loading-timer {
+  color: #007bff;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.debug-panel {
+  font-family: monospace;
+  border: 1px solid #ccc;
+}
+
+@keyframes pulse {
+  0% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: scale(1.05);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+}
+
+.analysis-results {
+  height: 100%;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 15px;
+}
+
+.results-header h2 {
+  color: #2c3e50;
+  margin: 0;
+}
+
+.domain-badge {
+  background: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.suggestions-container h3 {
+  color: #495057;
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+}
+
+.suggestions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Scrollbar Styling for Suggestions */
+.suggestions-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: #0A0A0A;
+  border-radius: 4px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #7F00FF, #C400FF);
+  border-radius: 4px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #6600CC, #A000CC);
+}
+
+/* Firefox scrollbar styling */
+.suggestions-list {
+  scrollbar-width: thin;
+  scrollbar-color: #B03EFF #0A0A0A;
+}
+
+/* Suggestions Container Layout */
+.suggestions-list-wrapper {
+  overflow: hidden;
+  position: relative;
+  max-height: 500px;
+}
+
+.suggestions-list {
+  height: 90%;
+  padding-right: 8px;
+  margin-right: -8px;
+}
+
+/* Smooth scrolling */
+.suggestions-list {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced suggestion item styling for better scrolling experience */
+.suggestion-item {
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.suggestion-item:last-child {
+  margin-bottom: 8px;
+}
+
+/* Improved responsive design for larger heights */
+@media (max-height: 900px) {
+  .upload-section .relative,
+  .results-section .relative {
+    height: 650px !important;
+  }
+  
+  .analyzer-content {
+    min-height: 650px;
+  }
+  
+  .file-drop-zone {
+    min-height: 400px;
+  }
+  
+  .resume-text-input {
+    min-height: 400px !important;
+  }
+}
+
+@media (max-height: 800px) {
+  .upload-section .relative,
+  .results-section .relative {
+    height: 600px !important;
+  }
+  
+  .analyzer-content {
+    min-height: 600px;
+  }
+  
+  .file-drop-zone {
+    min-height: 350px;
+  }
+  
+  .resume-text-input {
+    min-height: 350px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .upload-section .relative,
+  .results-section .relative {
+    height: 550px !important;
+  }
+  
+  .analyzer-content {
+    min-height: 550px;
+  }
+  
+  .file-drop-zone {
+    min-height: 300px;
+  }
+  
+  .resume-text-input {
+    min-height: 300px !important;
+  }
+}
+
+/* Enhanced Responsive Design */
+
+/* Base styles for all screen sizes */
+.analyzer-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.analyzer-header p {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+/* Improve file drop zone responsiveness */
+.file-drop-zone {
+  min-height: min(450px, 60vh);
+  padding: clamp(15px, 3vw, 40px) clamp(10px, 2vw, 20px);
+}
+
+.drop-text {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+}
+
+.file-input-label {
+  padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+}
+
+/* Extra large screens */
+@media (min-width: 1600px) {
+  .resume-analyzer-container {
+    max-width: 1600px;
+  }
+  
+  .analyzer-content {
+    gap: 40px;
+  }
+}
+
+/* Large screens */
+@media (max-width: 1280px) {
+  .analyzer-content {
+    gap: 25px;
+  }
+}
+
+/* Medium screens (tablets landscape) */
+@media (max-width: 1024px) {
+  .analyzer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .upload-section .relative,
+  .results-section .relative {
+    height: auto !important;
+    min-height: 600px;
+  }
+}
+
+/* Tablets (portrait) and large phones */
+@media (max-width: 768px) {
+  .analyzer-header {
+    margin-bottom: 20px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .tab-btn {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .upload-section,
+  .results-section {
+    padding: 20px;
+  }
+  
+  .file-drop-zone {
+    min-height: 350px;
+  }
+  
+  .resume-text-input {
+    min-height: 350px !important;
+  }
+  
+  .suggestion-item {
+    padding: 12px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .analyzer-header h1 {
+    margin-bottom: 10px;
+  }
+  
+  .upload-section,
+  .results-section {
+    padding: 15px;
+  }
+  
+  .file-drop-zone {
+    min-height: 280px;
+    padding: 15px 10px;
+  }
+  
+  .upload-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .drop-text {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+  }
+  
+  .or-text {
+    margin: 10px 0;
+  }
+  
+  .file-input-label {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .file-info {
+    font-size: 0.8rem;
+  }
+  
+  .selected-file {
+    padding: 10px;
+  }
+  
+  .file-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+  
+  .file-name {
+    font-size: 0.9rem;
+  }
+  
+  .file-size {
+    font-size: 0.8rem;
+  }
+  
+  .remove-file-btn {
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+  }
+  
+  .resume-text-input {
+    min-height: 250px !important;
+    padding: 10px;
+  }
+  
+  .analyze-btn,
+  .clear-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+  
+  .results-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .domain-badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+  
+  .suggestions-container h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  
+  .suggestion-item {
+    padding: 10px;
+  }
+  
+  .suggestion-number {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+    margin-right: 10px;
+  }
+  
+  .suggestion-text {
+    font-size: 0.9rem;
+  }
+}
+
+/* Fix for iOS Safari viewport height issues */
+@supports (-webkit-touch-callout: none) {
+  .upload-section .relative,
+  .results-section .relative {
+    height: auto !important;
+    min-height: 550px;
+  }
+  
+  .file-drop-zone,
+  .resume-text-input {
+    min-height: 300px !important;
+  }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .upload-section .relative,
+  .results-section .relative {
+    height: auto !important;
+    min-height: 450px;
+  }
+  
+  .analyzer-header {
+    margin-bottom: 15px;
+  }
+  
+  .analyzer-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .analyzer-header p {
+    font-size: 0.8rem;
+  }
+  
+  .file-drop-zone,
+  .resume-text-input {
+    min-height: 200px !important;
+  }
+  
+  .loading-state,
+  .no-results {
+    padding: 30px 20px;
+  }
+  
+  .loading-icon,
+  .no-results-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+}
