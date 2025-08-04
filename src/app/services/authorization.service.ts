@@ -37,7 +37,7 @@ export class AuthService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.checkInitialAuthState();
+    this.initializeAuthState();
   }
 
   signUp(userData: SignUpRequest): Observable<AuthResponse> {
@@ -110,9 +110,16 @@ export class AuthService {
     );
   }
 
-  private checkInitialAuthState(): void {
+  private initializeAuthState(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.validateToken().subscribe();
+      // Set initial state based on token presence
+      const hasToken = this.getToken() !== null;
+      this.isAuthenticatedSubject.next(hasToken);
+      
+      // Then validate the token asynchronously
+      if (hasToken) {
+        this.validateToken().subscribe();
+      }
     }
   }
 
@@ -127,5 +134,15 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.isAuthenticatedSubject.next(false);
+  }
+
+  getCurrentUser(): Observable<any> {
+    // Return mock user data for now - replace with actual API call
+    return of({
+      id: 1,
+      username: 'John Doe',
+      email: 'john@example.com',
+      joinDate: new Date()
+    });
   }
 }

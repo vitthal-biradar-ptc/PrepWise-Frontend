@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   isScrolled = false;
   isAuthenticated = false;
+  profileDropdownOpen = false;
   private authSubscription?: Subscription;
   
   navItems: NavItem[] = [
@@ -49,12 +50,42 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.isScrolled = window.scrollY > 20;
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Close dropdown when clicking outside
+    if (this.profileDropdownOpen) {
+      const target = event.target as HTMLElement;
+      const profileButton = target.closest('.profile-button');
+      const dropdown = target.closest('.profile-dropdown');
+      
+      if (!profileButton && !dropdown) {
+        this.profileDropdownOpen = false;
+      }
+    }
+  }
+
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
+    // Close profile dropdown when opening mobile menu
+    if (this.mobileMenuOpen) {
+      this.profileDropdownOpen = false;
+    }
   }
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+  }
+
+  toggleProfileDropdown(): void {
+    this.profileDropdownOpen = !this.profileDropdownOpen;
+    // Close mobile menu when opening profile dropdown
+    if (this.profileDropdownOpen) {
+      this.mobileMenuOpen = false;
+    }
+  }
+
+  closeProfileDropdown(): void {
+    this.profileDropdownOpen = false;
   }
 
   navigateToSection(href: string): void {
@@ -74,8 +105,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/sign-in']);
   }
 
+  navigateToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+    this.closeProfileDropdown();
+  }
+
   logout(): void {
     this.authService.logout();
     this.closeMobileMenu();
+    this.closeProfileDropdown();
   }
 }
