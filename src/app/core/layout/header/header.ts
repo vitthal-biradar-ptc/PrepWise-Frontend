@@ -1,6 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../../services/authorization.service';
+import { Subscription } from 'rxjs';
 
 interface NavItem {
   title: string;
@@ -15,9 +17,11 @@ interface NavItem {
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   isScrolled = false;
+  isAuthenticated = false;
+  private authSubscription?: Subscription;
   
   navItems: NavItem[] = [
     { title: 'Features', href: '#features', icon: 'layout' },
@@ -26,9 +30,18 @@ export class HeaderComponent implements OnInit {
     { title: 'How It Works', href: '#how-it-works', icon: 'help' }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(
+      isAuth => this.isAuthenticated = isAuth
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:scroll', [])
@@ -55,5 +68,14 @@ export class HeaderComponent implements OnInit {
 
   navigateToSignUp(): void {
     this.router.navigate(['/sign-up']);
+  }
+
+  navigateToSignIn(): void {
+    this.router.navigate(['/sign-in']);
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.closeMobileMenu();
   }
 }

@@ -64,6 +64,23 @@
               />
             </div>
 
+            <!-- Username Field -->
+            <div class="space-y-2">
+              <label for="username" class="text-sm font-medium text-[#F1F1F1]">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                required
+                [(ngModel)]="username"
+                name="username"
+                [disabled]="isLoading"
+                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+              />
+            </div>
+
             <!-- Password Field -->
             <div class="space-y-2">
               <label for="password" class="text-sm font-medium text-[#F1F1F1]">

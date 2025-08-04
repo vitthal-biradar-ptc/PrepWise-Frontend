@@ -75,14 +75,29 @@
       </a>
     </nav>
 
-    <!-- Get Started Button (Desktop) -->
-    <a 
-      routerLink="/sign-up"
-      class="hidden md:inline-flex ml-6 group h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-2 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30 relative z-10 overflow-hidden"
-    >
-      <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
-      <span class="relative">Get Started</span>
-    </a>
+    <!-- Desktop Auth Section -->
+    <div class="hidden md:flex ml-6 items-center relative z-10">
+      <!-- Profile Icon (when authenticated) -->
+      <div *ngIf="isAuthenticated" class="relative">
+        <button 
+          class="flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
+        >
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Login Button (when not authenticated) -->
+      <button 
+        *ngIf="!isAuthenticated"
+        (click)="navigateToSignIn()"
+        class="group h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-2 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30 relative overflow-hidden flex"
+      >
+        <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
+        <span class="relative">Login</span>
+      </button>
+    </div>
 
     <!-- Mobile Menu Button -->
     <button 
@@ -178,14 +193,39 @@
           {{ item.title }}
         </a>
         
-        <!-- Mobile Get Started Button -->
-        <a 
-          routerLink="/sign-up"
-          class="w-full mt-4 group flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-3 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 relative overflow-hidden"
-        >
-          <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
-          <span class="relative">Get Started</span>
-        </a>
+        <!-- Mobile Auth Section -->
+        <div class="mt-4 pt-4 border-t border-[#B03EFF]/20">
+          <!-- Mobile Profile Section (when authenticated) -->
+          <div *ngIf="isAuthenticated" class="space-y-2">
+            <div class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] rounded-xl">
+              <div class="flex items-center justify-center h-8 w-8 rounded-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white mr-3">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              Profile
+            </div>
+            <button 
+              (click)="logout()"
+              class="w-full flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200"
+            >
+              <svg class="mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
+            </button>
+          </div>
+
+          <!-- Mobile Login Button (when not authenticated) -->
+          <button 
+            *ngIf="!isAuthenticated"
+            (click)="navigateToSignIn()"
+            class="w-full group flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-3 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 relative overflow-hidden"
+          >
+            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
+            <span class="relative">Login</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ import { ResumeAnalysisResponse, ResumeAnalysisRequest } from '../models/resume-
   providedIn: 'root'
 })
 export class ResumeAnalyzerService {
-  private baseUrl = 'http://localhost:8081/api/gemini';
+  private baseUrl = 'http://localhost:8080/api/gemini';
 
   constructor(private http: HttpClient) {}
 

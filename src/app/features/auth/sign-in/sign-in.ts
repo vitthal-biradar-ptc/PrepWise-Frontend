@@ -1,40 +1,68 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService, SignInRequest } from '../../../services/authorization.service';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, HttpClientModule],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css'
 })
 export class SignIn {
-  email: string = '';
+  usernameOrEmail: string = '';
   password: string = '';
   rememberMe: boolean = false;
   error: string = '';
   isLoading: boolean = false;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   handleSubmit(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
     this.error = '';
 
-    // Simulate API call delay
-    console.log('Sign in attempt:', {
-      email: this.email,
-      password: this.password,
-      rememberMe: this.rememberMe
-    });
+    const credentials: SignInRequest = {
+      usernameOrEmail: this.usernameOrEmail,
+      password: this.password
+    };
 
-    setTimeout(() => {
-      this.isLoading = false;
-      // In a real app, you would handle the API response here
-      console.log('Successfully signed in');
-      
-      // Reset form
-      this.resetForm();
-    }, 2000);
+    this.authService.signIn(credentials).subscribe({
+      next: (response) => {
+        console.log('Sign in successful:', response);
+        
+        // Store token in cookies
+        this.authService.setToken(response.token, response.tokenType);
+        
+        this.isLoading = false;
+        
+        // Reset form
+        this.resetForm();
+        
+        // Redirect to home page
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Sign in error:', error);
+        this.isLoading = false;
+        
+        let errorMessage = 'An error occurred during sign in';
+        if (error.status === 401) {
+          errorMessage = 'Invalid username/email or password';
+        } else if (error.status === 400) {
+          errorMessage = 'Please check your input and try again';
+        } else if (error.status === 0) {
+          errorMessage = 'Unable to connect to server. Please try again later.';
+        }
+        
+        this.showError(errorMessage);
+      }
+    });
   }
 
   private showError(message: string): void {
@@ -54,7 +82,7 @@ export class SignIn {
   }
 
   private resetForm(): void {
-    this.email = '';
+    this.usernameOrEmail = '';
     this.password = '';
     this.rememberMe = false;
     this.error = '';
