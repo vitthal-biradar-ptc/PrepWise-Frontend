@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeroComponent } from "../components/hero/hero.component";
 import { FeaturesComponent } from "../components/feature-section/features";
 import { WorksComponent } from "../components/works/works";
 import { TestimonialsComponent } from "../components/testimonials/testimonials";
 import { FooterComponent } from '../../../core/layout/footer/footer';
 import { HeaderComponent } from '../../../core/layout/header/header';
+import { AuthService } from '../../../services/authorization.service';
 
 @Component({
   selector: 'home',
@@ -13,6 +14,11 @@ import { HeaderComponent } from '../../../core/layout/header/header';
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
-export class LandingPageComponent  {
+export class LandingPageComponent implements OnInit {
+  constructor(private authService: AuthService) {}
 
+  ngOnInit(): void {
+    // Ensure auth state is properly initialized
+    this.authService.validateToken().subscribe();
+  }
 }

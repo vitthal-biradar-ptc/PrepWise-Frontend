@@ -66,13 +66,16 @@ export class SignUp {
         // Store token in cookies
         this.authService.setToken(response.token, response.tokenType);
         
-        this.isLoading = false;
-        
-        // Reset form
-        this.resetForm();
-        
-        // Redirect to home page
-        this.router.navigate(['/']);
+        // Validate token to update auth state
+        this.authService.validateToken().subscribe(() => {
+          this.isLoading = false;
+          
+          // Reset form
+          this.resetForm();
+          
+          // Redirect to home page
+          this.router.navigate(['/']);
+        });
       },
       error: (error) => {
         console.error('Sign up error:', error);
