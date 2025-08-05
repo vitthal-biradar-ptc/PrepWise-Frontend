@@ -19,6 +19,7 @@ export class SignUp {
   location: string = '';
   githubUsername: string = '';
   linkedinUsername: string = '';
+  portfolioUrl: string = '';
   termsAccepted: boolean = false;
   error: string = '';
   isLoading: boolean = false;
@@ -97,8 +98,9 @@ export class SignUp {
       name: this.name,
       password: this.password,
       location: this.location,
-      githubUsername: githubUrl,
-      linkedinUsername: linkedinUrl
+      githubUrl,
+      linkedinUrl,
+      portfolioLink: this.portfolioUrl.trim() || null
     };
 
     // Log the data being sent
@@ -162,9 +164,11 @@ export class SignUp {
     this.username = '';
     this.name = '';
     this.password = '';
-    this.confirmPassword = ''; this.linkedinUsername = '';
-    this.location = '';   this.termsAccepted = false;
-
+    this.confirmPassword = '';
+    this.linkedinUsername = '';
+    this.location = '';
+    this.githubUsername = '';
+    this.portfolioUrl = '';
+    this.termsAccepted = false;
   }
-
-}  
+}
