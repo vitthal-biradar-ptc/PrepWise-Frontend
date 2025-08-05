@@ -11,6 +11,13 @@
   perspective: 1000px;
 }
 
+/* Required Field Star */
+.required-star {
+  color: #ff3b30;
+  margin-left: 2px;
+}
+
+/* Card Border Glow */
 .card-border-glow {
   position: relative;
 }
@@ -204,4 +211,50 @@ a:hover {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+/* Form Field Flex Layout */
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.min-w-\[45\%\] {
+  min-width: 45%;
+}
+
+/* Responsive adjustments for form fields */
+@media (max-width: 640px) {
+  .flex-wrap > div {
+    min-width: 100%;
+  }
+}
+
+/* Input field prefix */
+.inline-flex {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Input Fields with Prefix */
+.flex span.inline-flex {
+  background-color: #1A1A1A;
+  color: #A7A7A7;
+  border: 1px solid rgba(176, 62, 255, 0.3);
+  border-right: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* Input with prefix rounded corners fix */
+.flex input.rounded-r-lg {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
