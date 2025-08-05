@@ -16,8 +16,9 @@ export interface SignUpRequest {
   name: string;
   password: string;
   location: string;
-  githubUsername?: string | null;
-  linkedinUsername?: string | null;
+  githubUrl?: string | null;
+  linkedinUrl?: string | null;
+  portfolioLink?: string | null;
 }
 
 export interface SignInRequest {
