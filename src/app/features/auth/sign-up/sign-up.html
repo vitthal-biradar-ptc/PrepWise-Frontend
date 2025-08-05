@@ -27,7 +27,7 @@
       <div class="relative bg-[#0D0D0D] border border-[#B03EFF]/30 shadow-lg shadow-[#B03EFF]/10 text-[#F1F1F1] rounded-xl" style="backdrop-filter: blur(20px);">
         
         <!-- Header -->
-        <div class="space-y-1 text-center pb-6 pt-8 px-8">
+        <div class="space-y-1 text-center pb-4 pt-8 px-8">
           <div class="flex items-center justify-center mb-2">
             <div class="w-12 h-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full card-decoration"></div>
           </div>
@@ -46,73 +46,142 @@
             <span class="font-medium" id="error-text"></span>
           </div>
 
-          <form (ngSubmit)="handleSubmit($event)" class="space-y-5">
-            <!-- Email Field -->
-            <div class="space-y-2">
-              <label for="email" class="text-sm font-medium text-[#F1F1F1]">
-                Email address
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                required
-                [(ngModel)]="email"
-                name="email"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
-            </div>
+          <form (ngSubmit)="handleSubmit($event)" class="space-y-4">
+            <!-- Form Fields in Flex Layout -->
+            <div class="flex flex-wrap gap-4">
+              <!-- Name Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="name" class="text-sm font-medium text-[#F1F1F1]">
+                  Name <span class="required-star">*</span>
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  required
+                  [(ngModel)]="name"
+                  name="name"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
 
-            <!-- Username Field -->
-            <div class="space-y-2">
-              <label for="username" class="text-sm font-medium text-[#F1F1F1]">
-                Username
-              </label>
-              <input
-                id="username"
-                type="text"
-                placeholder="Enter your username"
-                required
-                [(ngModel)]="username"
-                name="username"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
-            </div>
+              <!-- Username Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="username" class="text-sm font-medium text-[#F1F1F1]">
+                  Username <span class="required-star">*</span>
+                </label>
+                <input
+                  id="username"
+                  type="text"
+                  placeholder="Choose a username"
+                  required
+                  [(ngModel)]="username"
+                  name="username"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
 
-            <!-- Password Field -->
-            <div class="space-y-2">
-              <label for="password" class="text-sm font-medium text-[#F1F1F1]">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                required
-                [(ngModel)]="password"
-                name="password"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
-            </div>
+              <!-- Email Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="email" class="text-sm font-medium text-[#F1F1F1]">
+                  Email address <span class="required-star">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  required
+                  [(ngModel)]="email"
+                  name="email"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
 
-            <!-- Confirm Password Field -->
-            <div class="space-y-2">
-              <label for="confirmPassword" class="text-sm font-medium text-[#F1F1F1]">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                required
-                [(ngModel)]="confirmPassword"
-                name="confirmPassword"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
+              <!-- Location Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="location" class="text-sm font-medium text-[#F1F1F1]">
+                  Location <span class="required-star">*</span>
+                </label>
+                <input
+                  id="location"
+                  type="text"
+                  placeholder="City, Country"
+                  required
+                  [(ngModel)]="location"
+                  name="location"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
+
+              <!-- Password Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="password" class="text-sm font-medium text-[#F1F1F1]">
+                  Password <span class="required-star">*</span>
+                </label>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  [(ngModel)]="password"
+                  name="password"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
+
+              <!-- Confirm Password Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="confirmPassword" class="text-sm font-medium text-[#F1F1F1]">
+                  Confirm Password <span class="required-star">*</span>
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  [(ngModel)]="confirmPassword"
+                  name="confirmPassword"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
+
+              <!-- GitHub Username Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="githubUsername" class="text-sm font-medium text-[#F1F1F1]">
+                  GitHub Username
+                </label>
+                <input
+                  id="githubUsername"
+                  type="text"
+                  placeholder="GitHub username"
+                  [(ngModel)]="githubUsername"
+                  name="githubUsername"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
+
+              <!-- LinkedIn Username Field -->
+              <div class="space-y-1 flex-1 min-w-[45%]">
+                <label for="linkedinUsername" class="text-sm font-medium text-[#F1F1F1]">
+                  LinkedIn Username
+                </label>
+                <input
+                  id="linkedinUsername"
+                  type="text"
+                  placeholder="LinkedIn username"
+                  [(ngModel)]="linkedinUsername"
+                  name="linkedinUsername"
+                  [disabled]="isLoading"
+                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
+                />
+              </div>
             </div>
 
             <!-- Terms Checkbox -->
@@ -141,7 +210,7 @@
             <button
               type="submit"
               [disabled]="isLoading"
-              class="gradient-button w-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:opacity-90 text-[#F1F1F1] font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+              class="gradient-button w-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:opacity-90 text-[#F1F1F1] font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group mt-4"
             >
               <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-[1.05] opacity-0 group-hover:opacity-100 duration-300"></span>
               <span class="relative">
@@ -176,3 +245,4 @@
     </div>
   </div>
 </div>
+       

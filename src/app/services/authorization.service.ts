@@ -13,7 +13,11 @@ export interface AuthResponse {
 export interface SignUpRequest {
   email: string;
   username: string;
+  name: string;
   password: string;
+  location: string;
+  githubUsername?: string | null;
+  linkedinUsername?: string | null;
 }
 
 export interface SignInRequest {

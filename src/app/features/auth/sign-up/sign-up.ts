@@ -13,8 +13,12 @@ import { AuthService, SignUpRequest } from '../../../services/authorization.serv
 export class SignUp {
   email: string = '';
   username: string = '';
+  name: string = '';
   password: string = '';
   confirmPassword: string = '';
+  location: string = '';
+  githubUsername: string = '';
+  linkedinUsername: string = '';
   termsAccepted: boolean = false;
   error: string = '';
   isLoading: boolean = false;
@@ -24,14 +28,36 @@ export class SignUp {
     private router: Router
   ) {}
 
+  // When the form is submitted, this method is called:
   handleSubmit(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
     this.error = '';
 
-    // Validate username
+    // Validate required fields
+    if (!this.name.trim()) {
+      this.error = "Name is required";
+      this.showError(this.error);
+      this.isLoading = false;
+      return;
+    }
+
     if (!this.username.trim()) {
       this.error = "Username is required";
+      this.showError(this.error);
+      this.isLoading = false;
+      return;
+    }
+
+    if (!this.email.trim()) {
+      this.error = "Email is required";
+      this.showError(this.error);
+      this.isLoading = false;
+      return;
+    }
+
+    if (!this.location.trim()) {
+      this.error = "Location is required";
       this.showError(this.error);
       this.isLoading = false;
       return;
@@ -53,12 +79,32 @@ export class SignUp {
       return;
     }
 
+    // Prepare GitHub and LinkedIn URLs if usernames are provided
+    let githubUrl = null;
+    if (this.githubUsername && this.githubUsername.trim()) {
+      githubUrl = `https://github.com/${this.githubUsername.trim()}`;
+    }
+
+    let linkedinUrl = null;
+    if (this.linkedinUsername && this.linkedinUsername.trim()) {
+      linkedinUrl = `https://www.linkedin.com/in/${this.linkedinUsername.trim()}`;
+    }
+
+    // This creates the request body
     const userData: SignUpRequest = {
       email: this.email,
       username: this.username,
-      password: this.password
+      name: this.name,
+      password: this.password,
+      location: this.location,
+      githubUsername: githubUrl,
+      linkedinUsername: linkedinUrl
     };
 
+    // Log the data being sent
+    console.log('Sending sign-up data:', userData);
+
+    // This line sends the POST request to your backend
     this.authService.signUp(userData).subscribe({
       next: (response) => {
         console.log('Sign up successful:', response);
@@ -114,9 +160,11 @@ export class SignUp {
   private resetForm(): void {
     this.email = '';
     this.username = '';
+    this.name = '';
     this.password = '';
-    this.confirmPassword = '';
-    this.termsAccepted = false;
-    this.error = '';
+    this.confirmPassword = ''; this.linkedinUsername = '';
+    this.location = '';   this.termsAccepted = false;
+
   }
-}
+
+}  
