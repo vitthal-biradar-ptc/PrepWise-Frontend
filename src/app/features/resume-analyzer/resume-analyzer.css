@@ -1,3 +1,7 @@
+.resume-analyzer-section {
+  padding-top: 10rem !important; /* Add top padding to account for fixed header */
+}
+
 .resume-analyzer-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -537,8 +541,13 @@
 
 /* Tablets (portrait) and large phones */
 @media (max-width: 768px) {
+  .resume-analyzer-section {
+    padding-top: 7rem !important; /* More padding on mobile */
+  }
+  
   .analyzer-header {
     margin-bottom: 20px;
+    margin-top: 1rem; /* Adjust margin on mobile */
   }
   
   .action-buttons {
@@ -577,6 +586,10 @@
 
 /* Small phones */
 @media (max-width: 480px) {
+  .resume-analyzer-section {
+    padding-top: 8rem !important; /* Even more padding on very small screens */
+  }
+  
   .analyzer-header h1 {
     margin-bottom: 10px;
   }
@@ -680,6 +693,10 @@
 
 /* Fix for iOS Safari viewport height issues */
 @supports (-webkit-touch-callout: none) {
+  .resume-analyzer-section {
+    padding-top: 10rem !important;
+  }
+  
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;
@@ -694,6 +711,10 @@
 
 /* Landscape mode on mobile */
 @media (max-height: 500px) and (orientation: landscape) {
+  .resume-analyzer-section {
+    padding-top: 6rem !important;
+  }
+  
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;

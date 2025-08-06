@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navItems: NavItem[] = [
     { title: 'Features', href: '#features', icon: 'layout' },
     { title: 'Interviews', href: '#interviews', icon: 'interviews' },
-    { title: 'Learning', href: '#learning', icon: 'book' },
+    { title: 'Resume Analyzer', href: '/resume-analyzer', icon: 'book' },
     { title: 'How It Works', href: '#how-it-works', icon: 'help' }
   ];
 
@@ -114,5 +114,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.closeMobileMenu();
     this.closeProfileDropdown();
+  }
+
+  handleNavClick(item: NavItem, event: MouseEvent): void {
+    event.preventDefault();
+    
+    if (item.href.startsWith('/')) {
+      // Internal route - use Angular router
+      this.router.navigate([item.href]);
+      this.closeMobileMenu();
+    } else {
+      // Internal hash link - use existing scroll behavior
+      this.navigateToSection(item.href);
+    }
   }
 }

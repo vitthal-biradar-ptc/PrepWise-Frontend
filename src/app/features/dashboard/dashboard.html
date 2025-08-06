@@ -1,4 +1,7 @@
 <div class="dashboard-container" style="background-color: #1A1A1A; color: #F1F1F1;">
+  <!-- Header Component -->
+  <app-header></app-header>
+  
   <!-- Toast for notifications -->
   <p-toast></p-toast>
 
@@ -9,7 +12,7 @@
         <!-- Profile Photo Section -->
         <div class="profile-photo-section">
           <p-avatar 
-            [image]="profile.photo" 
+            [image]="profile.photo || 'https://via.placeholder.com/150'" 
             size="xlarge" 
             shape="circle"
             class="profile-photo"
@@ -18,7 +21,7 @@
           </p-avatar>
           <div class="profile-info">
             <div class="name-section">
-              <h1 class="profile-name" *ngIf="!isProfileEditing">{{ profile.name }}</h1>
+              <h1 class="profile-name" *ngIf="!isProfileEditing">{{ profile.name || 'Loading...' }}</h1>
               <input 
                 pInputText 
                 [(ngModel)]="profile.name" 
@@ -28,7 +31,7 @@
             </div>
             
             <div class="email-section">
-              <p class="profile-email" *ngIf="!isProfileEditing">{{ profile.email }}</p>
+              <p class="profile-email" *ngIf="!isProfileEditing">{{ profile.email || 'Loading...' }}</p>
               <input 
                 pInputText 
                 [(ngModel)]="profile.email" 
@@ -39,7 +42,7 @@
 
             <div class="location-section">
               <p class="profile-location" *ngIf="!isProfileEditing">
-                <i class="pi pi-map-marker"></i> {{ profile.location }}
+                <i class="pi pi-map-marker"></i> {{ profile.location || 'Loading...' }}
               </p>
               <input 
                 pInputText 
@@ -54,7 +57,7 @@
         <div class="profile-actions">
           <div class="domain-badge">
             <p-chip 
-              [label]="profile.domain" 
+              [label]="profile.domain || 'General'" 
               icon="pi pi-briefcase"
               class="domain-chip">
             </p-chip>
@@ -72,19 +75,19 @@
       </div>
 
       <div class="social-links">
-        <div class="social-link" *ngIf="!isProfileEditing">
+        <div class="social-link" *ngIf="!isProfileEditing && profile.githubUrl">
           <a [href]="profile.githubUrl" target="_blank" class="social-btn github">
             <i class="pi pi-github"></i>
             <span>GitHub</span>
           </a>
         </div>
-        <div class="social-link" *ngIf="!isProfileEditing">
+        <div class="social-link" *ngIf="!isProfileEditing && profile.linkedinUrl">
           <a [href]="profile.linkedinUrl" target="_blank" class="social-btn linkedin">
             <i class="pi pi-linkedin"></i>
             <span>LinkedIn</span>
           </a>
         </div>
-        <div class="social-link" *ngIf="!isProfileEditing">
+        <div class="social-link" *ngIf="!isProfileEditing && profile.portfolioUrl">
           <a [href]="profile.portfolioUrl" target="_blank" class="social-btn portfolio">
             <i class="pi pi-globe"></i>
             <span>Portfolio</span>
@@ -122,6 +125,7 @@
         </ng-template>
         <div class="chart-content">
           <p-chart 
+            *ngIf="domainChartData"
             type="pie" 
             [data]="domainChartData" 
             [options]="domainChartOptions"
@@ -141,6 +145,7 @@
         </ng-template>
         <div class="chart-content">
           <p-chart 
+            *ngIf="atsChartData"
             type="polarArea" 
             [data]="atsChartData" 
             [options]="atsChartOptions"
@@ -222,6 +227,11 @@
               </p-button>
             </div>
           </div>
+        </div>
+        
+        <!-- Show message if no skills -->
+        <div *ngIf="skills?.length === 0" style="text-align: center; color: #A7A7A7; padding: 2rem;">
+          <p>No skills added yet. Click "Add Skill" to get started!</p>
         </div>
       </div>
     </p-card>
