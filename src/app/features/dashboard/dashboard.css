@@ -3,7 +3,51 @@
   background-color: #1A1A1A;
   color: #F1F1F1;
   min-height: 100vh;
-  padding: 2rem 1.5rem;
+  padding: 0;
+  padding-top: 10rem; /* Add top padding to account for fixed header */
+}
+
+/* Add top margin to first content section to account for header */
+.profile-container {
+  margin-top: 5rem; /* Increased margin for better spacing */
+  padding: 10px;
+  border: 3px solid rgba(176, 62, 255, 0.5);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+/* Add horizontal margins to other sections */
+.charts-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.skills-section {
+  margin-bottom: 2.5rem;
+  padding: 10px;
+  border: 3px solid rgba(176, 62, 255, 0.5);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+.certifications-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 /* Profile section */
@@ -356,6 +400,8 @@ p-button ::ng-deep .p-button.edit-btn:hover {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2.5rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .chart-container {
@@ -424,11 +470,8 @@ p-button ::ng-deep .p-button.edit-btn:hover {
   border-radius: 20px;
   transition: all 0.3s ease;
   overflow: hidden;
-}
-
-.skills-section:hover {
-  border-color: rgba(176, 62, 255, 0.8);
-  box-shadow: 0 0 30px rgba(127, 0, 255, 0.2);
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .skills-card {
@@ -580,6 +623,8 @@ p-button ::ng-deep .p-button.edit-btn:hover {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .certifications-container,
@@ -755,28 +800,11 @@ p-button ::ng-deep .p-button.edit-btn:hover {
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 1rem;
+    padding-top: 7rem; /* More padding on mobile to account for mobile menu */
   }
   
-  .profile-header {
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .profile-photo-section {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
-  }
-  
-  .profile-photo {
-    height: 150px !important;
-    width: 150px !important;
-    margin: 0 auto;
-  }
-  
-  .profile-actions {
-    align-items: center;
-    margin-top: 1rem;
+  .profile-container {
+    margin-top: 2rem; /* Adjust margin on mobile */
   }
   
   .skills-grid {
@@ -802,6 +830,10 @@ p-button ::ng-deep .p-button.edit-btn:hover {
 }
 
 @media (max-width: 480px) {
+  .dashboard-container {
+    padding-top: 8rem; /* Even more padding on very small screens */
+  }
+  
   .profile-name {
     font-size: 1.8rem;
   }
@@ -952,6 +984,18 @@ p-button ::ng-deep .p-button.edit-btn:hover {
   border-color: #b03eff;
   box-shadow: 0 0 0 2px rgba(176, 62, 255, 0.2);
 }
+
+:host ::ng-deep .p-inputtextarea {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(176, 62, 255, 0.2);
+  color: #f1f1f1;
+}
+
+:host ::ng-deep .p-inputtextarea:focus {
+  border-color: #b03eff;
+  box-shadow: 0 0 0 2px rgba(176, 62, 255, 0.2);
+}
+
 
 :host ::ng-deep .p-inputtextarea {
   background-color: #1a1a1a;

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { ChartModule } from 'primeng/chart';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -12,6 +13,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { UserProfileService } from '../../services/user-profile.service';
+import { UserProfile, BackendSkill, BackendCertification, BackendAchievement } from './user-profile.interface';
+import { HeaderComponent } from '../../core/layout/header/header';
 
 interface Skill {
   id: number;
@@ -44,6 +48,7 @@ interface Achievement {
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     ChartModule,
     InputTextModule,
     ButtonModule,
@@ -53,23 +58,25 @@ interface Achievement {
     BadgeModule,
     TextareaModule,
     DialogModule,
-    ToastModule
-  ],
-  providers: [MessageService],
+    ToastModule,
+    HeaderComponent,
+    
+],
+  providers: [MessageService, UserProfileService],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  // Profile data
+  // Profile data - will be populated from backend
   profile = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    location: 'San Francisco, CA',
-    domain: 'Software Engineering',
-    githubUrl: 'https://github.com/johndoe',
-    linkedinUrl: 'https://linkedin.com/in/johndoe',
-    portfolioUrl: 'https://johndoe.dev',
-    photo: 'https://plus.unsplash.com/premium_photo-1739178656495-8109a8bc4f53?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    name: '',
+    email: '',
+    location: '',
+    domain: '',
+    githubUrl: '',
+    linkedinUrl: '',
+    portfolioUrl: '',
+    photo: ''
   };
 
   // Chart data
@@ -78,26 +85,10 @@ export class DashboardComponent implements OnInit {
   atsChartData: any;
   atsChartOptions: any;
 
-  // Skills data
-  skills: Skill[] = [
-    { id: 1, name: 'JavaScript', level: 'Expert', category: 'Programming', isEditing: false },
-    { id: 2, name: 'React', level: 'Advanced', category: 'Frontend', isEditing: false },
-    { id: 3, name: 'Node.js', level: 'Advanced', category: 'Backend', isEditing: false },
-    { id: 4, name: 'Python', level: 'Intermediate', category: 'Programming', isEditing: false },
-    { id: 5, name: 'AWS', level: 'Intermediate', category: 'Cloud', isEditing: false },
-    { id: 6, name: 'Docker', level: 'Beginner', category: 'DevOps', isEditing: false }
-  ];
-
-  // Certifications and achievements
-  certifications: Certification[] = [
-    { id: 1, name: 'AWS Certified Solutions Architect', issuer: 'Amazon Web Services', date: '2023-06-15', description: 'Associate level certification for cloud architecture', isEditing: false },
-    { id: 2, name: 'Google Cloud Professional Developer', issuer: 'Google Cloud', date: '2023-03-20', description: 'Professional level certification for cloud development', isEditing: false }
-  ];
-
-  achievements: Achievement[] = [
-    { id: 1, title: 'Best Developer Award', description: 'Recognized for outstanding contribution to open source projects', date: '2023-12-01', isEditing: false },
-    { id: 2, title: 'Hackathon Winner', description: 'First place in regional hackathon for innovative AI solution', date: '2023-08-15', isEditing: false }
-  ];
+  // Data arrays - will be populated from backend
+  skills: Skill[] = [];
+  certifications: Certification[] = [];
+  achievements: Achievement[] = [];
 
   // New item placeholders
   newSkill: Partial<Skill> = {};
@@ -110,19 +101,144 @@ export class DashboardComponent implements OnInit {
   showAddCertificationDialog = false;
   showAddAchievementDialog = false;
 
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    private userProfileService: UserProfileService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.initCharts();
+    // Initialize charts first
+    this.initPerformanceChart();
+    this.initCharts(); // Initialize with fallback data
+    
+    // Then load user profile
+    this.loadUserProfile();
   }
 
-  initCharts() {
-    // Domain Analysis Pie Chart
+  loadUserProfile() {
+    this.userProfileService.getUserProfile().subscribe({
+      next: (data: UserProfile) => {
+        this.populateProfileData(data);
+        this.populateSkillsData(data.skills || []);
+        this.populateCertificationsData(data.certifications || []);
+        this.populateAchievementsData(data.achievements || []);
+        this.initDomainChart(data.domainData);
+        
+        // Trigger change detection
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load profile data. Using fallback data.'
+        });
+        // Ensure fallback data is displayed
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private populateProfileData(data: UserProfile) {
+    this.profile = {
+      name: data.name || 'User',
+      email: data.email || '',
+      location: data.location || '',
+      domain: data.domainBadge || 'General',
+      githubUrl: data.githubUrl || '',
+      linkedinUrl: data.linkedinUrl || '',
+      portfolioUrl: data.portfolioLink || '',
+      photo: data.profilePhoto || 'https://via.placeholder.com/150'
+    };
+  }
+
+  private populateSkillsData(backendSkills: BackendSkill[]) {
+    if (!Array.isArray(backendSkills)) {
+      this.skills = [];
+      return;
+    }
+    
+    this.skills = backendSkills.map(skill => ({
+      id: skill.id,
+      name: skill.name,
+      level: this.mapProficiencyToLevel(skill.proficiency),
+      category: this.inferSkillCategory(skill.name),
+      isEditing: false
+    }));
+  }
+
+  private populateCertificationsData(backendCerts: BackendCertification[]) {
+    if (!Array.isArray(backendCerts)) {
+      this.certifications = [];
+      return;
+    }
+    
+    this.certifications = backendCerts.map(cert => ({
+      id: cert.id,
+      name: cert.name,
+      issuer: cert.issuer || 'Unknown',
+      date: cert.date || new Date().toISOString().split('T')[0],
+      description: cert.description || '',
+      isEditing: false
+    }));
+  }
+
+  private populateAchievementsData(backendAchievements: BackendAchievement[]) {
+    if (!Array.isArray(backendAchievements)) {
+      this.achievements = [];
+      return;
+    }
+    
+    this.achievements = backendAchievements.map(achievement => ({
+      id: achievement.id,
+      title: achievement.name,
+      description: achievement.description,
+      date: achievement.date || new Date().toISOString().split('T')[0],
+      isEditing: false
+    }));
+  }
+
+  private mapProficiencyToLevel(proficiency: string): 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert' {
+    switch (proficiency.toLowerCase()) {
+      case 'expert': return 'Expert';
+      case 'advanced': return 'Advanced';
+      case 'intermediate': return 'Intermediate';
+      case 'beginner': return 'Beginner';
+      default: return 'Intermediate';
+    }
+  }
+
+  private inferSkillCategory(skillName: string): string {
+    const skill = skillName.toLowerCase();
+    if (skill.includes('react') || skill.includes('angular') || skill.includes('vue') || skill.includes('html') || skill.includes('css')) {
+      return 'Frontend';
+    } else if (skill.includes('node') || skill.includes('express') || skill.includes('spring') || skill.includes('django')) {
+      return 'Backend';
+    } else if (skill.includes('aws') || skill.includes('azure') || skill.includes('docker') || skill.includes('kubernetes')) {
+      return 'Cloud';
+    } else if (skill.includes('python') || skill.includes('java') || skill.includes('javascript') || skill.includes('typescript')) {
+      return 'Programming';
+    } else if (skill.includes('mongodb') || skill.includes('mysql') || skill.includes('postgres')) {
+      return 'Database';
+    } else if (skill.includes('machine') || skill.includes('ai') || skill.includes('ml')) {
+      return 'AI/ML';
+    } else {
+      return 'Other';
+    }
+  }
+
+  initDomainChart(domainData: any) {
+    if (!domainData || !domainData.labels || !domainData.datasets) {
+      this.initCharts();
+      return;
+    }
+
     this.domainChartData = {
-      labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
+      labels: domainData.labels,
       datasets: [
         {
-          data: [30, 25, 20, 15, 8, 2],
+          data: domainData.datasets[0].data,
           backgroundColor: [
             '#8a2be2',
             '#9932cc',
@@ -185,8 +301,10 @@ export class DashboardComponent implements OnInit {
         animateRotate: true
       }
     };
+  }
 
-    // ATS Score Analysis Polar Area Chart
+  initPerformanceChart() {
+    // Keep dummy data for Performance Metrics as requested
     this.atsChartData = {
       labels: ['Resume Score', 'Skills Match', 'Experience Level', 'Education', 'Certifications', 'Projects'],
       datasets: [
@@ -276,6 +394,80 @@ export class DashboardComponent implements OnInit {
         animateRotate: true
       }
     };
+  }
+
+  initCharts() {
+    // Fallback dummy data for domain chart
+    this.domainChartData = {
+      labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
+      datasets: [
+        {
+          data: [30, 25, 20, 15, 8, 2],
+          backgroundColor: [
+            '#8a2be2',
+            '#9932cc',
+            '#ba55d3',
+            '#da70d6',
+            '#dda0dd',
+            '#e6e6fa'
+          ],
+          borderColor: [
+            '#8a2be2',
+            '#9932cc',
+            '#ba55d3',
+            '#da70d6',
+            '#dda0dd',
+            '#e6e6fa'
+          ],
+          borderWidth: 3,
+          hoverBorderWidth: 5,
+          hoverBackgroundColor: [
+            '#9932cc',
+            '#ba55d3',
+            '#da70d6',
+            '#dda0dd',
+            '#e6e6fa',
+            '#f0f8ff'
+          ]
+        }
+      ]
+    };
+
+    this.domainChartOptions = {
+      plugins: {
+        legend: {
+          labels: {
+            color: '#ffffff',
+            font: {
+              size: 14,
+              weight: '600'
+            },
+            padding: 20,
+            usePointStyle: true,
+            pointStyle: 'circle'
+          },
+          position: 'bottom'
+        },
+        tooltip: {
+          backgroundColor: 'rgba(30, 30, 63, 0.9)',
+          titleColor: '#ffffff',
+          bodyColor: '#e6e6fa',
+          borderColor: '#8a2be2',
+          borderWidth: 2,
+          cornerRadius: 10,
+          displayColors: true
+        }
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    };
+
+    // Initialize performance chart with dummy data
+    this.initPerformanceChart();
   }
 
   // Profile editing methods

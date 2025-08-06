@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
+import { HeaderComponent } from '../../core/layout/header/header';
 
 @Component({
   selector: 'app-resume-analyzer',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './resume-analyzer.html',
   styleUrl: './resume-analyzer.css'
 })
