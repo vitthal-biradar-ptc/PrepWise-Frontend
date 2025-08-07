@@ -1,154 +1,290 @@
-<section class="resume-analyzer-section pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-12 lg:pb-20 min-h-screen relative overflow-hidden bg-[#0A0A0A]">
+<section class="pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-12 lg:pb-20 min-h-screen relative overflow-hidden bg-[#0A0A0A]">
    <app-header></app-header>
-  <!-- Background decorations -->
-  <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-    <div class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#7F00FF]/20 rounded-full blur-[80px] md:blur-[100px]"></div>
-    <div class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#C400FF]/20 rounded-full blur-[80px] md:blur-[100px]"></div>
-    <div class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#B03EFF]/10 rounded-full blur-[60px] md:blur-[80px]"></div>
+  
+  <!-- Simplified background decorations -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <div class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#7F00FF]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#C400FF]/20 rounded-full blur-[100px]"></div>
+    <div class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#B03EFF]/10 rounded-full blur-[80px]"></div>
   </div>
 
-  <div class="container mx-auto px-4 sm:px-6 relative z-10">
-    <div class="analyzer-header text-center mb-6 md:mb-10">
+  <div class="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+    <!-- Header -->
+    <div class="text-center mb-8 md:mb-12">
+      <div class="inline-flex items-center gap-2 bg-gradient-to-r from-[#7F00FF]/20 to-[#C400FF]/20 border border-[#B03EFF]/30 rounded-full px-4 py-2 mb-4">
+        <span class="w-2 h-2 bg-[#B03EFF] rounded-full"></span>
+        <span class="text-[#B03EFF] text-sm font-medium">AI-Powered Analysis</span>
+      </div>
       
-      <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-6 text-white">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#7F00FF] to-[#C400FF]">AI-Powered</span>
-        <span class="text-white"> Resume Analysis</span>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-white leading-tight">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-[#7F00FF] via-[#B03EFF] to-[#C400FF] animate-gradient">Smart Resume</span>
+        <br class="hidden sm:block">
+        <span class="text-white">Analyzer</span>
       </h1>
-      <p class="text-base sm:text-lg md:text-xl text-[#A7A7A7] max-w-2xl mx-auto">
-        Upload your resume or paste the text to get AI-powered analysis and personalized suggestions
+      <p class="text-lg sm:text-xl md:text-2xl text-[#A7A7A7] max-w-3xl mx-auto leading-relaxed">
+        Get instant AI-powered insights and personalized recommendations to make your resume stand out
       </p>
+      
+      <!-- Stats Section -->
+      <div class="flex justify-center items-center gap-8 mt-8">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-[#B03EFF]">50K+</div>
+          <div class="text-sm text-[#A7A7A7]">Resumes Analyzed</div>
+        </div>
+        <div class="w-px h-12 bg-[#B03EFF]/20"></div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-[#B03EFF]">95%</div>
+          <div class="text-sm text-[#A7A7A7]">Success Rate</div>
+        </div>
+        <div class="w-px h-12 bg-[#B03EFF]/20"></div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-[#B03EFF]">30s</div>
+          <div class="text-sm text-[#A7A7A7]">Avg Analysis</div>
+        </div>
+      </div>
     </div>
 
-    <div class="analyzer-content grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
       <!-- Left Side - Upload Area -->
-      <div class="upload-section relative">
-        <div class="absolute -inset-0.5 bg-gradient-to-br from-[#7F00FF]/20 to-[#C400FF]/20 rounded-xl blur-lg opacity-70"></div>
-        <div class="relative bg-[#1A1A1A] rounded-xl p-4 sm:p-6 md:p-8 border border-[#B03EFF]/30 h-auto min-h-[550px] md:min-h-[650px] lg:h-[750px] flex flex-col" style="backdrop-filter: blur(20px);">
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/30 to-[#C400FF]/30 rounded-2xl blur-xl opacity-75"></div>
+        <div class="relative bg-[#1A1A1A]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-2xl">
           
-          <div class="tab-buttons flex mb-4 md:mb-6 flex-shrink-0">
+          <!-- Tab Buttons -->
+          <div class="flex mb-6 md:mb-8 bg-[#0A0A0A]/50 rounded-xl p-1">
             <button 
-              class="tab-btn flex-1 py-2 md:py-3 px-3 md:px-6 rounded-l-lg font-medium transition-all text-sm sm:text-base" 
-              [class.active]="activeTab === 'file'"
+              class="flex-1 py-3 md:py-4 px-4 md:px-6 rounded-lg font-semibold transition-all duration-300 text-sm sm:text-base relative overflow-hidden"
+              [class]="activeTab === 'file' ? 'bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white shadow-lg' : 'text-[#A7A7A7] hover:text-white hover:bg-[#B03EFF]/10'"
               (click)="switchTab('file')">
-              Upload File
+              <span class="flex items-center justify-center gap-2">
+                <span class="text-lg">📁</span>
+                Upload File
+              </span>
             </button>
             <button 
-              class="tab-btn flex-1 py-2 md:py-3 px-3 md:px-6 rounded-r-lg font-medium transition-all text-sm sm:text-base" 
-              [class.active]="activeTab === 'text'"
+              class="flex-1 py-3 md:py-4 px-4 md:px-6 rounded-lg font-semibold transition-all duration-300 text-sm sm:text-base relative overflow-hidden"
+              [class]="activeTab === 'text' ? 'bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white shadow-lg' : 'text-[#A7A7A7] hover:text-white hover:bg-[#B03EFF]/10'"
               (click)="switchTab('text')">
-              Paste Text
+              <span class="flex items-center justify-center gap-2">
+                <span class="text-lg">📝</span>
+                Paste Text
+              </span>
             </button>
           </div>
 
           <!-- File Upload Tab -->
-          <div *ngIf="activeTab === 'file'" class="upload-area flex-1 flex flex-col">
+          <div *ngIf="activeTab === 'file'" class="flex-1 flex flex-col">
             <div 
-              class="file-drop-zone flex-1 border-2 border-dashed border-[#B03EFF]/30 rounded-lg p-4 sm:p-6 md:p-8 text-center transition-all hover:border-[#B03EFF]/60 hover:bg-[#B03EFF]/5 flex items-center justify-center"
-              [class.has-file]="selectedFile"
-              [class.drag-active]="isDragging"
+              class="flex-1 border-2 border-dashed rounded-xl p-6 md:p-8 text-center transition-all duration-300 flex items-center justify-center relative overflow-hidden"
+              [class]="selectedFile ? 'border-green-500 bg-green-500/5' : isDragging ? 'border-[#B03EFF] bg-[#B03EFF]/10' : 'border-[#B03EFF]/20 hover:border-[#B03EFF]/60 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5'"
               (dragover)="onDragOver($event)"
               (dragleave)="onDragLeave($event)"
               (drop)="onDrop($event)">
               
-              <div *ngIf="!selectedFile" class="drop-zone-content flex flex-col items-center justify-center h-full w-full">
-                <div class="upload-icon text-4xl sm:text-5xl md:text-6xl mb-2 md:mb-4 text-[#B03EFF]">📄</div>
-                <p class="drop-text text-base sm:text-lg md:text-xl text-[#F1F1F1] mb-1 md:mb-2">Drag and drop your PDF resume here</p>
-                <p class="or-text text-[#A7A7A7] mb-2 md:mb-4">or</p>
-                <label for="file-input" class="file-input-label bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-[#F1F1F1] px-4 sm:px-5 md:px-6 py-2 md:py-3 rounded-lg font-medium cursor-pointer hover:shadow-lg transition-all text-sm sm:text-base">
-                  Choose File
+              <div *ngIf="!selectedFile" class="flex flex-col items-center justify-center h-full w-full">
+                <div class="text-6xl md:text-8xl mb-4 md:mb-6">
+                  <div class="bg-gradient-to-br from-[#7F00FF] to-[#C400FF] bg-clip-text text-transparent">📄</div>
+                </div>
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">Drop your resume here</h3>
+                <p class="text-[#A7A7A7] mb-4 text-base md:text-lg">Drag and drop your PDF resume or click to browse</p>
+                
+                <label for="file-input" class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:from-[#9A1FFF] hover:to-[#D61FFF] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold cursor-pointer transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#B03EFF]/25 transform hover:scale-105 text-base md:text-lg">
+                  <span class="flex items-center gap-2">
+                    <span>📁</span>
+                    Choose File
+                  </span>
                   <input 
                     id="file-input" 
                     type="file" 
                     accept=".pdf" 
                     (change)="onFileSelected($event)"
-                    style="display: none;">
+                    class="hidden">
                 </label>
-                <p class="file-info text-[#A7A7A7] text-xs sm:text-sm mt-2 md:mt-3">Only PDF files are supported</p>
+                
+                <div class="mt-6 space-y-2">
+                  <p class="text-[#A7A7A7] text-sm">Supported format: PDF only</p>
+                  <p class="text-[#A7A7A7] text-xs">Maximum file size: 10MB</p>
+                </div>
               </div>
 
-              <div *ngIf="selectedFile" class="selected-file flex items-center bg-[#B03EFF]/10 p-3 md:p-4 rounded-lg border border-[#B03EFF]/20 w-full">
-                <div class="file-icon text-2xl md:text-3xl mr-3 md:mr-4 text-[#B03EFF]">📄</div>
-                <div class="file-details flex-1">
-                  <p class="file-name text-[#A7A7A7] font-medium text-sm sm:text-base">{{ selectedFile.name }}</p>
-                  <p class="file-size text-[#A7A7A7] text-xs sm:text-sm">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+              <!-- Selected File Display -->
+              <div *ngIf="selectedFile" class="flex items-center bg-gradient-to-r from-[#B03EFF]/10 to-[#7F00FF]/10 p-4 md:p-6 rounded-xl border border-[#B03EFF]/30 w-full backdrop-blur-sm">
+                <div class="text-3xl md:text-4xl mr-4 md:mr-6">
+                  <div class="bg-gradient-to-br from-[#7F00FF] to-[#C400FF] bg-clip-text text-transparent">📄</div>
                 </div>
-                <button class="remove-file-btn bg-red-500 text-white w-7 h-7 sm:w-8 sm:h-8 rounded-full hover:bg-red-600 transition-colors" (click)="selectedFile = null">✕</button>
+                <div class="flex-1">
+                  <p class="text-white font-semibold text-base md:text-lg mb-1">{{ selectedFile.name }}</p>
+                  <p class="text-[#A7A7A7] text-sm">{{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB</p>
+                  <div class="flex items-center gap-2 mt-2">
+                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                    <span class="text-green-400 text-xs font-medium">Ready for analysis</span>
+                  </div>
+                </div>
+                <button class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white w-10 h-10 rounded-full transition-all duration-300 hover:scale-110 flex items-center justify-center" (click)="selectedFile = null">
+                  <span class="text-lg">×</span>
+                </button>
               </div>
             </div>
           </div>
 
           <!-- Text Input Tab -->
-          <div *ngIf="activeTab === 'text'" class="text-input-area flex-1 flex flex-col">
-            <textarea 
-              [(ngModel)]="resumeText"
-              placeholder="Paste your resume text here..."
-              class="resume-text-input w-full flex-1 bg-[#0A0A0A] border border-[#B03EFF]/30 rounded-lg p-3 sm:p-4 text-[#F1F1F1] placeholder-[#A7A7A7] focus:border-[#B03EFF] focus:outline-none resize-none text-sm sm:text-base min-h-[250px] sm:min-h-[350px] md:min-h-[450px]">
-            </textarea>
+          <div *ngIf="activeTab === 'text'" class="flex-1 flex flex-col">
+            <div class="flex-1 relative">
+              <textarea 
+                [(ngModel)]="resumeText"
+                placeholder="Paste your resume text here... Include all sections like experience, education, skills, etc."
+                class="w-full h-full bg-[#0A0A0A]/50 border border-[#B03EFF]/20 rounded-xl p-4 md:p-6 text-white placeholder-[#A7A7A7] focus:border-[#B03EFF] focus:outline-none resize-none text-sm md:text-base min-h-[400px] md:min-h-[500px] transition-colors duration-300 backdrop-blur-sm">
+              </textarea>
+              <div class="absolute bottom-4 right-4 text-xs text-[#A7A7A7] bg-[#1A1A1A]/80 px-2 py-1 rounded">
+                {{ resumeText.length }} characters
+              </div>
+            </div>
           </div>
 
           <!-- Error Display -->
-          <div *ngIf="error" class="error-message bg-red-500/10 border border-red-500/30 text-red-400 p-2 sm:p-3 rounded-lg mt-3 md:mt-4 flex-shrink-0 text-sm sm:text-base">
-            {{ error }}
+          <div *ngIf="error" class="bg-gradient-to-r from-red-500/10 to-red-600/10 border border-red-500/30 text-red-400 p-3 md:p-4 rounded-xl mt-4 md:mt-6 flex items-center gap-3 backdrop-blur-sm">
+            <span class="text-xl">⚠️</span>
+            <span class="text-sm md:text-base">{{ error }}</span>
           </div>
 
           <!-- Action Buttons -->
-          <div class="action-buttons flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 md:mt-6 flex-shrink-0">
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 md:mt-8">
             <button 
-              class="analyze-btn flex-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-[#F1F1F1] py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+              class="flex-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:from-[#9A1FFF] hover:to-[#D61FFF] text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#B03EFF]/25 disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg transform hover:scale-105 disabled:hover:scale-100 relative overflow-hidden"
               (click)="analyzeResume()"
               [disabled]="isLoading || (!selectedFile && !resumeText.trim())">
-              <span *ngIf="!isLoading">Analyze Resume</span>
-              <span *ngIf="isLoading">Analyzing...</span>
+              <span class="flex items-center justify-center gap-2">
+                <span *ngIf="!isLoading">🎯</span>
+                <span *ngIf="isLoading" class="animate-spin">⏳</span>
+                <span *ngIf="!isLoading">Analyze Resume</span>
+                <span *ngIf="isLoading">Analyzing...</span>
+              </span>
             </button>
-            <button class="clear-btn bg-[#1A1A1A] border border-[#B03EFF]/30 text-[#F1F1F1] py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:border-[#B03EFF]/60 transition-all text-sm sm:text-base" (click)="clearAll()">Clear All</button>
+            <button class="bg-[#1A1A1A]/80 hover:bg-[#2A2A2A] border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 text-base md:text-lg backdrop-blur-sm" (click)="clearAll()">
+              <span class="flex items-center justify-center gap-2">
+                <span>🗑️</span>
+                Clear All
+              </span>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Right Side - Results Area -->
-      <div class="results-section relative">
-        <div class="absolute -inset-0.5 bg-gradient-to-br from-[#7F00FF]/20 to-[#C400FF]/20 rounded-xl blur-lg opacity-70"></div>
-        <div class="relative bg-[#1A1A1A] rounded-xl p-4 sm:p-6 md:p-8 border border-[#B03EFF]/30 h-auto min-h-[550px] md:min-h-[650px] lg:h-[750px] flex flex-col" style="backdrop-filter: blur(20px);">
+      <div class="relative group">
+        <div class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/30 to-[#C400FF]/30 rounded-2xl blur-xl opacity-75"></div>
+        <div class="relative bg-[#1A1A1A]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-2xl">
           
-          <div *ngIf="!analysisResult && !isLoading" class="no-results text-center flex-1 flex flex-col justify-center py-12 md:py-24">
-            <div class="no-results-icon text-5xl md:text-7xl mb-4 md:mb-8 text-[#B03EFF]">🎯</div>
-            <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#F1F1F1] mb-3 md:mb-6">Ready for Analysis</h3>
-            <p class="text-base sm:text-lg md:text-xl text-[#A7A7A7]">Upload your resume or paste the text, then click "Analyze Resume" to get started.</p>
+          <!-- No Results State -->
+          <div *ngIf="!analysisResult && !isLoading" class="text-center flex-1 flex flex-col justify-center py-12 md:py-20">
+            <div class="text-6xl md:text-8xl mb-6 md:mb-8">🎯</div>
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6">Ready for Analysis</h3>
+            <p class="text-lg md:text-xl text-[#A7A7A7] leading-relaxed max-w-md mx-auto">Upload your resume or paste the text, then click "Analyze Resume" to get AI-powered insights and suggestions.</p>
+            
+            <div class="mt-8 space-y-3">
+              <div class="flex items-center justify-center gap-3 text-[#B03EFF]">
+                <span>✨</span>
+                <span class="text-sm">AI-powered content analysis</span>
+              </div>
+              <div class="flex items-center justify-center gap-3 text-[#B03EFF]">
+                <span>🎯</span>
+                <span class="text-sm">Personalized recommendations</span>
+              </div>
+              <div class="flex items-center justify-center gap-3 text-[#B03EFF]">
+                <span>⚡</span>
+                <span class="text-sm">Instant results</span>
+              </div>
+            </div>
           </div>
 
-          <div *ngIf="isLoading" class="loading-state text-center flex-1 flex flex-col justify-center py-12 md:py-24">
-            <div class="loading-icon text-5xl md:text-7xl mb-4 md:mb-8 text-[#B03EFF]">⏳</div>
-            <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#F1F1F1] mb-3 md:mb-6">Analyzing your resume with AI...</h3>
-            <p class="text-base sm:text-lg md:text-xl text-[#A7A7A7] mb-2 md:mb-4">Please wait while we process your resume and generate suggestions.</p>
-            <p class="loading-timer text-[#B03EFF] font-medium text-base md:text-lg">Time elapsed: {{ getElapsedTime() }}s</p>
+          <!-- Loading State -->
+          <div *ngIf="isLoading" class="text-center flex-1 flex flex-col justify-center py-12 md:py-20">
+            <div class="text-6xl md:text-8xl mb-6 md:mb-8">🧠</div>
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6">AI Analysis in Progress</h3>
+            <p class="text-lg md:text-xl text-[#A7A7A7] mb-6">Our AI is carefully analyzing your resume and generating personalized suggestions...</p>
+            
+            <!-- Progress Animation -->
+            <div class="w-full max-w-md mx-auto mb-6">
+              <div class="bg-[#B03EFF]/20 rounded-full h-2 overflow-hidden">
+                <div class="progress-fill bg-gradient-to-r from-[#7F00FF] to-[#C400FF] h-full rounded-full"></div>
+              </div>
+            </div>
+            
+            <p class="text-[#B03EFF] font-semibold text-lg">Time elapsed: {{ getElapsedTime() }}s</p>
+            
+            <div class="mt-6 space-y-2 text-sm text-[#A7A7A7]">
+              <div class="flex items-center justify-center gap-2">
+                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <span>Parsing resume content</span>
+              </div>
+              <div class="flex items-center justify-center gap-2">
+                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <span>Analyzing structure and content</span>
+              </div>
+              <div class="flex items-center justify-center gap-2">
+                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <span>Generating recommendations</span>
+              </div>
+            </div>
           </div>
 
-          <div *ngIf="analysisResult && !isLoading" class="analysis-results flex flex-col h-full">
-            <div class="results-header flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 pb-3 md:pb-4 border-b border-[#B03EFF]/20 flex-shrink-0 gap-2 sm:gap-0">
-              <h2 class="text-xl sm:text-2xl font-bold text-[#F1F1F1]">Analysis Results</h2>
-              <div class="domain-badge bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-[#F1F1F1] px-3 md:px-4 py-1 md:py-2 rounded-full text-xs sm:text-sm font-medium" *ngIf="analysisResult.domain">
-                {{ analysisResult.domain }}
+          <!-- Analysis Results -->
+          <div *ngIf="analysisResult && !isLoading" class="flex flex-col h-full">
+            <!-- Results Header -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 pb-4 md:pb-6 border-b border-[#B03EFF]/20 gap-4 lg:gap-0">
+              <div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Analysis Complete</h2>
+                <p class="text-[#A7A7A7] text-sm">Generated {{ getCurrentTime() }}</p>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <div class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg" *ngIf="analysisResult.domain">
+                  {{ analysisResult.domain }}
+                </div>
+                <div class="bg-[#B03EFF]/20 text-[#B03EFF] px-4 py-2 rounded-full text-sm font-semibold">
+                  {{ analysisResult.suggestions?.length || 0 }} Suggestions
+                </div>
               </div>
             </div>
 
-            <div class="suggestions-container flex flex-col flex-1 min-h-0" *ngIf="analysisResult.suggestions">
-              <h3 class="text-lg sm:text-xl font-bold text-[#F1F1F1] mb-2 md:mb-4 flex-shrink-0">Suggestions for Improvement ({{ analysisResult.suggestions.length }} items)</h3>
-              <div class="suggestions-list-wrapper flex-1 overflow-hidden">
-                <div class="suggestions-list space-y-2 md:space-y-4 overflow-y-auto max-h-full pr-2">
+            <!-- Suggestions Container -->
+            <div class="flex flex-col flex-1 min-h-0" *ngIf="analysisResult.suggestions && analysisResult.suggestions.length > 0">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl md:text-2xl font-bold text-white">Recommendations</h3>
+                <div class="bg-[#B03EFF]/10 text-[#B03EFF] px-3 py-1 rounded-full text-sm">
+                  High Priority
+                </div>
+              </div>
+              
+              <div class="flex-1 overflow-hidden">
+                <div class="space-y-3 md:space-y-4 overflow-y-auto max-h-full pr-2 custom-scrollbar">
                   <div 
                     *ngFor="let suggestion of analysisResult.suggestions; let i = index; trackBy: trackBySuggestion" 
-                    class="suggestion-item flex items-start bg-[#B03EFF]/5 border border-[#B03EFF]/20 p-3 md:p-4 rounded-lg hover:bg-[#B03EFF]/10 transition-all">
-                    <div class="suggestion-number bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-[#F1F1F1] w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold mr-2 md:mr-4 flex-shrink-0">
+                    class="flex items-start bg-gradient-to-r from-[#B03EFF]/5 to-[#7F00FF]/5 border border-[#B03EFF]/20 p-4 md:p-6 rounded-xl hover:bg-[#B03EFF]/10 hover:border-[#B03EFF]/40 transition-all duration-300">
+                    
+                    <div class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm md:text-base font-bold mr-4 md:mr-6 flex-shrink-0 shadow-lg">
                       {{ i + 1 }}
                     </div>
-                    <div class="suggestion-text text-[#F1F1F1] leading-relaxed text-sm sm:text-base">{{ suggestion }}</div>
+                    
+                    <div class="flex-1">
+                      <div class="text-white leading-relaxed text-sm md:text-base">{{ suggestion }}</div>
+                      <div class="flex items-center gap-4 mt-3 text-xs text-[#A7A7A7]">
+                        <span class="flex items-center gap-1">
+                          <span class="w-2 h-2 bg-[#B03EFF] rounded-full"></span>
+                          AI Generated
+                        </span>
+                        <span>Impact: High</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div *ngIf="!analysisResult.suggestions || analysisResult.suggestions.length === 0" class="no-suggestions text-center flex-1 flex flex-col justify-center">
-              <p class="text-[#A7A7A7] text-sm sm:text-base">No suggestions available.</p>
+            <!-- No Suggestions State -->
+            <div *ngIf="!analysisResult.suggestions || analysisResult.suggestions.length === 0" class="text-center flex-1 flex flex-col justify-center py-12">
+              <div class="text-4xl mb-4">✨</div>
+              <h3 class="text-xl font-bold text-white mb-2">Great Resume!</h3>
+              <p class="text-[#A7A7A7]">Your resume looks excellent. No major improvements needed at this time.</p>
             </div>
           </div>
         </div>

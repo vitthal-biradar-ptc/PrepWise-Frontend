@@ -38,15 +38,7 @@ export class ResumeAnalyzer implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Test toast functionality
-    this.testToast();
-  }
-
-  // Test method to verify toasts are working
-  testToast(): void {
-    setTimeout(() => {
-      this.toastService.showSuccess('Welcome!', 'Resume Analyzer is ready to use.');
-    }, 1000);
+    // Component initialized - ready for use
   }
 
   onFileSelected(event: any): void {
@@ -118,6 +110,7 @@ export class ResumeAnalyzer implements OnInit {
     this.error = '';
     this.analysisResult = null;
     this.startTimer();
+    this.cdr.detectChanges(); // Force change detection
 
     // Show info toast that analysis has started
     this.toastService.showInfo(
@@ -133,19 +126,23 @@ export class ResumeAnalyzer implements OnInit {
 
     analysisObservable.subscribe({
       next: (result: ResumeAnalysisResponse) => {
-        this.isLoading = false;
-        this.analysisResult = result;
-        this.stopTimer();
-        this.toastService.showResumeAnalysisSuccess(result.suggestions?.length);
-        this.cdr.detectChanges();
+        this.ngZone.run(() => {
+          this.isLoading = false;
+          this.analysisResult = result;
+          this.stopTimer();
+          this.toastService.showResumeAnalysisSuccess(result.suggestions?.length);
+          this.cdr.detectChanges();
+        });
       },
       error: (error: any) => {
-        this.isLoading = false;
-        this.stopTimer();
-        const errorMessage = error.error?.message || 'Failed to analyze resume. Please try again.';
-        this.error = errorMessage;
-        this.toastService.showResumeAnalysisError(errorMessage);
-        this.cdr.detectChanges();
+        this.ngZone.run(() => {
+          this.isLoading = false;
+          this.stopTimer();
+          const errorMessage = error.error?.message || 'Failed to analyze resume. Please try again.';
+          this.error = errorMessage;
+          this.toastService.showResumeAnalysisError(errorMessage);
+          this.cdr.detectChanges();
+        });
       }
     });
   }
@@ -155,6 +152,7 @@ export class ResumeAnalyzer implements OnInit {
     this.resumeText = '';
     this.analysisResult = null;
     this.error = '';
+    this.cdr.detectChanges(); // Force change detection
     this.toastService.showInfo(
       'Form Cleared',
       'All fields and results have been reset.',
@@ -165,6 +163,7 @@ export class ResumeAnalyzer implements OnInit {
   switchTab(tab: 'file' | 'text'): void {
     this.activeTab = tab;
     this.error = '';
+    this.cdr.detectChanges(); // Force change detection
     this.toastService.showInfo(
       'Tab Switched',
       `Switched to ${tab === 'file' ? 'file upload' : 'text input'} mode.`,
@@ -187,17 +186,13 @@ export class ResumeAnalyzer implements OnInit {
 
   private startTimer(): void {
     this.analysisStartTime = Date.now();
-    console.log('Analysis started at:', new Date().toISOString());
   }
 
   private stopTimer(): void {
     const endTime = Date.now();
     const duration = endTime - this.analysisStartTime;
-    console.log('Analysis completed at:', new Date().toISOString());
-    console.log('Total analysis time:', duration, 'ms');
   }
 }
 
 // Add this export for the router
 export { ResumeAnalyzer as ResumeAnalyzerComponent };
-

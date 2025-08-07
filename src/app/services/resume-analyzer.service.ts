@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { ResumeAnalysisResponse, ResumeAnalysisRequest } from '../models/resume-analysis.model';
 import { AuthService } from './authorization.service';
 import { Router } from '@angular/router';
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ResumeAnalyzerService {
-  private baseUrl = 'http://localhost:8080/api/gemini';
+  private baseUrl = 'http://localhost:8080/api';
 
   constructor(
     private http: HttpClient,
@@ -30,7 +31,9 @@ export class ResumeAnalyzerService {
     
     return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/analyze-resume`, formData, {
       headers: this.getAuthHeaders()
-    });
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   analyzeResumeText(text: string): Observable<ResumeAnalysisResponse> {
@@ -38,7 +41,9 @@ export class ResumeAnalyzerService {
     
     return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/analyze-text`, request, {
       headers: this.getAuthHeaders()
-    });
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Unified method for backwards compatibility and easier usage
@@ -68,5 +73,8 @@ export class ResumeAnalyzerService {
       headers: this.getAuthHeaders()
     });
   }
-}
 
+  private handleError(error: any): Observable<never> {
+    return throwError(() => error);
+  }
+}
