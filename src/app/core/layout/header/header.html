@@ -76,7 +76,7 @@
     <!-- Desktop Auth Section -->
     <div class="hidden md:flex ml-6 items-center relative z-10">
       <!-- Profile Icon (when authenticated) -->
-      <div *ngIf="isAuthenticated" class="relative">
+      <div *ngIf="!isAuthLoading && isAuthenticated" class="relative">
         <button 
           (click)="toggleProfileDropdown()"
           class="profile-button flex items-center justify-center h-10 w-10 rounded-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
@@ -118,13 +118,18 @@
 
       <!-- Login Button (when not authenticated) -->
       <button 
-        *ngIf="!isAuthenticated"
+        *ngIf="!isAuthLoading && !isAuthenticated"
         (click)="navigateToSignIn()"
         class="group h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-2 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30 relative overflow-hidden flex"
       >
         <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
         <span class="relative">Login</span>
       </button>
+
+      <!-- Loading state -->
+      <div *ngIf="isAuthLoading" class="w-10 h-10 flex items-center justify-center">
+        <div class="w-5 h-5 border-2 border-[#B03EFF] border-t-transparent rounded-full animate-spin"></div>
+      </div>
     </div>
 
     <!-- Mobile Menu Button -->
@@ -225,7 +230,7 @@
         <!-- Mobile Auth Section -->
         <div class="mt-4 pt-4 border-t border-[#B03EFF]/20">
           <!-- Mobile Profile Section (when authenticated) -->
-          <div *ngIf="isAuthenticated" class="space-y-2">
+          <div *ngIf="!isAuthLoading && isAuthenticated" class="space-y-2">
             <button 
               (click)="navigateToDashboard()"
               class="w-full flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
@@ -248,13 +253,18 @@
 
           <!-- Mobile Login Button (when not authenticated) -->
           <button 
-            *ngIf="!isAuthenticated"
+            *ngIf="!isAuthLoading && !isAuthenticated"
             (click)="navigateToSignIn()"
             class="w-full group flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-3 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 relative overflow-hidden"
           >
             <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
             <span class="relative">Login</span>
           </button>
+
+          <!-- Mobile Loading state -->
+          <div *ngIf="isAuthLoading" class="w-full h-12 flex items-center justify-center">
+            <div class="w-5 h-5 border-2 border-[#B03EFF] border-t-transparent rounded-full animate-spin"></div>
+          </div>
         </div>
       </div>
     </div>

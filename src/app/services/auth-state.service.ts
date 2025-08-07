@@ -18,6 +18,10 @@ export class AuthStateService {
     return this.isAuthenticatedSubject.value;
   }
 
+  isAuthenticated(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
   reset(): void {
     this.isAuthenticatedSubject.next(false);
   }

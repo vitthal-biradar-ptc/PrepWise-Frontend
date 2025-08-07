@@ -1,5 +1,5 @@
 .resume-analyzer-section {
-  padding-top: 10rem !important; /* Add top padding to account for fixed header */
+  padding-top: 8rem !important; /* Increased padding to account for fixed header */
 }
 
 .resume-analyzer-container {
@@ -542,7 +542,7 @@
 /* Tablets (portrait) and large phones */
 @media (max-width: 768px) {
   .resume-analyzer-section {
-    padding-top: 7rem !important; /* More padding on mobile */
+    padding-top: 9rem !important; /* More padding on mobile to account for mobile header */
   }
   
   .analyzer-header {
@@ -587,7 +587,7 @@
 /* Small phones */
 @media (max-width: 480px) {
   .resume-analyzer-section {
-    padding-top: 8rem !important; /* Even more padding on very small screens */
+    padding-top: 10rem !important; /* Even more padding on very small screens */
   }
   
   .analyzer-header h1 {

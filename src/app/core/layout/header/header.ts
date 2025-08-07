@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
   isScrolled = false;
   isAuthenticated = false;
+  isAuthLoading = true; // Add loading state
   profileDropdownOpen = false;
   private authSubscription?: Subscription;
   
@@ -39,8 +40,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Initialize auth state immediately
+    this.isAuthenticated = this.authStateService.isAuthenticated();
+    this.isAuthLoading = false;
+    
+    // Subscribe to auth state changes
     this.authSubscription = this.authStateService.isAuthenticated$.subscribe(
-      isAuth => this.isAuthenticated = isAuth
+      isAuth => {
+        this.isAuthenticated = isAuth;
+        this.isAuthLoading = false;
+        // Close dropdowns when auth state changes
+        if (!isAuth) {
+          this.profileDropdownOpen = false;
+        }
+      }
     );
   }
 

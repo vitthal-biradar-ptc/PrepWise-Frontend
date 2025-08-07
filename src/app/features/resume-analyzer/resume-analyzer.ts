@@ -7,11 +7,12 @@ import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
+import { HeaderComponent } from "../../core/layout/header/header";
 
 @Component({
   selector: 'app-resume-analyzer',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule],
+  imports: [CommonModule, FormsModule, ToastModule, HeaderComponent],
   providers: [MessageService],
   templateUrl: './resume-analyzer.html',
   styleUrls: ['./resume-analyzer.css']

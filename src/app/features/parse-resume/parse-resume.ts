@@ -7,10 +7,12 @@ import { MessageService } from 'primeng/api';
 import { ResumeParseService } from '../../services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
 import { ToastService } from '../../services/toast.service';
+import { HeaderComponent } from "../../core/layout/header/header";
+
 
 @Component({
   selector: 'app-parse-resume',
-  imports: [CommonModule, FormsModule, ToastModule],
+  imports: [CommonModule, FormsModule, ToastModule, HeaderComponent],
   providers: [MessageService],
   templateUrl: './parse-resume.html',
   styleUrl: './parse-resume.css'
