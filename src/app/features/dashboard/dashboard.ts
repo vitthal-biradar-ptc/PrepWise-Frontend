@@ -14,7 +14,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { UserProfileService } from '../../services/user-profile.service';
-import { UserProfile, BackendSkill, BackendCertification, BackendAchievement } from './user-profile.interface';
+import { UserProfile, BackendSkill, BackendCertification, BackendAchievement, UpdateProfilePayload } from './user-profile.interface';
 import { Router } from '@angular/router';
 import { ToastService } from '../../services/toast.service';
 import { HeaderComponent } from "../../core/layout/header/header";
@@ -105,6 +105,15 @@ export class DashboardComponent implements OnInit {
   // Add property to store resume analysis result
   resumeAnalysisResult: any = null;
   showAnalysisNotification: boolean = false;
+
+  // Add property to track if data has been modified
+  private isDataModified = false;
+
+  // Add delete confirmation properties
+  showDeleteSkillDialog = false;
+  showDeleteCertificationDialog = false;
+  showDeleteAchievementDialog = false;
+  itemToDelete: any = null;
 
   constructor(
     private messageService: MessageService,
@@ -512,7 +521,8 @@ export class DashboardComponent implements OnInit {
 
   saveProfile() {
     this.isProfileEditing = false;
-    this.toastService.showProfileUpdateSuccess();
+    this.isDataModified = true;
+    this.updateUserProfile();
   }
 
   // Skills management methods
@@ -522,16 +532,37 @@ export class DashboardComponent implements OnInit {
 
   saveSkill(skill: Skill) {
     skill.isEditing = false;
+    this.isDataModified = true;
     this.toastService.showSuccess(
       'Skill Updated',
       `${skill.name} has been updated successfully.`,
       3000
     );
+    this.updateUserProfile();
   }
 
   deleteSkill(skillId: number) {
-    this.skills = this.skills.filter(s => s.id !== skillId);
-    this.toastService.showDeleteSuccess('Skill');
+    console.log('Delete skill called with ID:', skillId);
+    this.itemToDelete = this.skills.find(s => s.id === skillId);
+    console.log('Item to delete:', this.itemToDelete);
+    this.showDeleteSkillDialog = true;
+    console.log('Delete dialog should show:', this.showDeleteSkillDialog);
+  }
+
+  confirmDeleteSkill() {
+    if (this.itemToDelete) {
+      this.skills = this.skills.filter(s => s.id !== this.itemToDelete.id);
+      this.isDataModified = true;
+      this.toastService.showDeleteSuccess('Skill');
+      this.updateUserProfile();
+    }
+    this.showDeleteSkillDialog = false;
+    this.itemToDelete = null;
+  }
+
+  cancelDeleteSkill() {
+    this.showDeleteSkillDialog = false;
+    this.itemToDelete = null;
   }
 
   addSkill() {
@@ -546,7 +577,9 @@ export class DashboardComponent implements OnInit {
       this.skills.push(skill);
       this.newSkill = {};
       this.showAddSkillDialog = false;
+      this.isDataModified = true;
       this.toastService.showSkillAddSuccess(skill.name);
+      this.updateUserProfile();
     }
   }
 
@@ -557,16 +590,37 @@ export class DashboardComponent implements OnInit {
 
   saveCertification(cert: Certification) {
     cert.isEditing = false;
+    this.isDataModified = true;
     this.toastService.showSuccess(
       'Certification Updated',
       `${cert.name} has been updated successfully.`,
       3000
     );
+    this.updateUserProfile();
   }
 
   deleteCertification(certId: number) {
-    this.certifications = this.certifications.filter(c => c.id !== certId);
-    this.toastService.showDeleteSuccess('Certification');
+    console.log('Delete certification called with ID:', certId);
+    this.itemToDelete = this.certifications.find(c => c.id === certId);
+    console.log('Item to delete:', this.itemToDelete);
+    this.showDeleteCertificationDialog = true;
+    console.log('Delete dialog should show:', this.showDeleteCertificationDialog);
+  }
+
+  confirmDeleteCertification() {
+    if (this.itemToDelete) {
+      this.certifications = this.certifications.filter(c => c.id !== this.itemToDelete.id);
+      this.isDataModified = true;
+      this.toastService.showDeleteSuccess('Certification');
+      this.updateUserProfile();
+    }
+    this.showDeleteCertificationDialog = false;
+    this.itemToDelete = null;
+  }
+
+  cancelDeleteCertification() {
+    this.showDeleteCertificationDialog = false;
+    this.itemToDelete = null;
   }
 
   addCertification() {
@@ -582,7 +636,9 @@ export class DashboardComponent implements OnInit {
       this.certifications.push(cert);
       this.newCertification = {};
       this.showAddCertificationDialog = false;
+      this.isDataModified = true;
       this.toastService.showCertificationAddSuccess(cert.name);
+      this.updateUserProfile();
     }
   }
 
@@ -593,16 +649,37 @@ export class DashboardComponent implements OnInit {
 
   saveAchievement(achievement: Achievement) {
     achievement.isEditing = false;
+    this.isDataModified = true;
     this.toastService.showSuccess(
       'Achievement Updated',
       `${achievement.title} has been updated successfully.`,
       3000
     );
+    this.updateUserProfile();
   }
 
   deleteAchievement(achievementId: number) {
-    this.achievements = this.achievements.filter(a => a.id !== achievementId);
-    this.toastService.showDeleteSuccess('Achievement');
+    console.log('Delete achievement called with ID:', achievementId);
+    this.itemToDelete = this.achievements.find(a => a.id === achievementId);
+    console.log('Item to delete:', this.itemToDelete);
+    this.showDeleteAchievementDialog = true;
+    console.log('Delete dialog should show:', this.showDeleteAchievementDialog);
+  }
+
+  confirmDeleteAchievement() {
+    if (this.itemToDelete) {
+      this.achievements = this.achievements.filter(a => a.id !== this.itemToDelete.id);
+      this.isDataModified = true;
+      this.toastService.showDeleteSuccess('Achievement');
+      this.updateUserProfile();
+    }
+    this.showDeleteAchievementDialog = false;
+    this.itemToDelete = null;
+  }
+
+  cancelDeleteAchievement() {
+    this.showDeleteAchievementDialog = false;
+    this.itemToDelete = null;
   }
 
   addAchievement() {
@@ -617,7 +694,9 @@ export class DashboardComponent implements OnInit {
       this.achievements.push(achievement);
       this.newAchievement = {};
       this.showAddAchievementDialog = false;
+      this.isDataModified = true;
       this.toastService.showAchievementAddSuccess(achievement.title);
+      this.updateUserProfile();
     }
   }
 
@@ -643,5 +722,108 @@ export class DashboardComponent implements OnInit {
   dismissAnalysisNotification() {
     this.showAnalysisNotification = false;
     this.resumeAnalysisResult = null;
+  }
+
+  updateUserProfile() {
+    if (!this.isDataModified) return;
+
+    const updatePayload: UpdateProfilePayload = this.formatProfileForUpdate();
+    
+    this.userProfileService.updateUserProfile(updatePayload).subscribe({
+      next: (response: UserProfile) => {
+        this.toastService.showSuccess(
+          'Profile Updated',
+          'Your profile has been successfully updated.',
+          3000
+        );
+        this.isDataModified = false;
+        
+        // Automatically fetch fresh data from backend after successful update
+        this.refreshProfileData();
+      },
+      error: (error) => {
+        this.toastService.showError(
+          'Update Failed',
+          'Failed to update profile. Please try again.',
+          5000
+        );
+        console.error('Profile update error:', error);
+      }
+    });
+  }
+
+  // Add new method to refresh profile data from backend
+  private refreshProfileData() {
+    this.userProfileService.getUserProfile().subscribe({
+      next: (data: UserProfile) => {
+        // Update all sections with fresh backend data
+        this.populateProfileData(data);
+        this.populateSkillsData(data.skills || []);
+        this.populateCertificationsData(data.certifications || []);
+        this.populateAchievementsData(data.achievements || []);
+        this.initDomainChart(data.domainData);
+        
+        this.toastService.showInfo(
+          'Data Refreshed',
+          'Dashboard updated with latest information.',
+          2000
+        );
+        
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.toastService.showError(
+          'Refresh Failed',
+          'Could not fetch latest data from server.',
+          3000
+        );
+        console.error('Profile refresh error:', error);
+      }
+    });
+  }
+
+  private formatProfileForUpdate(): UpdateProfilePayload {
+    // Convert frontend format to backend format
+    const backendSkills: BackendSkill[] = this.skills.map(skill => ({
+      id: skill.id,
+      name: skill.name,
+      proficiency: skill.level
+    }));
+
+    const backendCertifications: BackendCertification[] = this.certifications.map(cert => ({
+      id: cert.id,
+      name: cert.name,
+      issuer: cert.issuer,
+      date: cert.date,
+      description: cert.description
+    }));
+
+    const backendAchievements: BackendAchievement[] = this.achievements.map(achievement => ({
+      id: achievement.id,
+      name: achievement.title,
+      description: achievement.description,
+      date: achievement.date
+    }));
+
+    return {
+      name: this.profile.name,
+      email: this.profile.email,
+      location: this.profile.location,
+      domainBadge: this.profile.domain,
+      githubUrl: this.profile.githubUrl || null,
+      linkedinUrl: this.profile.linkedinUrl || null,
+      portfolioLink: this.profile.portfolioUrl || null,
+      profilePhoto: this.profile.photo,
+      skills: backendSkills,
+      certifications: backendCertifications,
+      achievements: backendAchievements,
+      domainData: this.domainChartData ? {
+        labels: this.domainChartData.labels,
+        datasets: this.domainChartData.datasets
+      } : {
+        labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
+        datasets: [{ data: [30, 25, 20, 15, 8, 2] }]
+      }
+    };
   }
 }

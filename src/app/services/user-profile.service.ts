@@ -4,13 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { UserProfile } from '../features/dashboard/user-profile.interface';
 import { AuthService } from './authorization.service';
-import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = 'http://localhost:8080/api';
 
   constructor(
     private http: HttpClient,
@@ -31,6 +30,24 @@ export class UserProfileService {
     });
     
     return this.http.get<UserProfile>(`${this.apiUrl}/get-user`, { headers })
+      .pipe(
+        catchError(this.handleError.bind(this))
+      );
+  }
+
+  updateUserProfile(profileData: any): Observable<UserProfile> {
+    const token = this.authService.getToken();
+    
+    if (!token) {
+      return throwError(() => new Error('Authentication token not found'));
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': token,
+      'Content-Type': 'application/json'
+    });
+    
+    return this.http.put<UserProfile>(`${this.apiUrl}/update-profile`, profileData, { headers })
       .pipe(
         catchError(this.handleError.bind(this))
       );

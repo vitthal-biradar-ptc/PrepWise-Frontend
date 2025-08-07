@@ -3,9 +3,9 @@ export interface UserProfile {
   email: string;
   location: string;
   domainBadge: string;
-  githubUrl: string;
-  linkedinUrl: string;
-  portfolioLink: string;
+  githubUrl: string | null;
+  linkedinUrl: string | null;
+  portfolioLink: string | null;
   profilePhoto: string;
   skills: BackendSkill[];
   certifications: BackendCertification[];
@@ -39,4 +39,20 @@ export interface DomainData {
   datasets: [{
     data: number[];
   }];
+}
+
+// Add interface for the complete update payload
+export interface UpdateProfilePayload {
+  name: string;
+  email: string;
+  location: string;
+  domainBadge: string;
+  githubUrl: string | null;
+  linkedinUrl: string | null;
+  portfolioLink: string | null;
+  profilePhoto: string;
+  skills: BackendSkill[];
+  certifications: BackendCertification[];
+  achievements: BackendAchievement[];
+  domainData: DomainData;
 }
