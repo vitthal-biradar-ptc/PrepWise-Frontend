@@ -436,32 +436,61 @@
     header="Add New Skill" 
     [(visible)]="showAddSkillDialog" 
     [modal]="true"
-    [style]="{width: '500px', 'background-color': '#1A1A1A', 'color': '#F1F1F1'}"
+    [style]="{width: '600px', 'max-width': '90vw'}"
     styleClass="custom-dialog"
     class="add-dialog">
-    <div class="dialog-content">
+    <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label>Skill Name:</label>
-        <input pInputText [(ngModel)]="newSkill.name" placeholder="e.g., JavaScript">
+        <label class="block text-white font-semibold mb-3 text-base">Skill Name:</label>
+        <input 
+          pInputText 
+          [(ngModel)]="newSkill.name" 
+          placeholder="e.g., JavaScript, Python, React"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Category:</label>
-        <input pInputText [(ngModel)]="newSkill.category" placeholder="e.g., Programming">
+        <label class="block text-white font-semibold mb-3 text-base">Category:</label>
+        <input 
+          pInputText 
+          [(ngModel)]="newSkill.category" 
+          placeholder="e.g., Programming Languages, Frameworks, Tools"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Level:</label>
-        <select pInputText [(ngModel)]="newSkill.level" class="edit-input">
-          <option value="">Select Level</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-          <option value="Expert">Expert</option>
-        </select>
+        <label class="block text-white font-semibold mb-3 text-base">Proficiency Level:</label>
+        <div class="relative">
+          <select 
+            [(ngModel)]="newSkill.level" 
+            class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white appearance-none cursor-pointer focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 bg-gradient-to-br from-gray-800 to-gray-900">
+            <option value="" class="bg-gray-800 text-gray-400">Select your proficiency level</option>
+            <option value="Beginner" class="bg-gray-800 text-white py-2">🌱 Beginner - Just starting out</option>
+            <option value="Intermediate" class="bg-gray-800 text-white py-2">📈 Intermediate - Comfortable with basics</option>
+            <option value="Advanced" class="bg-gray-800 text-white py-2">🚀 Advanced - Highly proficient</option>
+            <option value="Expert" class="bg-gray-800 text-white py-2">⭐ Expert - Master level</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+            <i class="pi pi-chevron-down text-purple-500"></i>
+          </div>
+        </div>
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <p-button label="Cancel" icon="pi pi-times" (onClick)="showAddSkillDialog = false" severity="secondary"></p-button>
-      <p-button label="Add Skill" icon="pi pi-check" (onClick)="addSkill()" severity="success"></p-button>
+      <div class="flex gap-3 justify-end">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (onClick)="showAddSkillDialog = false" 
+          severity="secondary"
+          class="px-6 py-2">
+        </p-button>
+        <p-button 
+          label="Add Skill" 
+          icon="pi pi-check" 
+          (onClick)="addSkill()" 
+          severity="success"
+          class="px-6 py-2">
+        </p-button>
+      </div>
     </ng-template>
   </p-dialog>
 
@@ -470,30 +499,62 @@
     header="Add New Certification" 
     [(visible)]="showAddCertificationDialog" 
     [modal]="true"
-    [style]="{width: '500px', 'background-color': '#1A1A1A', 'color': '#F1F1F1'}"
+    [style]="{width: '600px', 'max-width': '90vw'}"
     styleClass="custom-dialog"
     class="add-dialog">
-    <div class="dialog-content">
+    <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label>Certification Name:</label>
-        <input pInputText [(ngModel)]="newCertification.name" placeholder="e.g., AWS Certified Solutions Architect">
+        <label class="block text-white font-semibold mb-3 text-base">Certification Name:</label>
+        <input 
+          pInputText 
+          [(ngModel)]="newCertification.name" 
+          placeholder="e.g., AWS Certified Solutions Architect, Google Cloud Professional"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Issuing Organization:</label>
-        <input pInputText [(ngModel)]="newCertification.issuer" placeholder="e.g., Amazon Web Services">
+        <label class="block text-white font-semibold mb-3 text-base">Issuing Organization:</label>
+        <input 
+          pInputText 
+          [(ngModel)]="newCertification.issuer" 
+          placeholder="e.g., Amazon Web Services, Google, Microsoft"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Date:</label>
-        <input pInputText type="date" [(ngModel)]="newCertification.date">
+        <label class="block text-white font-semibold mb-3 text-base">Certification Date:</label>
+        <input 
+          pInputText 
+          type="date" 
+          [(ngModel)]="newCertification.date"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Description:</label>
-        <textarea pInputTextarea [(ngModel)]="newCertification.description" rows="3" placeholder="Brief description of the certification"></textarea>
+        <label class="block text-white font-semibold mb-3 text-base">Description:</label>
+        <textarea 
+          pInputTextarea 
+          [(ngModel)]="newCertification.description" 
+          rows="4" 
+          placeholder="Brief description of the certification and its significance"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none">
+        </textarea>
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <p-button label="Cancel" icon="pi pi-times" (onClick)="showAddCertificationDialog = false" severity="secondary"></p-button>
-      <p-button label="Add Certification" icon="pi pi-check" (onClick)="addCertification()" severity="success"></p-button>
+      <div class="flex gap-3 justify-end">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (onClick)="showAddCertificationDialog = false" 
+          severity="secondary"
+          class="px-6 py-2">
+        </p-button>
+        <p-button 
+          label="Add Certification" 
+          icon="pi pi-check" 
+          (onClick)="addCertification()" 
+          severity="success"
+          class="px-6 py-2">
+        </p-button>
+      </div>
     </ng-template>
   </p-dialog>
 
@@ -502,26 +563,54 @@
     header="Add New Achievement" 
     [(visible)]="showAddAchievementDialog" 
     [modal]="true"
-    [style]="{width: '500px', 'background-color': '#1A1A1A', 'color': '#F1F1F1'}"
+    [style]="{width: '600px', 'max-width': '90vw'}"
     styleClass="custom-dialog"
     class="add-dialog">
-    <div class="dialog-content">
+    <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label>Achievement Title:</label>
-        <input pInputText [(ngModel)]="newAchievement.title" placeholder="e.g., Best Developer Award">
+        <label class="block text-white font-semibold mb-3 text-base">Achievement Title:</label>
+        <input 
+          pInputText 
+          [(ngModel)]="newAchievement.title" 
+          placeholder="e.g., Best Developer Award, Hackathon Winner, Project Lead"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Date:</label>
-        <input pInputText type="date" [(ngModel)]="newAchievement.date">
+        <label class="block text-white font-semibold mb-3 text-base">Achievement Date:</label>
+        <input 
+          pInputText 
+          type="date" 
+          [(ngModel)]="newAchievement.date"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
       </div>
       <div class="form-group">
-        <label>Description:</label>
-        <textarea pInputTextarea [(ngModel)]="newAchievement.description" rows="3" placeholder="Brief description of the achievement"></textarea>
+        <label class="block text-white font-semibold mb-3 text-base">Description:</label>
+        <textarea 
+          pInputTextarea 
+          [(ngModel)]="newAchievement.description" 
+          rows="4" 
+          placeholder="Describe your achievement and its impact"
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none">
+        </textarea>
       </div>
     </div>
     <ng-template pTemplate="footer">
-      <p-button label="Cancel" icon="pi pi-times" (onClick)="showAddAchievementDialog = false" severity="secondary"></p-button>
-      <p-button label="Add Achievement" icon="pi pi-check" (onClick)="addAchievement()" severity="success"></p-button>
+      <div class="flex gap-3 justify-end">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (onClick)="showAddAchievementDialog = false" 
+          severity="secondary"
+          class="px-6 py-2">
+        </p-button>
+        <p-button 
+          label="Add Achievement" 
+          icon="pi pi-check" 
+          (onClick)="addAchievement()" 
+          severity="success"
+          class="px-6 py-2">
+        </p-button>
+      </div>
     </ng-template>
   </p-dialog>
 </div>
