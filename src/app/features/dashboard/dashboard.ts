@@ -15,7 +15,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { UserProfileService } from '../../services/user-profile.service';
 import { UserProfile, BackendSkill, BackendCertification, BackendAchievement } from './user-profile.interface';
-import { HeaderComponent } from '../../core/layout/header/header';
+import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
+import { HeaderComponent } from "../../core/layout/header/header";
 
 interface Skill {
   id: number;
@@ -59,8 +61,7 @@ interface Achievement {
     TextareaModule,
     DialogModule,
     ToastModule,
-    HeaderComponent,
-    
+    HeaderComponent
 ],
   providers: [MessageService, UserProfileService],
   templateUrl: './dashboard.html',
@@ -101,19 +102,49 @@ export class DashboardComponent implements OnInit {
   showAddCertificationDialog = false;
   showAddAchievementDialog = false;
 
+  // Add property to store resume analysis result
+  resumeAnalysisResult: any = null;
+  showAnalysisNotification: boolean = false;
+
   constructor(
     private messageService: MessageService,
     private userProfileService: UserProfileService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit() {
     // Initialize charts first
     this.initPerformanceChart();
     this.initCharts(); // Initialize with fallback data
-    
+
+    // Check for resume analysis result
+    this.checkForResumeAnalysisResult();
+
     // Then load user profile
     this.loadUserProfile();
+  }
+
+  checkForResumeAnalysisResult() {
+    try {
+      // Use the new toast service
+      this.toastService.showSuccess(
+        'Resume Analysis Complete!',
+        "",
+        5000
+      );
+
+    } catch (error) {
+      console.error('Error parsing resume analysis result:', error);
+      sessionStorage.removeItem('resumeAnalysisResult');
+      this.toastService.showError(
+        'Data Error',
+        'Failed to load resume analysis results.',
+        4000
+      );
+    }
+
   }
 
   loadUserProfile() {
@@ -124,17 +155,21 @@ export class DashboardComponent implements OnInit {
         this.populateCertificationsData(data.certifications || []);
         this.populateAchievementsData(data.achievements || []);
         this.initDomainChart(data.domainData);
-        
-        // Trigger change detection
+
+        this.toastService.showSuccess(
+          'Profile Loaded',
+          'Your profile data has been loaded successfully.',
+          3000
+        );
+
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Failed to load profile data. Using fallback data.'
-        });
-        // Ensure fallback data is displayed
+        this.toastService.showError(
+          'Profile Load Failed',
+          'Failed to load profile data. Using fallback data.',
+          5000
+        );
         this.cdr.detectChanges();
       }
     });
@@ -158,7 +193,7 @@ export class DashboardComponent implements OnInit {
       this.skills = [];
       return;
     }
-    
+
     this.skills = backendSkills.map(skill => ({
       id: skill.id,
       name: skill.name,
@@ -173,7 +208,7 @@ export class DashboardComponent implements OnInit {
       this.certifications = [];
       return;
     }
-    
+
     this.certifications = backendCerts.map(cert => ({
       id: cert.id,
       name: cert.name,
@@ -189,7 +224,7 @@ export class DashboardComponent implements OnInit {
       this.achievements = [];
       return;
     }
-    
+
     this.achievements = backendAchievements.map(achievement => ({
       id: achievement.id,
       title: achievement.name,
@@ -477,11 +512,7 @@ export class DashboardComponent implements OnInit {
 
   saveProfile() {
     this.isProfileEditing = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Profile Updated',
-      detail: 'Your profile has been successfully updated!'
-    });
+    this.toastService.showProfileUpdateSuccess();
   }
 
   // Skills management methods
@@ -491,20 +522,16 @@ export class DashboardComponent implements OnInit {
 
   saveSkill(skill: Skill) {
     skill.isEditing = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Skill Updated',
-      detail: `${skill.name} has been updated!`
-    });
+    this.toastService.showSuccess(
+      'Skill Updated',
+      `${skill.name} has been updated successfully.`,
+      3000
+    );
   }
 
   deleteSkill(skillId: number) {
     this.skills = this.skills.filter(s => s.id !== skillId);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Skill Removed',
-      detail: 'Skill has been removed from your profile.'
-    });
+    this.toastService.showDeleteSuccess('Skill');
   }
 
   addSkill() {
@@ -519,11 +546,7 @@ export class DashboardComponent implements OnInit {
       this.skills.push(skill);
       this.newSkill = {};
       this.showAddSkillDialog = false;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Skill Added',
-        detail: `${skill.name} has been added to your skills!`
-      });
+      this.toastService.showSkillAddSuccess(skill.name);
     }
   }
 
@@ -534,20 +557,16 @@ export class DashboardComponent implements OnInit {
 
   saveCertification(cert: Certification) {
     cert.isEditing = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Certification Updated',
-      detail: `${cert.name} has been updated!`
-    });
+    this.toastService.showSuccess(
+      'Certification Updated',
+      `${cert.name} has been updated successfully.`,
+      3000
+    );
   }
 
   deleteCertification(certId: number) {
     this.certifications = this.certifications.filter(c => c.id !== certId);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Certification Removed',
-      detail: 'Certification has been removed from your profile.'
-    });
+    this.toastService.showDeleteSuccess('Certification');
   }
 
   addCertification() {
@@ -563,11 +582,7 @@ export class DashboardComponent implements OnInit {
       this.certifications.push(cert);
       this.newCertification = {};
       this.showAddCertificationDialog = false;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Certification Added',
-        detail: `${cert.name} has been added to your certifications!`
-      });
+      this.toastService.showCertificationAddSuccess(cert.name);
     }
   }
 
@@ -578,20 +593,16 @@ export class DashboardComponent implements OnInit {
 
   saveAchievement(achievement: Achievement) {
     achievement.isEditing = false;
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Achievement Updated',
-      detail: `${achievement.title} has been updated!`
-    });
+    this.toastService.showSuccess(
+      'Achievement Updated',
+      `${achievement.title} has been updated successfully.`,
+      3000
+    );
   }
 
   deleteAchievement(achievementId: number) {
     this.achievements = this.achievements.filter(a => a.id !== achievementId);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Achievement Removed',
-      detail: 'Achievement has been removed from your profile.'
-    });
+    this.toastService.showDeleteSuccess('Achievement');
   }
 
   addAchievement() {
@@ -606,11 +617,7 @@ export class DashboardComponent implements OnInit {
       this.achievements.push(achievement);
       this.newAchievement = {};
       this.showAddAchievementDialog = false;
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Achievement Added',
-        detail: `${achievement.title} has been added to your achievements!`
-      });
+      this.toastService.showAchievementAddSuccess(achievement.title);
     }
   }
 
@@ -622,5 +629,19 @@ export class DashboardComponent implements OnInit {
       case 'Beginner': return '#8B5CF6';
       default: return '#A855F7';
     }
+  }
+
+  navigateToParseResume(): void {
+    this.toastService.showInfo(
+      'Redirecting',
+      'Taking you to the resume parser...',
+      2000
+    );
+    this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
+  }
+
+  dismissAnalysisNotification() {
+    this.showAnalysisNotification = false;
+    this.resumeAnalysisResult = null;
   }
 }

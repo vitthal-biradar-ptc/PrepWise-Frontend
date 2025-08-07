@@ -1,17 +1,22 @@
-import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
-import { HeaderComponent } from '../../core/layout/header/header';
+import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-resume-analyzer',
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './resume-analyzer.html',
-  styleUrl: './resume-analyzer.css'
+  styleUrls: ['./resume-analyzer.css']
 })
-export class ResumeAnalyzer {
+export class ResumeAnalyzer implements OnInit {
   selectedFile: File | null = null;
   resumeText: string = '';
   analysisResult: ResumeAnalysisResponse | null = null;
@@ -26,8 +31,22 @@ export class ResumeAnalyzer {
   constructor(
     private resumeAnalyzerService: ResumeAnalyzerService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router,
+    private toastService: ToastService
   ) {}
+
+  ngOnInit(): void {
+    // Test toast functionality
+    this.testToast();
+  }
+
+  // Test method to verify toasts are working
+  testToast(): void {
+    setTimeout(() => {
+      this.toastService.showSuccess('Welcome!', 'Resume Analyzer is ready to use.');
+    }, 1000);
+  }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -35,10 +54,16 @@ export class ResumeAnalyzer {
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
         this.selectedFile = null;
+        this.toastService.showError(
+          'Invalid File Type',
+          'Please select a PDF file only. Other file formats are not supported.',
+          4000
+        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
+      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
@@ -64,71 +89,62 @@ export class ResumeAnalyzer {
       const file = files[0];
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
+        this.toastService.showError(
+          'Invalid File Type',
+          'Please select a PDF file only. Other file formats are not supported.',
+          4000
+        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
+      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
   analyzeResume(): void {
     if (!this.selectedFile && !this.resumeText.trim()) {
-      this.error = 'Please select a file or enter resume text.';
+      this.error = 'Please upload a file or paste resume text.';
+      this.toastService.showError(
+        'No Input Provided',
+        'Please upload a PDF file or paste your resume text to continue.',
+        4000
+      );
       return;
     }
 
-    this.analysisStartTime = Date.now();
-    console.log('Analysis started at:', new Date().toISOString());
+    this.isLoading = true;
+    this.error = '';
+    this.analysisResult = null;
+    this.startTimer();
 
-    // Set loading state and force immediate UI update
-    this.ngZone.run(() => {
-      this.isLoading = true;
-      this.error = '';
-      this.analysisResult = null;
-      this.cdr.markForCheck();
-    });
+    // Show info toast that analysis has started
+    this.toastService.showInfo(
+      'Analysis Started',
+      'Your resume is being analyzed with AI. This may take a few moments...',
+      3000
+    );
 
-    const analysisObservable = this.activeTab === 'file' && this.selectedFile
+    // Use the correct service methods based on input type
+    const analysisObservable = this.selectedFile 
       ? this.resumeAnalyzerService.analyzeResumeFile(this.selectedFile)
       : this.resumeAnalyzerService.analyzeResumeText(this.resumeText);
 
     analysisObservable.subscribe({
       next: (result: ResumeAnalysisResponse) => {
-        const endTime = Date.now();
-        const duration = endTime - this.analysisStartTime;
-        
-        console.log('Analysis completed at:', new Date().toISOString());
-        console.log('Total analysis time:', duration, 'ms');
-        console.log('Resume Analysis Result:', result);
-        
-        // Use NgZone to ensure immediate UI update
-        this.ngZone.run(() => {
-          console.log('Setting results in NgZone...');
-          this.analysisResult = result;
-          this.isLoading = false;
-          
-          // Multiple strategies to force update
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-          
-          console.log('UI should be updated now - Results set:', !!this.analysisResult);
-          console.log('Loading state:', this.isLoading);
-        });
+        this.isLoading = false;
+        this.analysisResult = result;
+        this.stopTimer();
+        this.toastService.showResumeAnalysisSuccess(result.suggestions?.length);
+        this.cdr.detectChanges();
       },
-      error: (error) => {
-        const endTime = Date.now();
-        const duration = endTime - this.analysisStartTime;
-        
-        console.error('Analysis failed at:', new Date().toISOString());
-        console.error('Total time before error:', duration, 'ms');
-        console.error('Error analyzing resume:', error);
-        
-        this.ngZone.run(() => {
-          this.error = error.error?.suggestions?.[0] || error.message || 'An error occurred while analyzing the resume.';
-          this.isLoading = false;
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-        });
+      error: (error: any) => {
+        this.isLoading = false;
+        this.stopTimer();
+        const errorMessage = error.error?.message || 'Failed to analyze resume. Please try again.';
+        this.error = errorMessage;
+        this.toastService.showResumeAnalysisError(errorMessage);
+        this.cdr.detectChanges();
       }
     });
   }
@@ -138,11 +154,21 @@ export class ResumeAnalyzer {
     this.resumeText = '';
     this.analysisResult = null;
     this.error = '';
+    this.toastService.showInfo(
+      'Form Cleared',
+      'All fields and results have been reset.',
+      2000
+    );
   }
 
   switchTab(tab: 'file' | 'text'): void {
     this.activeTab = tab;
     this.error = '';
+    this.toastService.showInfo(
+      'Tab Switched',
+      `Switched to ${tab === 'file' ? 'file upload' : 'text input'} mode.`,
+      2000
+    );
   }
 
   getCurrentTime(): string {
@@ -157,4 +183,20 @@ export class ResumeAnalyzer {
   trackBySuggestion(index: number, item: string): number {
     return index;
   }
+
+  private startTimer(): void {
+    this.analysisStartTime = Date.now();
+    console.log('Analysis started at:', new Date().toISOString());
+  }
+
+  private stopTimer(): void {
+    const endTime = Date.now();
+    const duration = endTime - this.analysisStartTime;
+    console.log('Analysis completed at:', new Date().toISOString());
+    console.log('Total analysis time:', duration, 'ms');
+  }
 }
+
+// Add this export for the router
+export { ResumeAnalyzer as ResumeAnalyzerComponent };
+

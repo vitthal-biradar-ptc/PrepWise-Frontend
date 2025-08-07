@@ -1,1 +1,95 @@
 /* App-specific styles can go here */
+
+/* Global Toast Styling */
+:host ::ng-deep .custom-toast-container {
+  z-index: 9999 !important;
+}
+
+:host ::ng-deep .custom-toast {
+  border-radius: 12px !important;
+  border: 1px solid rgba(176, 62, 255, 0.3) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+}
+
+:host ::ng-deep .success-toast {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+:host ::ng-deep .success-toast .p-toast-message-content {
+  color: #10b981 !important;
+}
+
+:host ::ng-deep .success-toast .p-toast-message-text {
+  color: #f1f1f1 !important;
+}
+
+:host ::ng-deep .error-toast {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+:host ::ng-deep .error-toast .p-toast-message-content {
+  color: #ef4444 !important;
+}
+
+:host ::ng-deep .error-toast .p-toast-message-text {
+  color: #f1f1f1 !important;
+}
+
+:host ::ng-deep .info-toast {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+:host ::ng-deep .info-toast .p-toast-message-content {
+  color: #3b82f6 !important;
+}
+
+:host ::ng-deep .info-toast .p-toast-message-text {
+  color: #f1f1f1 !important;
+}
+
+:host ::ng-deep .warn-toast {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+:host ::ng-deep .warn-toast .p-toast-message-content {
+  color: #f59e0b !important;
+}
+
+:host ::ng-deep .warn-toast .p-toast-message-text {
+  color: #f1f1f1 !important;
+}
+
+:host ::ng-deep .p-toast-message {
+  margin: 0.5rem 0 !important;
+}
+
+:host ::ng-deep .p-toast-message-icon {
+  color: inherit !important;
+  font-size: 1.2rem !important;
+}
+
+:host ::ng-deep .p-toast-icon-close {
+  color: #a7a7a7 !important;
+  transition: color 0.2s ease !important;
+}
+
+:host ::ng-deep .p-toast-icon-close:hover {
+  color: #f1f1f1 !important;
+}
+
+:host ::ng-deep .p-toast-summary {
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+:host ::ng-deep .p-toast-detail {
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  opacity: 0.9 !important;
+}

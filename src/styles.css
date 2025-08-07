@@ -1,1 +1,182 @@
 @import "tailwindcss";
+
+/* Global Toast Styles with maximum specificity */
+.p-toast {
+  position: fixed !important;
+  top: 5rem !important;
+  right: 1rem !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  width: auto !important;
+  max-width: 25rem !important;
+}
+
+.p-toast .p-toast-message {
+  pointer-events: auto !important;
+  margin: 0.5rem 0 !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(176, 62, 255, 0.3) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  background: rgba(26, 26, 26, 0.95) !important;
+  color: #f1f1f1 !important;
+  min-width: 20rem !important;
+  position: relative !important;
+  z-index: 99999 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%) !important;
+  border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+}
+
+.p-toast .p-toast-message-content {
+  padding: 1rem !important;
+  color: #f1f1f1 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+}
+
+.p-toast .p-toast-message-icon {
+  color: inherit !important;
+  font-size: 1.2rem !important;
+  margin-right: 0.75rem !important;
+  flex-shrink: 0 !important;
+}
+
+.p-toast .p-toast-icon-close {
+  color: #a7a7a7 !important;
+  transition: color 0.2s ease !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  border-radius: 0.25rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-toast .p-toast-icon-close:hover {
+  color: #f1f1f1 !important;
+  background: rgba(176, 62, 255, 0.1) !important;
+}
+
+.p-toast .p-toast-summary {
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.25rem !important;
+  color: #f1f1f1 !important;
+  line-height: 1.3 !important;
+}
+
+.p-toast .p-toast-detail {
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  opacity: 0.9 !important;
+  color: #e5e5e5 !important;
+  margin: 0 !important;
+}
+
+/* Success toast specific colors */
+.p-toast .p-toast-message-success .p-toast-message-icon {
+  color: #10b981 !important;
+}
+
+.p-toast .p-toast-message-success .p-toast-summary {
+  color: #10b981 !important;
+}
+
+/* Error toast specific colors */
+.p-toast .p-toast-message-error .p-toast-message-icon {
+  color: #ef4444 !important;
+}
+
+.p-toast .p-toast-message-error .p-toast-summary {
+  color: #ef4444 !important;
+}
+
+/* Info toast specific colors */
+.p-toast .p-toast-message-info .p-toast-message-icon {
+  color: #3b82f6 !important;
+}
+
+.p-toast .p-toast-message-info .p-toast-summary {
+  color: #3b82f6 !important;
+}
+
+/* Warn toast specific colors */
+.p-toast .p-toast-message-warn .p-toast-message-icon {
+  color: #f59e0b !important;
+}
+
+.p-toast .p-toast-message-warn .p-toast-summary {
+  color: #f59e0b !important;
+}
+
+/* Toast animation */
+.p-toast .p-toast-message {
+  animation: toastSlideIn 0.3s ease-out !important;
+}
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Ensure toast container is always visible */
+.p-toast-top-right {
+  position: fixed !important;
+  top: 5rem !important;
+  right: 1rem !important;
+  z-index: 99999 !important;
+}
+
+/* Responsive toast positioning */
+@media (max-width: 768px) {
+  .p-toast,
+  .p-toast-top-right {
+    top: 4rem !important;
+    right: 0.5rem !important;
+    left: 0.5rem !important;
+    width: auto !important;
+  }
+  
+  .p-toast .p-toast-message {
+    margin: 0.25rem 0 !important;
+    min-width: auto !important;
+    width: 100% !important;
+  }
+}
+
+/* Ensure toasts appear above everything */
+body .p-toast {
+  z-index: 99999 !important;
+}
+
+body .p-toast .p-toast-message {
+  z-index: 99999 !important;
+}

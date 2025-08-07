@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { AuthService, SignUpRequest } from '../../../services/authorization.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [FormsModule, RouterModule, HttpClientModule],
+  imports: [FormsModule, RouterModule, HttpClientModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css'
 })
@@ -26,7 +30,8 @@ export class SignUp {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   // When the form is submitted, this method is called:
@@ -38,28 +43,28 @@ export class SignUp {
     // Validate required fields
     if (!this.name.trim()) {
       this.error = "Name is required";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
 
     if (!this.username.trim()) {
       this.error = "Username is required";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
 
     if (!this.email.trim()) {
       this.error = "Email is required";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
 
     if (!this.location.trim()) {
       this.error = "Location is required";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
@@ -67,7 +72,7 @@ export class SignUp {
     // Validate passwords match
     if (this.password !== this.confirmPassword) {
       this.error = "Passwords do not match";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
@@ -75,7 +80,7 @@ export class SignUp {
     // Validate terms acceptance
     if (!this.termsAccepted) {
       this.error = "Please accept the Terms of Service and Privacy Policy";
-      this.showError(this.error);
+      this.toastService.showError('Validation Error', this.error);
       this.isLoading = false;
       return;
     }
@@ -111,18 +116,16 @@ export class SignUp {
       next: (response) => {
         console.log('Sign up successful:', response);
         
-        // Store token in cookies
         this.authService.setToken(response.token, response.tokenType);
         
-        // Validate token to update auth state
         this.authService.validateToken().subscribe(() => {
           this.isLoading = false;
-          
-          // Reset form
           this.resetForm();
-          
-          // Redirect to home page
-          this.router.navigate(['/']);
+          this.toastService.showAuthSuccess('Account created successfully! Welcome to PrepWise.');
+          // Redirect to parse-resume page for first-time setup
+          setTimeout(() => {
+            this.router.navigate(['/parse-resume'], { state: { firstTime: true } });
+          }, 1500);
         });
       },
       error: (error) => {
@@ -138,25 +141,9 @@ export class SignUp {
           errorMessage = 'Unable to connect to server. Please try again later.';
         }
         
-        this.showError(errorMessage);
+        this.toastService.showAuthError(errorMessage);
       }
     });
-  }
-
-  private showError(message: string): void {
-    this.error = message;
-    const errorElement = document.getElementById('error-message');
-    const errorText = document.getElementById('error-text');
-    
-    if (errorElement && errorText) {
-      errorText.textContent = message;
-      errorElement.style.display = 'flex';
-      
-      // Hide error after 5 seconds
-      setTimeout(() => {
-        errorElement.style.display = 'none';
-      }, 5000);
-    }
   }
 
   private resetForm(): void {

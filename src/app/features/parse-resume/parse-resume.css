@@ -1,0 +1,46 @@
+.parse-resume-section {
+  padding-top: 10rem !important;
+}
+
+.file-drop-zone.drag-active {
+  border-color: #B03EFF;
+  background: rgba(176, 62, 255, 0.1);
+  transform: scale(1.01);
+  box-shadow: 0 0 15px rgba(176, 62, 255, 0.3);
+}
+
+.file-input-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(127, 0, 255, 0.3);
+}
+
+.parse-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(127, 0, 255, 0.3);
+}
+
+.proceed-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(127, 0, 255, 0.3);
+}
+
+.skill-tag {
+  transition: all 0.2s ease;
+}
+
+.skill-tag:hover {
+  background: rgba(176, 62, 255, 0.2);
+  border-color: rgba(176, 62, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .parse-resume-section {
+    padding-top: 7rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .parse-resume-section {
+    padding-top: 8rem !important;
+  }
+}

@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/authorization.service';
+import { AuthStateService } from '../../../services/auth-state.service';
 import { Subscription } from 'rxjs';
 
 interface NavItem {
@@ -25,16 +26,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
   
   navItems: NavItem[] = [
-    { title: 'Features', href: '#features', icon: 'layout' },
-    { title: 'Interviews', href: '#interviews', icon: 'interviews' },
+    { title: 'Features', href: '/', icon: 'layout' },
+    { title: 'Interviews', href: '/', icon: 'interviews' },
     { title: 'Resume Analyzer', href: '/resume-analyzer', icon: 'book' },
-    { title: 'How It Works', href: '#how-it-works', icon: 'help' }
+    { title: 'How It Works', href: '/', icon: 'help' }
   ];
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private authService: AuthService,
+    private authStateService: AuthStateService
+  ) { }
 
   ngOnInit(): void {
-    this.authSubscription = this.authService.isAuthenticated$.subscribe(
+    this.authSubscription = this.authStateService.isAuthenticated$.subscribe(
       isAuth => this.isAuthenticated = isAuth
     );
   }
@@ -114,6 +119,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.closeMobileMenu();
     this.closeProfileDropdown();
+    // Redirect to home page after logout
+    this.router.navigate(['/']);
   }
 
   handleNavClick(item: NavItem, event: MouseEvent): void {

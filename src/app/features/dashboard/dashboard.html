@@ -1,9 +1,41 @@
 <div class="dashboard-container" style="background-color: #1A1A1A; color: #F1F1F1;">
-  <!-- Header Component -->
   <app-header></app-header>
   
-  <!-- Toast for notifications -->
-  <p-toast></p-toast>
+  <!-- Resume Analysis Result Notification -->
+  <div *ngIf="showAnalysisNotification && resumeAnalysisResult" class="analysis-notification-container mb-6">
+    <div class="analysis-notification bg-gradient-to-r from-[#7F00FF]/10 to-[#C400FF]/10 border border-[#B03EFF]/30 rounded-xl p-6 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5"></div>
+      <div class="relative z-10">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full flex items-center justify-center mr-4">
+              <i class="pi pi-check text-white text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-[#F1F1F1] mb-1">Resume Analysis Complete!</h3>
+              <p class="text-[#A7A7A7]">Your profile has been updated with the analysis results</p>
+            </div>
+          </div>
+          <button 
+            (click)="dismissAnalysisNotification()"
+            class="text-[#A7A7A7] hover:text-[#F1F1F1] transition-colors">
+            <i class="pi pi-times text-lg"></i>
+          </button>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
+            <h4 class="text-[#B03EFF] font-semibold mb-2">Identified Domain</h4>
+            <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.domain || 'General' }}</p>
+          </div>
+          <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
+            <h4 class="text-[#B03EFF] font-semibold mb-2">Suggestions Generated</h4>
+            <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.suggestions?.length || 0 }} recommendations</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Profile Section -->
   <div class="profile-container">
@@ -63,13 +95,25 @@
             </p-chip>
           </div>
           
-          <div class="edit-profile-btn">
-            <p-button 
-              [icon]="isProfileEditing ? 'pi pi-check' : 'pi pi-pencil'"
-              [label]="isProfileEditing ? 'Save' : 'Edit Profile'"
-              (onClick)="isProfileEditing ? saveProfile() : toggleProfileEditing()"
-              class="edit-btn">
-            </p-button>
+          <div class="profile-buttons flex flex-col gap-2">
+            <div class="edit-profile-btn">
+              <p-button 
+                [icon]="isProfileEditing ? 'pi pi-check' : 'pi pi-pencil'"
+                [label]="isProfileEditing ? 'Save' : 'Edit Profile'"
+                (onClick)="isProfileEditing ? saveProfile() : toggleProfileEditing()"
+                class="edit-btn">
+              </p-button>
+            </div>
+            
+            <div class="upload-resume-btn">
+              <p-button 
+                icon="pi pi-upload"
+                label="Update Resume"
+                (onClick)="navigateToParseResume()"
+                class="upload-btn"
+                [style]="{'background': 'linear-gradient(to right, #C400FF, #7F00FF)', 'border': 'none'}">
+              </p-button>
+            </div>
           </div>
         </div>
       </div>

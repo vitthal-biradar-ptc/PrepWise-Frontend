@@ -1,14 +1,32 @@
 import { Routes } from '@angular/router';
-import { SignUp } from './features/auth/sign-up/sign-up';
-import { SignIn } from './features/auth/sign-in/sign-in';
-import { LandingPageComponent } from './features/landing/home/home';
-import { ResumeAnalyzer } from './features/resume-analyzer/resume-analyzer';
-import { DashboardComponent } from './features/dashboard/dashboard';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent, pathMatch: 'full' }, // Default route
-  { path: 'sign-up', component: SignUp },                           // Sign-up route
-  { path: 'sign-in', component: SignIn },                           // Sign-in route
-  { path: 'resume-analyzer', component: ResumeAnalyzer },           // Resume Analyzer route
-  { path: 'dashboard', component: DashboardComponent },             // Dashboard route
+  {
+    path: '',
+    loadComponent: () => import('./features/landing/home/home').then(m => m.LandingPageComponent),
+  },
+  {
+    path: 'sign-up',
+    loadComponent: () => import('./features/auth/sign-up/sign-up').then(m => m.SignUp),
+  },
+  {
+    path: 'sign-in',
+    loadComponent: () => import('./features/auth/sign-in/sign-in').then(m => m.SignIn),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./features/dashboard/dashboard').then(m => m.DashboardComponent),
+  },
+  {
+    path: 'parse-resume',
+    loadComponent: () => import('./features/parse-resume/parse-resume').then(m => m.ParseResume),
+  },
+  {
+    path: 'resume-analyzer',
+    loadComponent: () => import('./features/resume-analyzer/resume-analyzer').then(m => m.ResumeAnalyzerComponent),
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

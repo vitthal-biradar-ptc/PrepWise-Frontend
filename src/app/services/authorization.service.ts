@@ -1,8 +1,9 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthStateService } from './auth-state.service';
 
 export interface AuthResponse {
   token: string;
@@ -35,14 +36,17 @@ export interface ValidationResponse {
 })
 export class AuthService {
   private readonly API_BASE_URL = 'http://localhost:8080/api/auth';
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authStateService: AuthStateService
   ) {
     this.initializeAuthState();
+  }
+
+  get isAuthenticated$() {
+    return this.authStateService.isAuthenticated$;
   }
 
   signUp(userData: SignUpRequest): Observable<AuthResponse> {
@@ -87,13 +91,13 @@ export class AuthService {
 
   validateToken(): Observable<boolean> {
     if (!isPlatformBrowser(this.platformId)) {
-      this.isAuthenticatedSubject.next(false);
+      this.authStateService.setAuthenticationState(false);
       return of(false);
     }
 
     const token = this.getToken();
     if (!token) {
-      this.isAuthenticatedSubject.next(false);
+      this.authStateService.setAuthenticationState(false);
       return of(false);
     }
 
@@ -102,13 +106,13 @@ export class AuthService {
     }).pipe(
       map(response => response.valid),
       tap(isValid => {
-        this.isAuthenticatedSubject.next(isValid);
+        this.authStateService.setAuthenticationState(isValid);
         if (!isValid) {
           this.removeToken();
         }
       }),
       catchError(() => {
-        this.isAuthenticatedSubject.next(false);
+        this.authStateService.setAuthenticationState(false);
         this.removeToken();
         return of(false);
       })
@@ -116,29 +120,31 @@ export class AuthService {
   }
 
   private initializeAuthState(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // Set initial state based on token presence
-      const hasToken = this.getToken() !== null;
-      this.isAuthenticatedSubject.next(hasToken);
-      
-      // Then validate the token asynchronously
-      if (hasToken) {
-        this.validateToken().subscribe();
-      }
+    if (!isPlatformBrowser(this.platformId)) {
+      this.authStateService.setAuthenticationState(false);
+      return;
+    }
+    
+    const hasToken = this.getToken() !== null;
+    this.authStateService.setAuthenticationState(hasToken);
+    
+    if (hasToken) {
+      this.validateToken().subscribe();
     }
   }
 
   isAuthenticated(): boolean {
+    if (!isPlatformBrowser(this.platformId)) return false;
     return this.getToken() !== null;
   }
 
   getCurrentAuthState(): boolean {
-    return this.isAuthenticatedSubject.value;
+    return this.authStateService.getCurrentAuthState();
   }
 
   logout(): void {
     this.removeToken();
-    this.isAuthenticatedSubject.next(false);
+    this.authStateService.setAuthenticationState(false);
   }
 
   getCurrentUser(): Observable<any> {

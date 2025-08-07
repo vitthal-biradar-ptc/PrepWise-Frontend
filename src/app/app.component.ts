@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import {  RouterModule,RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.html',
-  styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [RouterOutlet, RouterModule]
+  imports: [RouterOutlet, ToastModule],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'PrepWise-Frontend';
+  title = 'PrepWise';
 }

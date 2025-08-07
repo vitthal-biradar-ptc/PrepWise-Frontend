@@ -1,9 +1,10 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { UserProfile } from '../features/dashboard/user-profile.interface';
+import { AuthService } from './authorization.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +14,19 @@ export class UserProfileService {
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
   ) {}
 
   getUserProfile(): Observable<UserProfile> {
-    const token = this.getTokenFromCookies();
+    const token = this.authService.getToken();
     
     if (!token) {
       return throwError(() => new Error('Authentication token not found'));
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+      'Authorization': token,
       'Content-Type': 'application/json'
     });
     
@@ -32,54 +34,6 @@ export class UserProfileService {
       .pipe(
         catchError(this.handleError.bind(this))
       );
-  }
-
-  private getTokenFromCookies(): string {
-    // Only access cookies in browser environment
-    if (isPlatformBrowser(this.platformId)) {
-      const tokenNames = ['auth_token', 'token', 'authToken', 'jwt', 'access_token'];
-      
-      for (const tokenName of tokenNames) {
-        const token = this.getCookie(tokenName);
-        if (token) {
-          return token.startsWith('Bearer ') ? token.substring(7) : token;
-        }
-      }
-    }
-
-    // Try localStorage and sessionStorage (also browser-only)
-    if (isPlatformBrowser(this.platformId)) {
-      const localStorageToken = localStorage.getItem('token') || localStorage.getItem('authToken');
-      if (localStorageToken) {
-        return localStorageToken.startsWith('Bearer ') ? localStorageToken.substring(7) : localStorageToken;
-      }
-
-      const sessionStorageToken = sessionStorage.getItem('token') || sessionStorage.getItem('authToken');
-      if (sessionStorageToken) {
-        return sessionStorageToken.startsWith('Bearer ') ? sessionStorageToken.substring(7) : sessionStorageToken;
-      }
-    }
-
-    return '';
-  }
-
-  private getCookie(name: string): string {
-    // Only access document in browser environment
-    if (!isPlatformBrowser(this.platformId)) {
-      return '';
-    }
-
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    
-    for (let i = 0; i < ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) {
-        return c.substring(nameEQ.length, c.length);
-      }
-    }
-    return '';
   }
 
   private handleError(error: HttpErrorResponse) {

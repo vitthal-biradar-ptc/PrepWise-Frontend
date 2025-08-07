@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 import { AuthService, SignInRequest } from '../../../services/authorization.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FormsModule, RouterModule, HttpClientModule],
+  imports: [FormsModule, RouterModule, HttpClientModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './sign-in.html',
   styleUrl: './sign-in.css'
 })
@@ -19,7 +23,8 @@ export class SignIn {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   handleSubmit(event: Event): void {
@@ -36,16 +41,16 @@ export class SignIn {
       next: (response) => {
         console.log('Sign in successful:', response);
         
-        // Store token in cookies
         this.authService.setToken(response.token, response.tokenType);
         
-        this.isLoading = false;
-        
-        // Reset form
-        this.resetForm();
-        
-        // Redirect to home page
-        this.router.navigate(['/']);
+        this.authService.validateToken().subscribe(() => {
+          this.isLoading = false;
+          this.resetForm();
+          this.toastService.showAuthSuccess('Welcome back! Redirecting to dashboard...');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 1500);
+        });
       },
       error: (error) => {
         console.error('Sign in error:', error);
@@ -60,25 +65,9 @@ export class SignIn {
           errorMessage = 'Unable to connect to server. Please try again later.';
         }
         
-        this.showError(errorMessage);
+        this.toastService.showAuthError(errorMessage);
       }
     });
-  }
-
-  private showError(message: string): void {
-    this.error = message;
-    const errorElement = document.getElementById('error-message');
-    const errorText = document.getElementById('error-text');
-    
-    if (errorElement && errorText) {
-      errorText.textContent = message;
-      errorElement.style.display = 'flex';
-      
-      // Hide error after 5 seconds
-      setTimeout(() => {
-        errorElement.style.display = 'none';
-      }, 5000);
-    }
   }
 
   private resetForm(): void {
