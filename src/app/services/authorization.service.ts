@@ -147,13 +147,4 @@ export class AuthService {
     this.authStateService.setAuthenticationState(false);
   }
 
-  getCurrentUser(): Observable<any> {
-    // Return mock user data for now - replace with actual API call
-    return of({
-      id: 1,
-      username: 'John Doe',
-      email: 'john@example.com',
-      joinDate: new Date()
-    });
-  }
 }

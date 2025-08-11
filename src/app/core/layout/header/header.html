@@ -145,7 +145,7 @@
       }
 
       <!-- Login Button (when not authenticated and not loading) -->
-      @if (!isAuthLoading && !isAuthenticated) {
+      @if (!isAuthenticated) {
         <button 
           (click)="navigateToSignIn()"
           class="group h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-2 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30 relative overflow-hidden flex"

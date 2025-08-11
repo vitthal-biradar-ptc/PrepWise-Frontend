@@ -2,15 +2,11 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { AuthService, SignUpRequest } from '../../../services/authorization.service';
-import { ToastService } from '../../../services/toast.service';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [FormsModule, RouterModule, HttpClientModule, ToastModule],
-  providers: [MessageService],
+  imports: [FormsModule, RouterModule, HttpClientModule],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.css'
 })
@@ -35,7 +31,6 @@ export class SignUp {
 
   private authService = inject(AuthService);
   private router = inject(Router);
-  private toastService = inject(ToastService);
 
   constructor() {}
 
@@ -171,7 +166,6 @@ export class SignUp {
     if (!this.validateForm()) {
       this.error = 'Please fix the errors below and try again';
       this.showError = true;
-      this.toastService.showError('Validation Error', this.error);
       return;
     }
 
@@ -210,7 +204,7 @@ export class SignUp {
         this.authService.validateToken().subscribe(() => {
           this.isLoading = false;
           this.resetForm();
-          this.toastService.showAuthSuccess('Account created successfully! Welcome to PrepWise.');
+          console.log('Account created successfully! Welcome to PrepWise.');
           setTimeout(() => {
             this.router.navigate(['/parse-resume'], { state: { firstTime: true } });
           }, 1500);
@@ -270,7 +264,7 @@ export class SignUp {
     
     this.error = errorMessage;
     this.showError = true;
-    this.toastService.showAuthError(errorMessage);
+    console.error('Auth error:', errorMessage);
   }
 
   private resetForm(): void {

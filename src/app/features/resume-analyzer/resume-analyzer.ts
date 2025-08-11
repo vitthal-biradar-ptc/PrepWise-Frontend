@@ -1,19 +1,15 @@
 import { Component, ChangeDetectorRef, NgZone, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
 import { Router } from '@angular/router';
-import { ToastService } from '../../services/toast.service';
 import { HeaderComponent } from "../../core/layout/header/header";
 
 @Component({
   selector: 'app-resume-analyzer',
   standalone: true,
-  imports: [CommonModule, FormsModule, ToastModule, HeaderComponent],
-  providers: [MessageService],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './resume-analyzer.html',
   styleUrls: ['./resume-analyzer.css']
 })
@@ -34,8 +30,7 @@ export class ResumeAnalyzer implements OnInit {
 
   constructor(
     private resumeAnalyzerService: ResumeAnalyzerService,
-    private router: Router,
-    private toastService: ToastService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -51,16 +46,10 @@ export class ResumeAnalyzer implements OnInit {
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
         this.selectedFile = null;
-        this.toastService.showError(
-          'Invalid File Type',
-          'Please select a PDF file only. Other file formats are not supported.',
-          4000
-        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
-      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
@@ -86,27 +75,16 @@ export class ResumeAnalyzer implements OnInit {
       const file = files[0];
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
-        this.toastService.showError(
-          'Invalid File Type',
-          'Please select a PDF file only. Other file formats are not supported.',
-          4000
-        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
-      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
   analyzeResume(): void {
     if (!this.selectedFile && !this.resumeText.trim()) {
       this.error = 'Please upload a file or paste resume text.';
-      this.toastService.showError(
-        'No Input Provided',
-        'Please upload a PDF file or paste your resume text to continue.',
-        4000
-      );
       return;
     }
 
@@ -116,13 +94,6 @@ export class ResumeAnalyzer implements OnInit {
       this.analysisResult = null;
       this.startTimer();
     });
-
-    // Show info toast that analysis has started
-    this.toastService.showInfo(
-      'Analysis Started',
-      'Your resume is being analyzed with AI. This may take a few moments...',
-      3000
-    );
 
     // Use the correct service methods based on input type
     const analysisObservable = this.selectedFile 
@@ -135,7 +106,6 @@ export class ResumeAnalyzer implements OnInit {
           this.isLoading = false;
           this.analysisResult = result;
           this.stopTimer();
-          this.toastService.showResumeAnalysisSuccess(result.suggestions?.length);
           this.cdr.detectChanges();
         });
       },
@@ -145,7 +115,6 @@ export class ResumeAnalyzer implements OnInit {
           this.stopTimer();
           const errorMessage = error.error?.message || 'Failed to analyze resume. Please try again.';
           this.error = errorMessage;
-          this.toastService.showResumeAnalysisError(errorMessage);
           this.cdr.detectChanges();
         });
       }
@@ -157,23 +126,13 @@ export class ResumeAnalyzer implements OnInit {
     this.resumeText = '';
     this.analysisResult = null;
     this.error = '';
-    this.cdr.detectChanges(); // Force change detection
-    this.toastService.showInfo(
-      'Form Cleared',
-      'All fields and results have been reset.',
-      2000
-    );
+    this.cdr.detectChanges();
   }
 
   switchTab(tab: 'file' | 'text'): void {
     this.activeTab = tab;
     this.error = '';
-    this.cdr.detectChanges(); // Force change detection
-    this.toastService.showInfo(
-      'Tab Switched',
-      `Switched to ${tab === 'file' ? 'file upload' : 'text input'} mode.`,
-      2000
-    );
+    this.cdr.detectChanges();
   }
 
   getCurrentTime(): string {
@@ -198,6 +157,3 @@ export class ResumeAnalyzer implements OnInit {
     const duration = endTime - this.analysisStartTime;
   }
 }
-
-// Add this export for the router
-export { ResumeAnalyzer as ResumeAnalyzerComponent };

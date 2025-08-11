@@ -2,18 +2,14 @@ import { Component, ChangeDetectorRef, NgZone, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { ResumeParseService } from '../../services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
-import { ToastService } from '../../services/toast.service';
 import { HeaderComponent } from "../../core/layout/header/header";
 
 
 @Component({
   selector: 'app-parse-resume',
-  imports: [CommonModule, FormsModule, ToastModule, HeaderComponent],
-  providers: [MessageService],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './parse-resume.html',
   styleUrl: './parse-resume.css'
 })
@@ -29,8 +25,7 @@ export class ParseResume {
 
   constructor(
     private resumeParseService: ResumeParseService,
-    private router: Router,
-    private toastService: ToastService
+    private router: Router
   ) {
     // Check if user came from signup (first time) or dashboard
     const navigation = this.router.getCurrentNavigation();
@@ -43,16 +38,10 @@ export class ParseResume {
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
         this.selectedFile = null;
-        this.toastService.showError(
-          'Invalid File Type',
-          'Please select a PDF file only. Other file formats are not supported.',
-          4000
-        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
-      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
@@ -78,27 +67,16 @@ export class ParseResume {
       const file = files[0];
       if (file.type !== 'application/pdf') {
         this.error = 'Please select a PDF file only.';
-        this.toastService.showError(
-          'Invalid File Type',
-          'Please select a PDF file only. Other file formats are not supported.',
-          4000
-        );
         return;
       }
       this.selectedFile = file;
       this.error = '';
-      this.toastService.showFileUploadSuccess(file.name);
     }
   }
 
   parseResume(): void {
     if (!this.selectedFile) {
       this.error = 'Please select a PDF resume file.';
-      this.toastService.showError(
-        'No File Selected',
-        'Please select a PDF resume file to continue.',
-        4000
-      );
       return;
     }
 
@@ -106,13 +84,6 @@ export class ParseResume {
       this.isLoading = true;
       this.error = '';
     });
-
-    // Show info toast that parsing has started
-    this.toastService.showInfo(
-      'Parsing Started',
-      'Your resume is being processed. This may take a few moments...',
-      3000
-    );
 
     this.resumeParseService.parseResume(this.selectedFile).subscribe({
       next: (result: ParsedResumeResponse) => {
@@ -122,13 +93,10 @@ export class ParseResume {
           this.isLoading = false;
           this.cdr.markForCheck();
           
-          // Show success toast
-          this.toastService.showResumeParseSuccess(result.message);
-          
           // Store result in session storage for dashboard notification
           sessionStorage.setItem('resumeAnalysisResult', JSON.stringify(result));
           
-          // Redirect to dashboard after a short delay to show the toast
+          // Redirect to dashboard after a short delay
           setTimeout(() => {
             this.router.navigate(['/dashboard']);
           }, 1500);
@@ -141,7 +109,6 @@ export class ParseResume {
           const errorMessage = error.error?.message || 'An error occurred while parsing the resume.';
           this.error = errorMessage;
           this.isLoading = false;
-          this.toastService.showResumeParseError(errorMessage);
           this.cdr.markForCheck();
           this.cdr.detectChanges();
         });
@@ -154,21 +121,11 @@ export class ParseResume {
   }
 
   skipForNow(): void {
-    this.toastService.showInfo(
-      'Setup Skipped',
-      'You can upload your resume later from the dashboard.',
-      3000
-    );
     this.router.navigate(['/dashboard']);
   }
 
   clearAll(): void {
     this.selectedFile = null;
     this.error = '';
-    this.toastService.showInfo(
-      'Form Cleared',
-      'All fields have been reset.',
-      2000
-    );
   }
 }

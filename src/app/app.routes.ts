@@ -23,7 +23,7 @@ export const routes: Routes = [
   },
   {
     path: 'resume-analyzer',
-    loadComponent: () => import('./features/resume-analyzer/resume-analyzer').then(m => m.ResumeAnalyzerComponent),
+    loadComponent: () => import('./features/resume-analyzer/resume-analyzer').then(m => m.ResumeAnalyzer)
   },
   {
     path: 'learning-path',

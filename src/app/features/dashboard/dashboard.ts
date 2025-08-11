@@ -11,12 +11,9 @@ import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 import { UserProfileService } from '../../services/user-profile.service';
 import { UserProfile, BackendSkill, BackendCertification, BackendAchievement, UpdateProfilePayload } from './user-profile.interface';
 import { Router } from '@angular/router';
-import { ToastService } from '../../services/toast.service';
 import { HeaderComponent } from "../../core/layout/header/header";
 
 interface Skill {
@@ -57,10 +54,9 @@ interface Achievement {
     BadgeModule,
     TextareaModule,
     DialogModule,
-    ToastModule,
     HeaderComponent
 ],
-  providers: [MessageService, UserProfileService],
+  providers: [UserProfileService],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
@@ -103,15 +99,15 @@ export class DashboardComponent implements OnInit {
   resumeAnalysisResult: any = null;
   showAnalysisNotification: boolean = false;
 
+  error: string = '';
+
   // Add property to track if data has been modified
   private isDataModified = false;
 
   constructor(
-    private messageService: MessageService,
     private userProfileService: UserProfileService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
-    private toastService: ToastService
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -128,21 +124,10 @@ export class DashboardComponent implements OnInit {
 
   checkForResumeAnalysisResult() {
     try {
-      // Use the new toast service
-      this.toastService.showSuccess(
-        'Resume Analysis Complete!',
-        "",
-        5000
-      );
-
+      console.log('Resume analysis complete');
     } catch (error) {
       console.error('Error parsing resume analysis result:', error);
       sessionStorage.removeItem('resumeAnalysisResult');
-      this.toastService.showError(
-        'Data Error',
-        'Failed to load resume analysis results.',
-        4000
-      );
     }
 
   }
@@ -155,21 +140,10 @@ export class DashboardComponent implements OnInit {
         this.populateCertificationsData(data.certifications || []);
         this.populateAchievementsData(data.achievements || []);
         this.initDomainChart(data.domainData);
-
-        this.toastService.showSuccess(
-          'Profile Loaded',
-          'Your profile data has been loaded successfully.',
-          3000
-        );
-
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.toastService.showError(
-          'Profile Load Failed',
-          'Failed to load profile data. Using fallback data.',
-          5000
-        );
+        console.error('Failed to load profile data:', error);
         this.cdr.detectChanges();
       }
     });
@@ -505,54 +479,28 @@ export class DashboardComponent implements OnInit {
   // Profile editing methods
   toggleProfileEditing() {
     this.isProfileEditing = !this.isProfileEditing;
-    if (this.isProfileEditing) {
-      this.toastService.showInfo(
-        'Edit Mode',
-        'You can now edit your profile information.',
-        3000
-      );
-    }
   }
 
   saveProfile() {
     if (!this.profile.name?.trim()) {
-      this.toastService.showError(
-        'Validation Error',
-        'Name is required and cannot be empty.',
-        4000
-      );
+      this.error = 'Name is required and cannot be empty.';
       return;
     }
 
     if (!this.profile.email?.trim()) {
-      this.toastService.showError(
-        'Validation Error',
-        'Email is required and cannot be empty.',
-        4000
-      );
+      this.error = 'Email is required and cannot be empty.';
       return;
     }
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.profile.email)) {
-      this.toastService.showError(
-        'Validation Error',
-        'Please enter a valid email address.',
-        4000
-      );
+      this.error = 'Please enter a valid email address.';
       return;
     }
 
     this.isProfileEditing = false;
     this.isDataModified = true;
-    
-    this.toastService.showInfo(
-      'Saving Profile',
-      'Updating your profile information...',
-      2000
-    );
-    
     this.updateUserProfile();
   }
 
@@ -569,7 +517,6 @@ export class DashboardComponent implements OnInit {
       this.newSkill = {};
       this.showAddSkillDialog = false;
       this.isDataModified = true;
-      this.toastService.showSkillAddSuccess(skill.name);
       this.updateUserProfile();
     }
   }
@@ -588,7 +535,6 @@ export class DashboardComponent implements OnInit {
       this.newCertification = {};
       this.showAddCertificationDialog = false;
       this.isDataModified = true;
-      this.toastService.showCertificationAddSuccess(cert.name);
       this.updateUserProfile();
     }
   }
@@ -606,7 +552,6 @@ export class DashboardComponent implements OnInit {
       this.newAchievement = {};
       this.showAddAchievementDialog = false;
       this.isDataModified = true;
-      this.toastService.showAchievementAddSuccess(achievement.title);
       this.updateUserProfile();
     }
   }
@@ -643,19 +588,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToParseResume(): void {
-    this.toastService.showInfo(
-      'Redirecting',
-      'Taking you to the resume parser to update your profile...',
-      2000
-    );
-    setTimeout(() => {
-      this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
-    }, 500);
-  }
-
-  dismissAnalysisNotification() {
-    this.showAnalysisNotification = false;
-    this.resumeAnalysisResult = null;
+    this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
   }
 
   updateUserProfile() {
@@ -665,23 +598,12 @@ export class DashboardComponent implements OnInit {
     
     this.userProfileService.updateUserProfile(updatePayload).subscribe({
       next: (response: UserProfile) => {
-        this.toastService.showSuccess(
-          'Profile Updated',
-          'Your profile has been successfully updated.',
-          3000
-        );
+        console.log('Profile updated successfully');
         this.isDataModified = false;
-        
-        // Automatically fetch fresh data from backend after successful update
         this.refreshProfileData();
       },
       error: (error) => {
-        this.toastService.showError(
-          'Update Failed',
-          'Failed to update profile. Please try again.',
-          5000
-        );
-        console.error('Profile update error:', error);
+        console.error('Failed to update profile:', error);
       }
     });
   }
@@ -697,20 +619,9 @@ export class DashboardComponent implements OnInit {
         this.populateAchievementsData(data.achievements || []);
         this.initDomainChart(data.domainData);
         
-        this.toastService.showInfo(
-          'Data Refreshed',
-          'Dashboard updated with latest information.',
-          2000
-        );
-        
         this.cdr.detectChanges();
       },
       error: (error) => {
-        this.toastService.showError(
-          'Refresh Failed',
-          'Could not fetch latest data from server.',
-          3000
-        );
         console.error('Profile refresh error:', error);
       }
     });

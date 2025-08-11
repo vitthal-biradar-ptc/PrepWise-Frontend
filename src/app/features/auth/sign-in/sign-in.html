@@ -42,43 +42,140 @@
         <!-- Form Content -->
         <div class="px-8 pb-6">
           <!-- Error Message -->
-          <div class="bg-[#1A1A1A] border border-red-500/30 text-red-400 text-sm p-4 rounded-lg mb-4 flex items-start" style="display: none;" id="error-message">
-            <span class="font-medium" id="error-text"></span>
+          <div 
+            class="bg-[#1A1A1A] border border-red-500/30 text-red-400 text-sm p-4 rounded-lg mb-4 flex items-start transition-all duration-300" 
+            [class.show]="showError"
+            [style.display]="showError ? 'flex' : 'none'" 
+            id="error-message">
+            <svg class="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+            </svg>
+            <span class="font-medium flex-1">{{ generalError }}</span>
+            <button 
+              type="button" 
+              (click)="hideError()"
+              class="ml-2 text-red-400 hover:text-red-300 transition-colors">
+              <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </button>
           </div>
+
+          <!-- Rate Limiting Warning -->
+          @if (isBlocked) {
+            <div class="bg-orange-500/10 border border-orange-500/30 text-orange-400 text-sm p-4 rounded-lg mb-4 flex items-start">
+              <svg class="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              <div class="flex-1">
+                <p class="font-medium">Account Temporarily Blocked</p>
+                <p class="mt-1">Too many failed attempts. Please try again in {{ getBlockTimeRemaining() }}.</p>
+              </div>
+            </div>
+          }
 
           <form (ngSubmit)="handleSubmit($event)" class="space-y-5">
             <!-- Username or Email Field -->
             <div class="space-y-2">
-              <label for="usernameOrEmail" class="text-sm font-medium text-[#F1F1F1]">
+              <label for="usernameOrEmail" class="text-sm font-medium text-[#F1F1F1] flex items-center">
                 Username or Email
+                @if (touchedFields['usernameOrEmail'] && !hasFieldError('usernameOrEmail')) {
+                  <svg class="ml-1 h-4 w-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                }
               </label>
-              <input
-                id="usernameOrEmail"
-                type="text"
-                placeholder="Enter username or email"
-                required
-                [(ngModel)]="usernameOrEmail"
-                name="usernameOrEmail"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
+              <div class="relative">
+                <input
+                  id="usernameOrEmail"
+                  type="text"
+                  placeholder="Enter username or email"
+                  required
+                  [(ngModel)]="usernameOrEmail"
+                  name="usernameOrEmail"
+                  [disabled]="isLoading || isBlocked"
+                  (blur)="markFieldAsTouched('usernameOrEmail')"
+                  (input)="validateField('usernameOrEmail')"
+                  [class]="'input-glow w-full px-3 py-2 pl-10 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
+                    (hasFieldError('usernameOrEmail') ? 'border-red-500 focus:border-red-500' : 
+                     touchedFields['usernameOrEmail'] && !hasFieldError('usernameOrEmail') ? 'border-green-500 focus:border-green-500' :
+                     'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
+                />
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#A7A7A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                @if (isLoading) {
+                  <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                    <div class="w-4 h-4 border-2 border-[#B03EFF] border-t-transparent rounded-full animate-spin"></div>
+                  </div>
+                }
+              </div>
+              <div class="error-message min-h-[20px]" [style.display]="hasFieldError('usernameOrEmail') ? 'block' : 'none'">
+                <span class="text-red-400 text-xs flex items-center">
+                  <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  {{ getFieldError('usernameOrEmail') }}
+                </span>
+              </div>
             </div>
 
             <!-- Password Field -->
             <div class="space-y-2">
-              <label for="password" class="text-sm font-medium text-[#F1F1F1]">
+              <label for="password" class="text-sm font-medium text-[#F1F1F1] flex items-center">
                 Password
+                @if (touchedFields['password'] && !hasFieldError('password')) {
+                  <svg class="ml-1 h-4 w-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                }
               </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                required
-                [(ngModel)]="password"
-                name="password"
-                [disabled]="isLoading"
-                class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-              />
+              <div class="relative">
+                <input
+                  id="password"
+                  [type]="showPassword ? 'text' : 'password'"
+                  placeholder="••••••••"
+                  required
+                  [(ngModel)]="password"
+                  name="password"
+                  [disabled]="isLoading || isBlocked"
+                  (blur)="markFieldAsTouched('password')"
+                  (input)="validateField('password')"
+                  [class]="'input-glow w-full px-3 py-2 pl-10 pr-10 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
+                    (hasFieldError('password') ? 'border-red-500 focus:border-red-500' : 
+                     touchedFields['password'] && !hasFieldError('password') ? 'border-green-500 focus:border-green-500' :
+                     'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
+                />
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#A7A7A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <button
+                  type="button"
+                  (click)="togglePasswordVisibility()"
+                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#A7A7A7] hover:text-[#F1F1F1] transition-colors"
+                  [disabled]="isLoading || isBlocked"
+                >
+                  @if (!showPassword) {
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  }
+                  @if (showPassword) {
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
+                    </svg>
+                  }
+                </button>
+              </div>
+              <div class="error-message min-h-[20px]" [style.display]="hasFieldError('password') ? 'block' : 'none'">
+                <span class="text-red-400 text-xs flex items-center">
+                  <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                  </svg>
+                  {{ getFieldError('password') }}
+                </span>
+              </div>
             </div>
 
             <!-- Remember Me & Forgot Password -->
@@ -89,7 +186,8 @@
                   id="remember"
                   [(ngModel)]="rememberMe"
                   name="remember"
-                  class="mt-1 w-4 h-4 rounded border-[#B03EFF]/30 bg-[#1A1A1A] text-[#B03EFF] focus:ring-[#B03EFF]/20 focus:ring-2 transition-all"
+                  [disabled]="isLoading || isBlocked"
+                  class="mt-1 w-4 h-4 rounded border-[#B03EFF]/30 bg-[#1A1A1A] text-[#B03EFF] focus:ring-[#B03EFF]/20 focus:ring-2 transition-all disabled:opacity-50"
                 />
                 <label for="remember" class="text-sm text-[#A7A7A7]">
                   Remember me
@@ -100,15 +198,23 @@
               </a>
             </div>
 
-            <!-- Submit Button -->
+            <!-- Submit Button with Enhanced Loading State -->
             <button
               type="submit"
-              [disabled]="isLoading"
+              [disabled]="isLoading || isBlocked || !isFormValid"
               class="gradient-button w-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:opacity-90 text-[#F1F1F1] font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
             >
               <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-[1.05] opacity-0 group-hover:opacity-100 duration-300"></span>
-              <span class="relative">
-                {{ isLoading ? "Signing in..." : "Sign in" }}
+              <span class="relative flex items-center justify-center">
+                @if (isLoading) {
+                  <div class="mr-2 w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                }
+                @if (isBlocked) {
+                  <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+                  </svg>
+                }
+                {{ isLoading ? "Signing in..." : isBlocked ? "Account Blocked" : "Sign in" }}
               </span>
             </button>
           </form>
