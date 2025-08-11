@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, NgZone, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
@@ -29,16 +29,20 @@ export class ResumeAnalyzer implements OnInit {
   // Add this property to track drag state
   isDragging = false;
 
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(
     private resumeAnalyzerService: ResumeAnalyzerService,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private router: Router,
     private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    // Component initialized - ready for use
+    // Ensure proper initialization with zone
+    this.ngZone.run(() => {
+      // Component initialized - ready for use
+    });
   }
 
   onFileSelected(event: any): void {
@@ -106,11 +110,12 @@ export class ResumeAnalyzer implements OnInit {
       return;
     }
 
-    this.isLoading = true;
-    this.error = '';
-    this.analysisResult = null;
-    this.startTimer();
-    this.cdr.detectChanges(); // Force change detection
+    this.ngZone.run(() => {
+      this.isLoading = true;
+      this.error = '';
+      this.analysisResult = null;
+      this.startTimer();
+    });
 
     // Show info toast that analysis has started
     this.toastService.showInfo(

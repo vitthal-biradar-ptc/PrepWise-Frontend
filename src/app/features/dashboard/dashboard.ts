@@ -24,7 +24,6 @@ interface Skill {
   name: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
   category: string;
-  isEditing: boolean;
 }
 
 interface Certification {
@@ -33,7 +32,6 @@ interface Certification {
   issuer: string;
   date: string;
   description: string;
-  isEditing: boolean;
 }
 
 interface Achievement {
@@ -41,7 +39,6 @@ interface Achievement {
   title: string;
   description: string;
   date: string;
-  isEditing: boolean;
 }
 
 @Component({
@@ -108,12 +105,6 @@ export class DashboardComponent implements OnInit {
 
   // Add property to track if data has been modified
   private isDataModified = false;
-
-  // Add delete confirmation properties
-  showDeleteSkillDialog = false;
-  showDeleteCertificationDialog = false;
-  showDeleteAchievementDialog = false;
-  itemToDelete: any = null;
 
   constructor(
     private messageService: MessageService,
@@ -207,8 +198,7 @@ export class DashboardComponent implements OnInit {
       id: skill.id,
       name: skill.name,
       level: this.mapProficiencyToLevel(skill.proficiency),
-      category: this.inferSkillCategory(skill.name),
-      isEditing: false
+      category: this.inferSkillCategory(skill.name)
     }));
   }
 
@@ -223,8 +213,7 @@ export class DashboardComponent implements OnInit {
       name: cert.name,
       issuer: cert.issuer || 'Unknown',
       date: cert.date || new Date().toISOString().split('T')[0],
-      description: cert.description || '',
-      isEditing: false
+      description: cert.description || ''
     }));
   }
 
@@ -238,8 +227,7 @@ export class DashboardComponent implements OnInit {
       id: achievement.id,
       title: achievement.name,
       description: achievement.description,
-      date: achievement.date || new Date().toISOString().split('T')[0],
-      isEditing: false
+      date: achievement.date || new Date().toISOString().split('T')[0]
     }));
   }
 
@@ -517,62 +505,65 @@ export class DashboardComponent implements OnInit {
   // Profile editing methods
   toggleProfileEditing() {
     this.isProfileEditing = !this.isProfileEditing;
+    if (this.isProfileEditing) {
+      this.toastService.showInfo(
+        'Edit Mode',
+        'You can now edit your profile information.',
+        3000
+      );
+    }
   }
 
   saveProfile() {
+    if (!this.profile.name?.trim()) {
+      this.toastService.showError(
+        'Validation Error',
+        'Name is required and cannot be empty.',
+        4000
+      );
+      return;
+    }
+
+    if (!this.profile.email?.trim()) {
+      this.toastService.showError(
+        'Validation Error',
+        'Email is required and cannot be empty.',
+        4000
+      );
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.profile.email)) {
+      this.toastService.showError(
+        'Validation Error',
+        'Please enter a valid email address.',
+        4000
+      );
+      return;
+    }
+
     this.isProfileEditing = false;
     this.isDataModified = true;
+    
+    this.toastService.showInfo(
+      'Saving Profile',
+      'Updating your profile information...',
+      2000
+    );
+    
     this.updateUserProfile();
   }
 
   // Skills management methods
-  editSkill(skill: Skill) {
-    skill.isEditing = true;
-  }
-
-  saveSkill(skill: Skill) {
-    skill.isEditing = false;
-    this.isDataModified = true;
-    this.toastService.showSuccess(
-      'Skill Updated',
-      `${skill.name} has been updated successfully.`,
-      3000
-    );
-    this.updateUserProfile();
-  }
-
-  deleteSkill(skillId: number) {
-    console.log('Delete skill called with ID:', skillId);
-    this.itemToDelete = this.skills.find(s => s.id === skillId);
-    console.log('Item to delete:', this.itemToDelete);
-    this.showDeleteSkillDialog = true;
-    console.log('Delete dialog should show:', this.showDeleteSkillDialog);
-  }
-
-  confirmDeleteSkill() {
-    if (this.itemToDelete) {
-      this.skills = this.skills.filter(s => s.id !== this.itemToDelete.id);
-      this.isDataModified = true;
-      this.toastService.showDeleteSuccess('Skill');
-      this.updateUserProfile();
-    }
-    this.showDeleteSkillDialog = false;
-    this.itemToDelete = null;
-  }
-
-  cancelDeleteSkill() {
-    this.showDeleteSkillDialog = false;
-    this.itemToDelete = null;
-  }
-
   addSkill() {
     if (this.newSkill.name && this.newSkill.level && this.newSkill.category) {
       const skill: Skill = {
         id: Date.now(),
         name: this.newSkill.name!,
         level: this.newSkill.level!,
-        category: this.newSkill.category!,
-        isEditing: false
+        category: this.newSkill.category!
       };
       this.skills.push(skill);
       this.newSkill = {};
@@ -584,45 +575,6 @@ export class DashboardComponent implements OnInit {
   }
 
   // Certifications management methods
-  editCertification(cert: Certification) {
-    cert.isEditing = true;
-  }
-
-  saveCertification(cert: Certification) {
-    cert.isEditing = false;
-    this.isDataModified = true;
-    this.toastService.showSuccess(
-      'Certification Updated',
-      `${cert.name} has been updated successfully.`,
-      3000
-    );
-    this.updateUserProfile();
-  }
-
-  deleteCertification(certId: number) {
-    console.log('Delete certification called with ID:', certId);
-    this.itemToDelete = this.certifications.find(c => c.id === certId);
-    console.log('Item to delete:', this.itemToDelete);
-    this.showDeleteCertificationDialog = true;
-    console.log('Delete dialog should show:', this.showDeleteCertificationDialog);
-  }
-
-  confirmDeleteCertification() {
-    if (this.itemToDelete) {
-      this.certifications = this.certifications.filter(c => c.id !== this.itemToDelete.id);
-      this.isDataModified = true;
-      this.toastService.showDeleteSuccess('Certification');
-      this.updateUserProfile();
-    }
-    this.showDeleteCertificationDialog = false;
-    this.itemToDelete = null;
-  }
-
-  cancelDeleteCertification() {
-    this.showDeleteCertificationDialog = false;
-    this.itemToDelete = null;
-  }
-
   addCertification() {
     if (this.newCertification.name && this.newCertification.issuer) {
       const cert: Certification = {
@@ -630,8 +582,7 @@ export class DashboardComponent implements OnInit {
         name: this.newCertification.name!,
         issuer: this.newCertification.issuer!,
         date: this.newCertification.date || new Date().toISOString().split('T')[0],
-        description: this.newCertification.description || '',
-        isEditing: false
+        description: this.newCertification.description || ''
       };
       this.certifications.push(cert);
       this.newCertification = {};
@@ -643,53 +594,13 @@ export class DashboardComponent implements OnInit {
   }
 
   // Achievements management methods
-  editAchievement(achievement: Achievement) {
-    achievement.isEditing = true;
-  }
-
-  saveAchievement(achievement: Achievement) {
-    achievement.isEditing = false;
-    this.isDataModified = true;
-    this.toastService.showSuccess(
-      'Achievement Updated',
-      `${achievement.title} has been updated successfully.`,
-      3000
-    );
-    this.updateUserProfile();
-  }
-
-  deleteAchievement(achievementId: number) {
-    console.log('Delete achievement called with ID:', achievementId);
-    this.itemToDelete = this.achievements.find(a => a.id === achievementId);
-    console.log('Item to delete:', this.itemToDelete);
-    this.showDeleteAchievementDialog = true;
-    console.log('Delete dialog should show:', this.showDeleteAchievementDialog);
-  }
-
-  confirmDeleteAchievement() {
-    if (this.itemToDelete) {
-      this.achievements = this.achievements.filter(a => a.id !== this.itemToDelete.id);
-      this.isDataModified = true;
-      this.toastService.showDeleteSuccess('Achievement');
-      this.updateUserProfile();
-    }
-    this.showDeleteAchievementDialog = false;
-    this.itemToDelete = null;
-  }
-
-  cancelDeleteAchievement() {
-    this.showDeleteAchievementDialog = false;
-    this.itemToDelete = null;
-  }
-
   addAchievement() {
     if (this.newAchievement.title && this.newAchievement.description) {
       const achievement: Achievement = {
         id: Date.now(),
         title: this.newAchievement.title!,
         description: this.newAchievement.description!,
-        date: this.newAchievement.date || new Date().toISOString().split('T')[0],
-        isEditing: false
+        date: this.newAchievement.date || new Date().toISOString().split('T')[0]
       };
       this.achievements.push(achievement);
       this.newAchievement = {};
@@ -710,13 +621,36 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Add method to safely format dates
+  formatDate(date: string): string {
+    if (!date || date === 'Unknown' || date === '') {
+      return '';
+    }
+    
+    try {
+      const parsedDate = new Date(date);
+      if (isNaN(parsedDate.getTime())) {
+        return '';
+      }
+      return parsedDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (error) {
+      return '';
+    }
+  }
+
   navigateToParseResume(): void {
     this.toastService.showInfo(
       'Redirecting',
-      'Taking you to the resume parser...',
+      'Taking you to the resume parser to update your profile...',
       2000
     );
-    this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
+    setTimeout(() => {
+      this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
+    }, 500);
   }
 
   dismissAnalysisNotification() {

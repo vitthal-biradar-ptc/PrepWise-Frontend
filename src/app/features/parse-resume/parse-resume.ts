@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -24,11 +24,12 @@ export class ParseResume {
   isDragging = false;
   isFirstTime = true; // Check if this is first time setup
 
+  private ngZone = inject(NgZone);
+  private cdr = inject(ChangeDetectorRef);
+
   constructor(
     private resumeParseService: ResumeParseService,
     private router: Router,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private toastService: ToastService
   ) {
     // Check if user came from signup (first time) or dashboard
@@ -104,7 +105,6 @@ export class ParseResume {
     this.ngZone.run(() => {
       this.isLoading = true;
       this.error = '';
-      this.cdr.markForCheck();
     });
 
     // Show info toast that parsing has started

@@ -2,40 +2,42 @@
   <app-header></app-header>
   
   <!-- Resume Analysis Result Notification -->
-  <div *ngIf="showAnalysisNotification && resumeAnalysisResult" class="analysis-notification-container mb-6">
-    <div class="analysis-notification bg-gradient-to-r from-[#7F00FF]/10 to-[#C400FF]/10 border border-[#B03EFF]/30 rounded-xl p-6 relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5"></div>
-      <div class="relative z-10">
-        <div class="flex items-start justify-between">
-          <div class="flex items-center mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full flex items-center justify-center mr-4">
-              <i class="pi pi-check text-white text-xl"></i>
+  @if (showAnalysisNotification && resumeAnalysisResult) {
+    <div class="analysis-notification-container mb-6">
+      <div class="analysis-notification bg-gradient-to-r from-[#7F00FF]/10 to-[#C400FF]/10 border border-[#B03EFF]/30 rounded-xl p-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5"></div>
+        <div class="relative z-10">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center mb-4">
+              <div class="w-12 h-12 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full flex items-center justify-center mr-4">
+                <i class="pi pi-check text-white text-xl"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-[#F1F1F1] mb-1">Resume Analysis Complete!</h3>
+                <p class="text-[#A7A7A7]">Your profile has been updated with the analysis results</p>
+              </div>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-[#F1F1F1] mb-1">Resume Analysis Complete!</h3>
-              <p class="text-[#A7A7A7]">Your profile has been updated with the analysis results</p>
+            <button 
+              (click)="dismissAnalysisNotification()"
+              class="text-[#A7A7A7] hover:text-[#F1F1F1] transition-colors">
+              <i class="pi pi-times text-lg"></i>
+            </button>
+          </div>
+          
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
+              <h4 class="text-[#B03EFF] font-semibold mb-2">Identified Domain</h4>
+              <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.domain || 'General' }}</p>
             </div>
-          </div>
-          <button 
-            (click)="dismissAnalysisNotification()"
-            class="text-[#A7A7A7] hover:text-[#F1F1F1] transition-colors">
-            <i class="pi pi-times text-lg"></i>
-          </button>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-4">
-          <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
-            <h4 class="text-[#B03EFF] font-semibold mb-2">Identified Domain</h4>
-            <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.domain || 'General' }}</p>
-          </div>
-          <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
-            <h4 class="text-[#B03EFF] font-semibold mb-2">Suggestions Generated</h4>
-            <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.suggestions?.length || 0 }} recommendations</p>
+            <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
+              <h4 class="text-[#B03EFF] font-semibold mb-2">Suggestions Generated</h4>
+              <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.suggestions?.length || 0 }} recommendations</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  }
 
   <!-- Profile Section -->
   <div class="profile-container">
@@ -53,35 +55,44 @@
           </p-avatar>
           <div class="profile-info">
             <div class="name-section">
-              <h1 class="profile-name" *ngIf="!isProfileEditing">{{ profile.name || 'Loading...' }}</h1>
-              <input 
-                pInputText 
-                [(ngModel)]="profile.name" 
-                *ngIf="isProfileEditing"
-                class="edit-input profile-name-input"
-                placeholder="Enter your name">
+              @if (!isProfileEditing) {
+                <h1 class="profile-name" style="margin-bottom: 0.25rem;">{{ profile.name || 'Loading...' }}</h1>
+              }
+              @if (isProfileEditing) {
+                <input 
+                  pInputText 
+                  [(ngModel)]="profile.name" 
+                  class="edit-input profile-name-input"
+                  placeholder="Enter your name">
+              }
             </div>
             
-            <div class="email-section">
-              <p class="profile-email" *ngIf="!isProfileEditing">{{ profile.email || 'Loading...' }}</p>
-              <input 
-                pInputText 
-                [(ngModel)]="profile.email" 
-                *ngIf="isProfileEditing"
-                class="edit-input"
-                placeholder="Enter your email">
+            <div class="email-section" style="margin-bottom: 0.25rem;">
+              @if (!isProfileEditing) {
+                <p class="profile-email" style="margin: 0;">{{ profile.email || 'Loading...' }}</p>
+              }
+              @if (isProfileEditing) {
+                <input 
+                  pInputText 
+                  [(ngModel)]="profile.email" 
+                  class="edit-input"
+                  placeholder="Enter your email">
+              }
             </div>
 
             <div class="location-section">
-              <p class="profile-location" *ngIf="!isProfileEditing">
-                <i class="pi pi-map-marker"></i> {{ profile.location || 'Loading...' }}
-              </p>
-              <input 
-                pInputText 
-                [(ngModel)]="profile.location" 
-                *ngIf="isProfileEditing"
-                class="edit-input"
-                placeholder="Enter your location">
+              @if (!isProfileEditing) {
+                <p class="profile-location" style="margin: 0;">
+                  <i class="pi pi-map-marker"></i> {{ profile.location || 'Loading...' }}
+                </p>
+              }
+              @if (isProfileEditing) {
+                <input 
+                  pInputText 
+                  [(ngModel)]="profile.location" 
+                  class="edit-input"
+                  placeholder="Enter your location">
+              }
             </div>
           </div>
         </div>
@@ -91,68 +102,88 @@
             <p-chip 
               [label]="profile.domain || 'General'" 
               icon="pi pi-briefcase"
-              class="domain-chip">
+              class="domain-chip"
+              [style]="{'background': 'linear-gradient(135deg, #7F00FF, #C400FF)', 'color': '#ffffff', 'border': 'none', 'font-weight': '600', 'padding': '8px 16px', 'border-radius': '12px'}">
             </p-chip>
           </div>
           
-          <div class="profile-buttons flex flex-col gap-2">
-            <div class="edit-profile-btn">
-              <p-button 
-                [icon]="isProfileEditing ? 'pi pi-check' : 'pi pi-pencil'"
-                [label]="isProfileEditing ? 'Save' : 'Edit Profile'"
-                (onClick)="isProfileEditing ? saveProfile() : toggleProfileEditing()"
-                class="edit-btn">
-              </p-button>
-            </div>
-            
-            <div class="upload-resume-btn">
-              <p-button 
-                icon="pi pi-upload"
-                label="Update Resume"
-                (onClick)="navigateToParseResume()"
-                class="upload-btn"
-                [style]="{'background': 'linear-gradient(to right, #C400FF, #7F00FF)', 'border': 'none'}">
-              </p-button>
-            </div>
+          <div class="profile-buttons" style="background: transparent;">
+             <p-button 
+              [label]="isProfileEditing ? 'Save Profile' : 'Edit Profile'"
+              (onClick)="isProfileEditing ? saveProfile() : toggleProfileEditing()"
+              class="profile-btn upload-btn"
+              [style]="{
+                'background': isProfileEditing ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'rgba(176, 62, 255, 0.2)',
+                'border': 'none',
+                'color': '#ffffff',
+                'font-weight': '600',
+                'padding': '12px 24px',
+                'border-radius': '12px',
+                'min-width': '160px'
+              }">
+            </p-button>
+            <p-button 
+              icon="pi pi-upload"
+              label="Update Resume"
+              (onClick)="navigateToParseResume()"
+              class="profile-btn upload-btn"
+              [style]="{
+                'background': 'linear-gradient(135deg, #7F00FF, #C400FF)',
+                'border': 'none',
+                'color': '#ffffff',
+                'font-weight': '600',
+                'padding': '12px 24px',
+                'border-radius': '12px',
+                'min-width': '160px'
+              }">
+            </p-button>
           </div>
         </div>
       </div>
 
       <div class="social-links">
-        <div class="social-link" *ngIf="!isProfileEditing && profile.githubUrl">
-          <a [href]="profile.githubUrl" target="_blank" class="social-btn github">
-            <i class="pi pi-github"></i>
-            <span>GitHub</span>
-          </a>
-        </div>
-        <div class="social-link" *ngIf="!isProfileEditing && profile.linkedinUrl">
-          <a [href]="profile.linkedinUrl" target="_blank" class="social-btn linkedin">
-            <i class="pi pi-linkedin"></i>
-            <span>LinkedIn</span>
-          </a>
-        </div>
-        <div class="social-link" *ngIf="!isProfileEditing && profile.portfolioUrl">
-          <a [href]="profile.portfolioUrl" target="_blank" class="social-btn portfolio">
-            <i class="pi pi-globe"></i>
-            <span>Portfolio</span>
-          </a>
-        </div>
+        @if (!isProfileEditing && profile.githubUrl) {
+          <div class="social-link">
+            <a [href]="profile.githubUrl" target="_blank" class="social-btn github">
+              <i class="pi pi-github"></i>
+              <span>GitHub</span>
+            </a>
+          </div>
+        }
+        @if (!isProfileEditing && profile.linkedinUrl) {
+          <div class="social-link">
+            <a [href]="profile.linkedinUrl" target="_blank" class="social-btn linkedin">
+              <i class="pi pi-linkedin"></i>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+        }
+        @if (!isProfileEditing && profile.portfolioUrl) {
+          <div class="social-link">
+            <a [href]="profile.portfolioUrl" target="_blank" class="social-btn portfolio">
+              <i class="pi pi-globe"></i>
+              <span>Portfolio</span>
+            </a>
+          </div>
+        }
 
         <!-- Social links editing -->
-        <div class="social-links-edit" *ngIf="isProfileEditing">
-          <div class="social-input-group">
-            <label>GitHub URL:</label>
-            <input pInputText [(ngModel)]="profile.githubUrl" placeholder="https://github.com/username">
+        @if (isProfileEditing) {
+          <div class="social-links-edit">
+            <div class="social-input-group">
+              <label>GitHub URL:</label>
+              <input pInputText [(ngModel)]="profile.githubUrl" placeholder="https://github.com/username">
+            </div>
+            <div class="social-input-group">
+              <label>LinkedIn URL:</label>
+              <input pInputText [(ngModel)]="profile.linkedinUrl" placeholder="https://linkedin.com/in/username">
+            </div>
+            <div class="social-input-group">
+              <label>Portfolio URL:</label>
+              <input pInputText [(ngModel)]="profile.portfolioUrl" placeholder="https://your-portfolio.com">
+            </div>
           </div>
-          <div class="social-input-group">
-            <label>LinkedIn URL:</label>
-            <input pInputText [(ngModel)]="profile.linkedinUrl" placeholder="https://linkedin.com/in/username">
-          </div>
-          <div class="social-input-group">
-            <label>Portfolio URL:</label>
-            <input pInputText [(ngModel)]="profile.portfolioUrl" placeholder="https://your-portfolio.com">
-          </div>
-        </div>
+        }
       </div>
     </div>
   </div>
@@ -168,13 +199,14 @@
           </div>
         </ng-template>
         <div class="chart-content">
-          <p-chart 
-            *ngIf="domainChartData"
-            type="pie" 
-            [data]="domainChartData" 
-            [options]="domainChartOptions"
-            class="w-full">
-          </p-chart>
+          @if (domainChartData) {
+            <p-chart 
+              type="pie" 
+              [data]="domainChartData" 
+              [options]="domainChartOptions"
+              class="w-full">
+            </p-chart>
+          }
         </div>
       </p-card>
     </div>
@@ -188,13 +220,14 @@
           </div>
         </ng-template>
         <div class="chart-content">
-          <p-chart 
-            *ngIf="atsChartData"
-            type="polarArea" 
-            [data]="atsChartData" 
-            [options]="atsChartOptions"
-            class="w-full">
-          </p-chart>
+          @if (atsChartData) {
+            <p-chart 
+              type="polarArea" 
+              [data]="atsChartData" 
+              [options]="atsChartOptions"
+              class="w-full">
+            </p-chart>
+          }
         </div>
       </p-card>
     </div>
@@ -217,66 +250,29 @@
       </ng-template>
       
       <div class="skills-grid">
-        <div class="skill-item" *ngFor="let skill of skills" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem;">
-          <div class="skill-content" *ngIf="!skill.isEditing">
-            <div class="skill-info">
-              <h4 class="skill-name">{{ skill.name }}</h4>
-              <p class="skill-category">{{ skill.category }}</p>
-            </div>
-            <div class="skill-level">
-              <p-badge 
-                [value]="skill.level" 
-                [style]="{'background-color': getLevelColor(skill.level)}">
-              </p-badge>
-            </div>
-            <div class="skill-actions">
-              <p-button 
-                icon="pi pi-pencil" 
-                severity="secondary"
-                (onClick)="editSkill(skill)"
-                class="action-btn">
-              </p-button>
-              <p-button 
-                icon="pi pi-trash" 
-                severity="danger"
-                (onClick)="deleteSkill(skill.id)"
-                class="action-btn">
-              </p-button>
+        @for (skill of skills; track skill.id) {
+          <div class="skill-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem;">
+            <div class="skill-content">
+              <div class="skill-info">
+                <h4 class="skill-name">{{ skill.name }}</h4>
+                <p class="skill-category">{{ skill.category }}</p>
+              </div>
+              <div class="skill-level">
+                <p-badge 
+                  [value]="skill.level" 
+                  [style]="{'background-color': getLevelColor(skill.level)}">
+                </p-badge>
+              </div>
             </div>
           </div>
-
-          <div class="skill-edit" *ngIf="skill.isEditing">
-            <div class="edit-inputs">
-              <input pInputText [(ngModel)]="skill.name" placeholder="Skill name" class="edit-input">
-              <input pInputText [(ngModel)]="skill.category" placeholder="Category" class="edit-input">
-              <select pInputText [(ngModel)]="skill.level" class="edit-input">
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Expert">Expert</option>
-              </select>
-            </div>
-            <div class="edit-actions">
-              <p-button 
-                icon="pi pi-check" 
-                severity="success"
-                (onClick)="saveSkill(skill)"
-                class="action-btn">
-              </p-button>
-              <p-button 
-                icon="pi pi-times" 
-                severity="secondary"
-                (onClick)="skill.isEditing = false"
-                class="action-btn">
-              </p-button>
-            </div>
-          </div>
-        </div>
+        }
         
         <!-- Show message if no skills -->
-        <div *ngIf="skills?.length === 0" style="text-align: center; color: #A7A7A7; padding: 2rem;">
-          <p>No skills added yet. Click "Add Skill" to get started!</p>
-        </div>
+        @if (skills.length === 0) {
+          <div style="text-align: center; color: #A7A7A7; padding: 2rem;">
+            <p>No skills added yet. Click "Add Skill" to get started!</p>
+          </div>
+        }
       </div>
     </p-card>
   </div>
@@ -299,59 +295,18 @@
         </ng-template>
         
         <div class="certifications-list">
-          <div class="certification-item" *ngFor="let cert of certifications" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
-            <div class="certification-content" *ngIf="!cert.isEditing">
-              <div class="certification-info">
-                <h4 class="certification-name">{{ cert.name }}</h4>
-                <p class="certification-issuer">{{ cert.issuer }}</p>
-                <p class="certification-date">{{ cert.date | date:'mediumDate' }}</p>
-                <p class="certification-description">{{ cert.description }}</p>
-              </div>
-              <div class="certification-actions">
-                <p-button 
-                  icon="pi pi-pencil" 
-                  severity="secondary"
-                  (onClick)="editCertification(cert)"
-                  class="action-btn">
-                </p-button>
-                <p-button 
-                  icon="pi pi-trash" 
-                  severity="danger"
-                  (onClick)="deleteCertification(cert.id)"
-                  class="action-btn">
-                </p-button>
+          @for (cert of certifications; track cert.id) {
+            <div class="certification-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
+              <div class="certification-content">
+                <div class="certification-info">
+                  <h4 class="certification-name">{{ cert.name }}</h4>
+                  <p class="certification-issuer">{{ cert.issuer }}</p>
+                  <p class="certification-date">{{ formatDate(cert.date) }}</p>
+                  <p class="certification-description">{{ cert.description }}</p>
+                </div>
               </div>
             </div>
-
-            <div class="certification-edit" *ngIf="cert.isEditing">
-              <div class="edit-inputs">
-                <input pInputText [(ngModel)]="cert.name" placeholder="Certification name" class="edit-input">
-                <input pInputText [(ngModel)]="cert.issuer" placeholder="Issuing organization" class="edit-input">
-                <input pInputText type="date" [(ngModel)]="cert.date" class="edit-input">
-                <textarea 
-                  pInputTextarea 
-                  [(ngModel)]="cert.description" 
-                  placeholder="Description"
-                  rows="3"
-                  class="edit-input">
-                </textarea>
-              </div>
-              <div class="edit-actions">
-                <p-button 
-                  icon="pi pi-check" 
-                  severity="success"
-                  (onClick)="saveCertification(cert)"
-                  class="action-btn">
-                </p-button>
-                <p-button 
-                  icon="pi pi-times" 
-                  severity="secondary"
-                  (onClick)="cert.isEditing = false"
-                  class="action-btn">
-                </p-button>
-              </div>
-            </div>
-          </div>
+          }
         </div>
       </p-card>
     </div>
@@ -372,60 +327,17 @@
         </ng-template>
         
         <div class="achievements-list">
-          <div class="achievement-item" *ngFor="let achievement of achievements" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
-            <div class="achievement-content" *ngIf="!achievement.isEditing">
-              <div class="achievement-info">
-                <h4 class="achievement-title" style="color: #F5F5DC;">{{ achievement.title }}</h4>
-                <p class="achievement-date" style="color: #A7A7A7;">{{ achievement.date | date:'mediumDate' }}</p>
-                <p class="achievement-description" style="color: #F1F1F1;">{{ achievement.description }}</p>
-              </div>
-              <div class="achievement-actions">
-                <p-button 
-                  icon="pi pi-pencil" 
-                  severity="secondary"
-                  (onClick)="editAchievement(achievement)"
-                  class="action-btn"
-                  [style]="{'background-color': 'rgba(176, 62, 255, 0.2)', 'border-color': 'rgba(176, 62, 255, 0.3)'}">
-                </p-button>
-                <p-button 
-                  icon="pi pi-trash" 
-                  severity="danger"
-                  (onClick)="deleteAchievement(achievement.id)"
-                  class="action-btn">
-                </p-button>
+          @for (achievement of achievements; track achievement.id) {
+            <div class="achievement-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
+              <div class="achievement-content">
+                <div class="achievement-info">
+                  <h4 class="achievement-title" style="color: #F5F5DC;">{{ achievement.title }}</h4>
+                  <p class="achievement-date" style="color: #A7A7A7;">{{ formatDate(achievement.date) }}</p>
+                  <p class="achievement-description" style="color: #F1F1F1;">{{ achievement.description }}</p>
+                </div>
               </div>
             </div>
-
-            <div class="achievement-edit" *ngIf="achievement.isEditing">
-              <div class="edit-inputs">
-                <input pInputText [(ngModel)]="achievement.title" placeholder="Achievement title" class="edit-input" style="background-color: #252525; color: #F1F1F1; border: 1px solid rgba(176, 62, 255, 0.3);">
-                <input pInputText type="date" [(ngModel)]="achievement.date" class="edit-input" style="background-color: #252525; color: #F1F1F1; border: 1px solid rgba(176, 62, 255, 0.3);">
-                <textarea 
-                  pInputTextarea 
-                  [(ngModel)]="achievement.description" 
-                  placeholder="Description"
-                  rows="3"
-                  class="edit-input"
-                  style="background-color: #252525; color: #F1F1F1; border: 1px solid rgba(176, 62, 255, 0.3);">
-                </textarea>
-              </div>
-              <div class="edit-actions">
-                <p-button 
-                  icon="pi pi-check" 
-                  severity="success"
-                  (onClick)="saveAchievement(achievement)"
-                  class="action-btn">
-                </p-button>
-                <p-button 
-                  icon="pi pi-times" 
-                  severity="secondary"
-                  (onClick)="achievement.isEditing = false"
-                  class="action-btn"
-                  [style]="{'background-color': 'rgba(176, 62, 255, 0.2)', 'border-color': 'rgba(176, 62, 255, 0.3)'}">
-                </p-button>
-              </div>
-            </div>
-          </div>
+          }
         </div>
       </p-card>
     </div>
@@ -437,7 +349,7 @@
     [(visible)]="showAddSkillDialog" 
     [modal]="true"
     [style]="{width: '600px', 'max-width': '90vw'}"
-    styleClass="custom-dialog"
+    styleClass="enhanced-dialog"
     class="add-dialog">
     <div class="dialog-content space-y-6">
       <div class="form-group">
@@ -463,10 +375,10 @@
             [(ngModel)]="newSkill.level" 
             class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white appearance-none cursor-pointer focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 bg-gradient-to-br from-gray-800 to-gray-900">
             <option value="" class="bg-gray-800 text-gray-400">Select your proficiency level</option>
-            <option value="Beginner" class="bg-gray-800 text-white py-2">🌱 Beginner - Just starting out</option>
-            <option value="Intermediate" class="bg-gray-800 text-white py-2">📈 Intermediate - Comfortable with basics</option>
-            <option value="Advanced" class="bg-gray-800 text-white py-2">🚀 Advanced - Highly proficient</option>
-            <option value="Expert" class="bg-gray-800 text-white py-2">⭐ Expert - Master level</option>
+            <option value="Beginner" class="bg-gray-800 text-white py-2">Beginner - Just starting out</option>
+            <option value="Intermediate" class="bg-gray-800 text-white py-2">Intermediate - Comfortable with basics</option>
+            <option value="Advanced" class="bg-gray-800 text-white py-2">Advanced - Highly proficient</option>
+            <option value="Expert" class="bg-gray-800 text-white py-2">Expert - Master level</option>
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
             <i class="pi pi-chevron-down text-purple-500"></i>
@@ -500,7 +412,7 @@
     [(visible)]="showAddCertificationDialog" 
     [modal]="true"
     [style]="{width: '600px', 'max-width': '90vw'}"
-    styleClass="custom-dialog"
+    styleClass="enhanced-dialog"
     class="add-dialog">
     <div class="dialog-content space-y-6">
       <div class="form-group">
@@ -564,7 +476,7 @@
     [(visible)]="showAddAchievementDialog" 
     [modal]="true"
     [style]="{width: '600px', 'max-width': '90vw'}"
-    styleClass="custom-dialog"
+    styleClass="enhanced-dialog"
     class="add-dialog">
     <div class="dialog-content space-y-6">
       <div class="form-group">
