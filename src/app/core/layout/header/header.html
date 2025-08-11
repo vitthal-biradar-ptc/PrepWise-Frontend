@@ -18,67 +18,83 @@
       </span>
     </a>
 
-    <!-- Desktop Navigation -->
-    <nav class="ml-auto hidden md:flex gap-2 relative z-10">
-      @for (item of navItems; track item.title) {
+    <!-- Desktop Navigation - Only show when authenticated -->
+    @if (!isAuthLoading && isAuthenticated) {
+      <nav class="ml-auto hidden md:flex gap-2 relative z-10">
         <a 
-          [href]="item.href"
-          (click)="handleNavClick(item, $event)"
+          href="/"
           class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
         >
-          <!-- Icons for each nav item -->
-          @if (item.icon === 'layout') {
-            <svg 
-              class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-            </svg>
-          }
-          
-          @if (item.icon === 'interviews') {
-            <svg 
-              class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          }
-          
-          @if (item.icon === 'book') {
-            <svg 
-              class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 200 200"
-            >
-              <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
-              <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
-              <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
-            </svg>
-          }
-          
-          @if (item.icon === 'help') {
-            <svg 
-              class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
-          
-          {{ item.title }}
+          <svg 
+            class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
         </a>
-      }
-    </nav>
+        
+        <a 
+          href="/resume-analyzer"
+          class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
+        >
+          <svg 
+            class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Resume Analyzer
+        </a>
+        
+        <a 
+          href="/learning-path"
+          class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
+        >
+          <svg 
+            class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 200 200"
+          >
+            <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
+            <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
+            <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
+          </svg>
+          Learning Path
+        </a>
+        
+        <a 
+          href="/interviews"
+          class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
+        >
+          <svg 
+            class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+            xmlns="http://www.w3.org/2000/svg" 
+            fill="none" 
+            viewBox="0 0 24 24" 
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          Interviews
+        </a>
+      </nav>
+    }
 
     <!-- Desktop Auth Section -->
-    <div class="hidden md:flex ml-6 items-center relative z-10">
+    <div class="hidden md:flex ml-auto items-center gap-4 relative z-10">
+      <!-- Welcome message for unauthenticated users -->
+      @if (!isAuthLoading && !isAuthenticated) {
+        <span class="text-sm text-[#F1F1F1]/70">Welcome to PrepWise</span>
+      }
+
       <!-- Loading state (show first) -->
       @if (isAuthLoading) {
         <div class="w-10 h-10 flex items-center justify-center">
@@ -143,7 +159,7 @@
     <!-- Mobile Menu Button -->
     <button 
       (click)="toggleMobileMenu()"
-      class="ml-auto md:hidden relative z-10 p-2 rounded-lg text-[#F1F1F1] hover:bg-[#B03EFF]/10 transition-colors duration-200"
+      class="md:hidden relative z-10 p-2 rounded-lg text-[#F1F1F1] hover:bg-[#B03EFF]/10 transition-colors duration-200 ml-4"
       [attr.aria-expanded]="mobileMenuOpen"
       aria-label="Toggle mobile menu"
     >
@@ -182,63 +198,79 @@
       <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5 pointer-events-none"></div>
       
       <div class="space-y-2 relative z-10">
-        @for (item of navItems; track item.title) {
+        <!-- Welcome message for mobile unauthenticated users -->
+        @if (!isAuthLoading && !isAuthenticated) {
+          <div class="text-center py-2 mb-4">
+            <p class="text-sm text-[#F1F1F1]/70">Welcome to PrepWise</p>
+            <p class="text-xs text-[#F1F1F1]/50 mt-1">Please log in to access all features</p>
+          </div>
+        }
+
+        <!-- Mobile Navigation - Only show when authenticated -->
+        @if (!isAuthLoading && isAuthenticated) {
           <a 
-            [href]="item.href"
-            (click)="handleNavClick(item, $event)"
+            href="/"
             class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
           >
-            <!-- Mobile Icons -->
-            @if (item.icon === 'layout') {
-              <svg 
-                class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-              </svg>
-            }
-            
-            @if (item.icon === 'interviews') {
-              <svg 
-                class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            }
-            
-            @if (item.icon === 'book') {
-              <svg 
-                class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 200 200"
-              >
-                <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
-                <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
-                <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
-              </svg>
-            }
-            
-            @if (item.icon === 'help') {
-              <svg 
-                class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            }
-            
-            {{ item.title }}
+            <svg 
+              class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Home
+          </a>
+          
+          <a 
+            href="/resume-analyzer"
+            class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
+          >
+            <svg 
+              class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Resume Analyzer
+          </a>
+          
+          <a 
+            href="/learning-path"
+            class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
+          >
+            <svg 
+              class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 200 200"
+            >
+              <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
+              <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
+              <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
+            </svg>
+            Learning Path
+          </a>
+          
+          <a 
+            href="/interviews"
+            class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
+          >
+            <svg 
+              class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Interviews
           </a>
         }
         
@@ -276,13 +308,13 @@
           }
 
           <!-- Mobile Login Button (when not authenticated and not loading) -->
-          @if (!isAuthLoading && !isAuthenticated) {
+          @if (!isAuthenticated) {
             <button 
               (click)="navigateToSignIn()"
               class="w-full group flex items-center justify-center h-12 rounded-xl bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-6 py-3 text-sm font-medium transition-all duration-200 hover:shadow-lg hover:shadow-[#B03EFF]/25 relative overflow-hidden"
             >
               <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-110 opacity-0 group-hover:opacity-100 duration-300"></span>
-              <span class="relative">Login</span>
+              <span class="relative">Login to Get Started</span>
             </button>
           }
         </div>

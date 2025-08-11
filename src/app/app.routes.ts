@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/resume-analyzer/resume-analyzer').then(m => m.ResumeAnalyzerComponent),
   },
   {
+    path: 'learning-path',
+    loadComponent: () => import('./features/learning-path/learning-path.component').then(m => m.LearningPathComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },

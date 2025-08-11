@@ -1,0 +1,193 @@
+<div class="learning-path-container">
+  <app-header></app-header>
+  
+  <div class="main-content">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="breadcrumb">
+        <span class="breadcrumb-item">Dashboard</span>
+        <span class="breadcrumb-separator">›</span>
+        <span class="breadcrumb-item current">Learning Path</span>
+      </div>
+      
+      <h1 class="page-title">Your Personalized Learning Path</h1>
+      
+      <div class="learning-meta" *ngIf="learningPathData">
+        <div class="duration-badge">
+          {{ getDurationLabel() }}
+        </div>
+        <div class="time-estimate">
+          <span class="time-icon">⏱️</span>
+          <span>{{ getCompletedHours() }}/{{ getTotalEstimatedHours() }} hours completed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overall Progress Section -->
+    <div class="progress-overview" *ngIf="learningPathData">
+      <div class="progress-header">
+        <h2 class="progress-title">Overall Progress</h2>
+        <span class="progress-percentage">{{ overallProgress.toFixed(1) }}%</span>
+      </div>
+      
+      <div class="progress-bar-container">
+        <div class="progress-bar">
+          <div 
+            class="progress-fill" 
+            [style.width.%]="overallProgress">
+          </div>
+        </div>
+      </div>
+      
+      <div class="progress-stats">
+        <div class="stat-item">
+          <span class="stat-label">Periods:</span>
+          <span class="stat-value">{{ learningPathData.learningPath.length }}</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-label">Total Tasks:</span>
+          <span class="stat-value">
+            {{ getTotalTasksCount() }}
+          </span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-label">Completed:</span>
+          <span class="stat-value">
+            {{ getCompletedTasksCount() }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learning Path Periods -->
+    <div class="periods-container" *ngIf="learningPathData">
+      <div 
+        class="period-card" 
+        *ngFor="let period of learningPathData.learningPath; let i = index"
+        [class.expanded]="isPeriodExpanded(i)">
+        
+        <!-- Period Header -->
+        <div class="period-header" (click)="togglePeriod(i)">
+          <div class="period-header-content">
+            <div class="period-info">
+              <h3 class="period-title">{{ period.period }}</h3>
+              <p class="period-goal">{{ period.goal }}</p>
+            </div>
+            
+            <div class="period-stats">
+              <div class="period-progress">
+                <div class="mini-progress-bar">
+                  <div 
+                    class="mini-progress-fill" 
+                    [style.width.%]="periodProgress[i]">
+                  </div>
+                </div>
+                <span class="mini-progress-text">{{ periodProgress[i].toFixed(0) }}%</span>
+              </div>
+              
+              <div class="expand-icon" [class.rotated]="isPeriodExpanded(i)">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Period Content -->
+        <div class="period-content" [class.expanded]="isPeriodExpanded(i)">
+          <div class="period-content-inner">
+            
+            <!-- Focus Areas -->
+            <div class="section focus-areas-section">
+              <h4 class="section-title">
+                <span class="section-icon">🎯</span>
+                Focus Areas
+              </h4>
+              <ul class="focus-areas-list">
+                <li class="focus-area-item" *ngFor="let area of period.focusAreas">
+                  {{ area }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- Resources -->
+            <div class="section resources-section">
+              <h4 class="section-title">
+                <span class="section-icon">📚</span>
+                Resources
+              </h4>
+              <div class="resources-grid">
+                <a 
+                  *ngFor="let resource of period.resources"
+                  [href]="resource.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="resource-item">
+                  <span class="resource-icon">{{ getResourceIcon(resource.type) }}</span>
+                  <div class="resource-content">
+                    <span class="resource-title">{{ resource.title }}</span>
+                    <span class="resource-type">{{ resource.type }}</span>
+                  </div>
+                  <span class="external-link-icon">↗</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Tasks -->
+            <div class="section tasks-section">
+              <h4 class="section-title">
+                <span class="section-icon">✅</span>
+                Tasks & Milestones
+              </h4>
+              <div class="tasks-list">
+                <div 
+                  class="task-item"
+                  *ngFor="let task of period.tasks; let taskIndex = index"
+                  [class.completed]="task.completed">
+                  
+                  <label class="task-checkbox-label">
+                    <input 
+                      type="checkbox"
+                      class="task-checkbox"
+                      [checked]="task.completed"
+                      (change)="toggleTask(i, taskIndex)">
+                    <span class="checkbox-custom"></span>
+                  </label>
+                  
+                  <div class="task-content">
+                    <p class="task-description" [class.completed]="task.completed">
+                      {{ task.description }}
+                    </p>
+                    <div class="task-meta">
+                      <span class="estimated-time">
+                        <span class="time-icon">⏱️</span>
+                        {{ task.estimatedHours }}h
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!learningPathData">
+      <div class="empty-state-content">
+        <div class="empty-state-icon">📚</div>
+        <h3 class="empty-state-title">No Learning Path Found</h3>
+        <p class="empty-state-description">
+          Complete your resume analysis to generate a personalized learning path.
+        </p>
+        <button class="cta-button" routerLink="/resume-analyzer">
+          Analyze Resume
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
