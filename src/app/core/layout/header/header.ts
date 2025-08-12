@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
   navItems: NavItem[] = [
     { title: 'Features', href: '/', icon: 'layout' },
-    { title: 'Interviews', href: '/', icon: 'interviews' },
+    { title: 'Interviews', href: '/mock-interview', icon: 'interviews' },
     { title: 'Resume Analyzer', href: '/resume-analyzer', icon: 'book' },
     { title: 'How It Works', href: '/', icon: 'help' }
   ];
