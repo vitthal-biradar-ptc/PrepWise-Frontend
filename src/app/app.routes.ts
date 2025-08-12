@@ -30,6 +30,18 @@ export const routes: Routes = [
     loadComponent: () => import('./features/learning-path/learning-path.component').then(m => m.LearningPathComponent),
   },
   {
+    path: 'mock-interview',
+    loadComponent: () => import('./features/mock-interview/mock-interview').then(m => m.MockInterviewComponent),
+  },
+  {
+    path: 'interview-results',
+    loadComponent: () => import('./features/mock-interview/interview-results.component').then(m => m.InterviewResultsComponent),
+  },
+  {
+    path: 'interview-report/:id',
+    loadComponent: () => import('./features/mock-interview/interview-report.component').then(m => m.InterviewReportComponent),
+  },
+  {
     path: '**',
     redirectTo: '',
   },
