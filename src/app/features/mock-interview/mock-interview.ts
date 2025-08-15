@@ -209,6 +209,15 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
     if (this.connectionStatus !== ConnectionStatus.CONNECTED) return;
 
     try {
+      // End interview if it's active
+      if (this.isInterviewActive) {
+        try {
+          await this.endInterview();
+        } catch (error) {
+          console.warn('Failed to end interview during disconnect:', error);
+        }
+      }
+      
       await this.geminiAgent.disconnect();
       this.connectionStatus = ConnectionStatus.DISCONNECTED;
       this.isMicActive = false;
@@ -218,6 +227,10 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       
       // Clear chat when disconnecting
       this.chatManager.clear();
+      
+      // Show setup modal again
+      this.showSetup = true;
+      this.currentSetup = null;
       
     } catch (error) {
       console.error('Error disconnecting:', error);
