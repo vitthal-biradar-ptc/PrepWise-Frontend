@@ -24,6 +24,13 @@
   <div class="mi-layout">
     <!-- Left Panel - Camera and Screen Preview -->
     <div class="mi-left">
+      <!-- Disconnect button positioned above preview area -->
+      <div class="mi-disconnect-container" *ngIf="connectionStatus === ConnectionStatus.CONNECTED">
+        <button class="mi-disconnect-btn" (click)="disconnect()" aria-label="Disconnect from interview">
+          Disconnect
+        </button>
+      </div>
+      
       <div class="mi-preview-container">
         <div id="cameraPreview" class="mi-preview mi-preview--camera" [style.display]="isCameraActive ? 'block' : 'none'">
           <div class="preview-label">Camera Preview</div>

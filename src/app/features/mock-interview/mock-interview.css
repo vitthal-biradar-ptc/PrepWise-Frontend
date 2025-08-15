@@ -178,6 +178,87 @@
   box-shadow: none;
 }
 
+/* Left Panel - Camera and Screen Preview */
+.mi-left { 
+  display: flex; 
+  flex-direction: column;
+  gap: 20px;
+  z-index: 900;
+}
+
+/* Disconnect button container */
+.mi-disconnect-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(176, 62, 255, 0.1);
+}
+
+.mi-disconnect-btn {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid rgba(176, 62, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.mi-disconnect-btn:hover {
+  background: #f5f5f5;
+  border-color: rgba(176, 62, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mi-disconnect-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Preview container and previews */
+.mi-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.mi-preview {
+  position: relative;
+  background: rgba(45, 45, 45, 0.8);
+  border: 1px solid rgba(176, 62, 255, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mi-preview--camera {
+  min-height: 240px;
+}
+
+.mi-preview--screen {
+  min-height: 200px;
+}
+
+.preview-label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 /* Media dock */
 .mi-media-dock {
   position: static;
@@ -434,46 +515,6 @@
   }
 }
 
-@media (max-width: 980px) {
-  .mi-layout { 
-    grid-template-columns: 1fr; 
-    gap: 16px;
-  }
-  
-  .mi-left { 
-    order: 2; 
-    flex-direction: row;
-    overflow-x: auto;
-  }
-  
-  .mi-preview-container {
-    flex-direction: row;
-    gap: 16px;
-  }
-  
-  .mi-preview {
-    min-width: 280px;
-    height: 180px;
-  }
-  
-  .mi-right { 
-    position: fixed; 
-    right: 16px; 
-    bottom: 20px; 
-    z-index: 1000;
-  }
-  
-  .mi-media-dock {
-    flex-direction: row;
-    gap: 16px;
-  }
-  
-  .mi-btn--circle {
-    width: 50px;
-    height: 50px;
-  }
-}
-
 @media (max-width: 768px) {
   .mi-topbar {
     flex-direction: column;
@@ -488,8 +529,17 @@
   .mi-layout {
     top: 120px; /* smaller stack on mobile */
   }
+  
+  .mi-disconnect-container {
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .mi-disconnect-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
 }
-
 
 @media (max-width: 980px) {
   .mi-layout { 
@@ -499,8 +549,13 @@
   
   .mi-left { 
     order: 2; 
-    flex-direction: row;
-    overflow-x: auto;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .mi-disconnect-container {
+    justify-content: center;
+    margin-bottom: 12px;
   }
   
   .mi-preview-container {
@@ -528,21 +583,5 @@
   .mi-btn--circle {
     width: 50px;
     height: 50px;
-  }
-}
-
-@media (max-width: 768px) {
-  .mi-topbar {
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
-  }
-  
-  .mi-topbar > * {
-    text-align: center;
-  }
-  
-  .mi-layout {
-    top: 120px;
   }
 }
