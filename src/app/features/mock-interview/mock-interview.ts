@@ -1,25 +1,23 @@
-import { Component, OnInit, OnDestroy, NgZone, ElementRef, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, ElementRef, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 
-import { GeminiAgentService } from './services/gemini-agent.service';
-import { ChatManagerService } from './services/chat-manager.service';
-import { SettingsService } from './services/settings.service';
-import { InterviewService } from './services/interview.service';
-import { ConnectionStatus, InterviewSetup, InterviewResult } from '../../models/interview.models';
-import { CameraManagerService } from './services/camera-manager.service';
-import { ScreenManagerService } from './services/screen-manager.service';
-import { AudioRecorderService } from './services/audio-recorder.service';
+import { ConnectionStatus, InterviewSetup } from '../../models/interview.models';
 import { InterviewSetupComponent } from './interview-setup.component';
+import { AudioRecorderService } from './services/audio-recorder.service';
+import { CameraManagerService } from './services/camera-manager.service';
+import { ChatManagerService } from './services/chat-manager.service';
 import { ConfigService } from './services/config.service';
-import { HeaderComponent } from '../../core/layout/header/header';
+import { GeminiAgentService } from './services/gemini-agent.service';
+import { InterviewService } from './services/interview.service';
+import { ScreenManagerService } from './services/screen-manager.service';
+import { SettingsService } from './services/settings.service';
 
 @Component({
   selector: 'app-mock-interview',
   standalone: true,
-  imports: [CommonModule, FormsModule, InterviewSetupComponent, HeaderComponent],
+  imports: [CommonModule, FormsModule, InterviewSetupComponent],
   templateUrl: './mock-interview.html',
   styleUrls: ['./mock-interview.css']
 })
