@@ -52,16 +52,23 @@ export class AudioStreamerService {
     }
 
     try {
-      // Convert Int16 samples to Float32 format
-      const float32Array = new Float32Array(chunk.length / 2);
-      
-      // Create a new ArrayBuffer to ensure compatibility
-      const arrayBuffer = chunk.buffer instanceof ArrayBuffer ? chunk.buffer : chunk.buffer.slice(0);
-      const dataView = new DataView(arrayBuffer);
+      let float32Array: Float32Array;
 
-      for (let i = 0; i < chunk.length / 2; i++) {
-        const int16 = dataView.getInt16(i * 2, true);
-        float32Array[i] = int16 / 32768;  // Scale to [-1.0, 1.0] range
+      if (chunk instanceof Int16Array) {
+        // chunk length = number of samples
+        float32Array = new Float32Array(chunk.length);
+        for (let i = 0; i < chunk.length; i++) {
+          float32Array[i] = chunk[i] / 32768;
+        }
+      } else {
+        // Uint8Array of PCM16LE bytes: length = 2 * samples
+        const sampleCount = Math.floor(chunk.byteLength / 2);
+        float32Array = new Float32Array(sampleCount);
+        const view = new DataView(chunk.buffer, chunk.byteOffset, chunk.byteLength);
+        for (let i = 0; i < sampleCount; i++) {
+          const int16 = view.getInt16(i * 2, true);
+          float32Array[i] = int16 / 32768;
+        }
       }
 
       if (this.processingBuffer.length > this.bufferSize * 4) {

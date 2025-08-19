@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { InterviewCard, InterviewResult } from '../../models/interview.models';
@@ -26,7 +26,7 @@ import { InterviewResultsService } from './services/interview-results.service';
       
       <div class="results-grid">
         <div 
-          *ngFor="let card of filteredCards" 
+          *ngFor="let card of filteredCards; trackBy: trackById" 
           class="interview-card"
           [class]="'card-' + card.status"
         >
@@ -75,6 +75,7 @@ import { InterviewResultsService } from './services/interview-results.service';
             <button 
               *ngIf="card.status === 'completed'" 
               class="btn-primary"
+              type="button"
               (click)="viewReport(card.id)"
             >
               View Report
@@ -82,6 +83,7 @@ import { InterviewResultsService } from './services/interview-results.service';
             <button 
               *ngIf="card.status === 'completed'" 
               class="btn-secondary"
+              type="button"
               (click)="retakeInterview(card.id)"
             >
               Retake
@@ -89,6 +91,7 @@ import { InterviewResultsService } from './services/interview-results.service';
             <button 
               *ngIf="card.status === 'in-progress'" 
               class="btn-primary"
+              type="button"
               (click)="resumeInterview(card.id)"
             >
               Resume
@@ -96,6 +99,7 @@ import { InterviewResultsService } from './services/interview-results.service';
             <button 
               *ngIf="card.status === 'in-progress'" 
               class="btn-secondary"
+              type="button"
               (click)="restartInterview(card.id)"
             >
               Restart
@@ -336,7 +340,8 @@ import { InterviewResultsService } from './services/interview-results.service';
     .card-not-started .progress-fill {
       background: linear-gradient(90deg, #9E9E9E, #BDBDBD);
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InterviewResultsComponent implements OnInit {
   activeTab = 'all';
@@ -433,4 +438,6 @@ export class InterviewResultsComponent implements OnInit {
       console.error('Error deleting interview:', error);
     }
   }
+
+  trackById(index: number, item: InterviewCard): string { return item.id; }
 }

@@ -81,7 +81,7 @@
   left: 0; 
   right: 0; 
   display: grid; 
-  grid-template-columns: 320px 1fr 120px; 
+  grid-template-columns: 320px 1fr;  /* reduced to two columns since controls are removed */
   gap: 20px; 
   padding: 20px; 
   z-index: 10;
@@ -509,7 +509,7 @@
 /* Responsive */
 @media (max-width: 1200px) {
   .mi-layout { 
-    grid-template-columns: 280px 1fr 100px; 
+    grid-template-columns: 280px 1fr; 
     gap: 16px; 
     padding: 16px; 
   }
