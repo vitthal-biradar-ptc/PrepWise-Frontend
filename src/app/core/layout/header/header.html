@@ -53,22 +53,22 @@
           Resume Analyzer
         </a>
         
-        <a 
-          href="/learning-path"
-          class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
-        >
-          <svg 
-            class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 200 200"
+          <a 
+            [href]="'/learning-paths/' + userId"
+            class="nav-link group inline-flex h-10 items-center justify-center rounded-xl bg-transparent px-4 py-2 text-sm font-medium text-[#F1F1F1] transition-all duration-200 hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] focus:outline-none focus:ring-2 focus:ring-[#B03EFF]/30"
           >
-            <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
-            <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
-            <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
-          </svg>
-          Learning Path
-        </a>
+            <svg 
+              class="mr-2 h-4 w-4 transition-transform group-hover:scale-110" 
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 200 200"
+            >
+              <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
+              <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
+              <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
+            </svg>
+            Learning Path
+          </a>
         
         <a 
           href="/mock-interview"
@@ -240,22 +240,24 @@
             Resume Analyzer
           </a>
           
-          <a 
-            href="/learning-path"
-            class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
-          >
-            <svg 
-              class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 200 200"
+          @if (userId) {
+            <a 
+              [href]="'/learning-paths/' + userId"
+              class="flex items-center px-4 py-3 text-sm text-[#F1F1F1] hover:bg-[#B03EFF]/10 hover:text-[#F5F5DC] rounded-xl transition-all duration-200 group"
             >
-              <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
-              <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
-              <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
-            </svg>
-            Learning Path
-          </a>
+              <svg 
+                class="mr-3 h-5 w-5 transition-transform group-hover:scale-110" 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 200 200"
+              >
+                <polygon points="100,0 120,80 200,100 120,120 100,200 80,120 0,100 80,80" fill="currentColor"/>
+                <polygon points="150,20 160,50 190,60 160,70 150,100 140,70 110,60 140,50" fill="currentColor"/>
+                <polygon points="30,120 40,145 65,155 40,165 30,190 20,165 0,155 20,145" fill="currentColor"/>
+              </svg>
+              Learning Path
+            </a>
+          }
           
           <a 
             href="/interviews"
