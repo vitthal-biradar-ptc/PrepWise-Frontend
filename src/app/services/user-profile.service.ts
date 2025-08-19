@@ -1,7 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { Observable, throwError, of } from 'rxjs';
+import { catchError, retry, map, tap, shareReplay, finalize } from 'rxjs/operators';
 import { UserProfile } from '../features/dashboard/user-profile.interface';
 import { AuthService } from './authorization.service';
 
@@ -10,6 +10,10 @@ import { AuthService } from './authorization.service';
 })
 export class UserProfileService {
   private apiUrl = 'http://localhost:8080/api';
+  // In-memory cache and in-flight request reference
+  private cachedProfile: UserProfile | null = null;
+  private cachedUserId: string | null = null;
+  private profileReq$?: Observable<UserProfile>;
 
   constructor(
     private http: HttpClient,
@@ -51,6 +55,44 @@ export class UserProfileService {
       .pipe(
         catchError(this.handleError.bind(this))
       );
+  }
+
+  // Fetch once per app load; reuse in-flight request and cache result in memory
+  getUserProfileCached(): Observable<UserProfile> {
+    if (this.cachedProfile) {
+      return of(this.cachedProfile);
+    }
+    if (this.profileReq$) {
+      return this.profileReq$;
+    }
+    this.profileReq$ = this.getUserProfile().pipe(
+      tap(profile => {
+        this.cachedProfile = profile;
+        this.cachedUserId = profile?.user_id ?? null;
+      }),
+      shareReplay(1),
+      finalize(() => {
+        // Allow future refresh after completion (success or error)
+        this.profileReq$ = undefined;
+      })
+    );
+    return this.profileReq$;
+  }
+
+  getUserIdCached(): Observable<string | null> {
+    if (this.cachedUserId) {
+      return of(this.cachedUserId);
+    }
+    return this.getUserProfileCached().pipe(
+      map(p => p?.user_id ?? null),
+      tap(id => (this.cachedUserId = id))
+    );
+  }
+
+  clearCache(): void {
+    this.cachedProfile = null;
+    this.cachedUserId = null;
+    this.profileReq$ = undefined;
   }
 
   private handleError(error: HttpErrorResponse) {
