@@ -6,7 +6,8 @@
     <div class="header-section">
       <h1 class="page-title">Your Personalized Learning Path</h1>
 
-      <div class="learning-meta" *ngIf="learningPathData">
+      @if (learningPathData) {
+      <div class="learning-meta">
         <div class="duration-badge">
           {{ getDurationLabel() }}
         </div>
@@ -18,12 +19,13 @@
           >
         </div>
       </div>
+      }
     </div>
 
     <!-- Modal: Generate New Learning Path -->
+    @if (showGeneratorModal) {
     <div
       class="modal-backdrop"
-      *ngIf="showGeneratorModal"
       (click)="closeGeneratorModal()"
       (keydown.escape)="closeGeneratorModal()"
       tabindex="-1"
@@ -89,18 +91,17 @@
             </button>
           </div>
 
-          <div
-            class="state error"
-            *ngIf="!generationLoading && generationError"
-          >
-            Error: {{ generationError }}
-          </div>
+          @if (!generationLoading && generationError) {
+          <div class="state error">Error: {{ generationError }}</div>
+          }
         </form>
       </div>
     </div>
+    }
 
     <!-- Overall Progress Section -->
-    <div class="progress-overview" *ngIf="learningPathData">
+    @if (learningPathData) {
+    <div class="progress-overview">
       <div class="progress-header">
         <h2 class="progress-title">Overall Progress</h2>
         <span class="progress-percentage"
@@ -137,9 +138,11 @@
         </div>
       </div>
     </div>
+    }
 
     <!-- Learning Path Periods -->
-    <div class="periods-container" *ngIf="learningPathData">
+    @if (learningPathData) {
+    <div class="periods-container">
       <div
         class="period-card"
         *ngFor="let period of learningPathData.learningPath; let i = index"
@@ -263,9 +266,11 @@
         </div>
       </div>
     </div>
+    }
 
     <!-- Empty State -->
-    <div class="empty-state" *ngIf="!learningPathData">
+    @if (!learningPathData) {
+    <div class="empty-state">
       <div class="empty-state-content">
         <div class="empty-state-icon">📚</div>
         <h3 class="empty-state-title">No Learning Path Found</h3>
@@ -277,5 +282,6 @@
         </button>
       </div>
     </div>
+    }
   </div>
 </div>
