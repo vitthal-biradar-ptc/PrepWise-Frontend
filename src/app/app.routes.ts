@@ -2,10 +2,6 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
-    loadComponent: () => import('./features/landing/home/home').then(m => m.LandingPageComponent),
-  },
-  {
     path: 'sign-up',
     loadComponent: () => import('./features/auth/sign-up/sign-up').then(m => m.SignUp),
   },
@@ -35,6 +31,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
-  },
+    redirectTo: ''
+  }
 ];
