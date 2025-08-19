@@ -1,13 +1,12 @@
 {
-  "name": "prep-wise",
+  "name": "prepwise-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:PrepWise": "node dist/PrepWise/server/server.mjs"
+    "test": "ng test"
   },
   "prettier": {
     "overrides": [
@@ -33,18 +32,16 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@types/chart.js": "^2.9.41",
     "chart.js": "^4.5.0",
-    "express": "^5.1.0",
     "primeng": "^20.0.1",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular/build": "^20.1.0",
+   "@angular/build": "^20.1.0",
     "@angular/cli": "^20.1.0",
     "@angular/compiler-cli": "^20.1.0",
-    "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
-    "@types/node": "^20.17.19",
     "autoprefixer": "^10.4.21",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
