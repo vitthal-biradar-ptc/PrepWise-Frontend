@@ -4,12 +4,13 @@ import { Observable, throwError, of } from 'rxjs';
 import { catchError, retry, map, tap, shareReplay, finalize } from 'rxjs/operators';
 import { UserProfile } from '../features/dashboard/user-profile.interface';
 import { AuthService } from './authorization.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiUrl;
   // In-memory cache and in-flight request reference
   private cachedProfile: UserProfile | null = null;
   private cachedUserId: string | null = null;
@@ -33,7 +34,7 @@ export class UserProfileService {
       'Content-Type': 'application/json'
     });
     
-    return this.http.get<UserProfile>(`${this.apiUrl}/get-user`, { headers })
+    return this.http.get<UserProfile>(`${this.apiUrl}/apiget-user`, { headers })
       .pipe(
         catchError(this.handleError.bind(this))
       );
@@ -51,7 +52,7 @@ export class UserProfileService {
       'Content-Type': 'application/json'
     });
     
-    return this.http.put<UserProfile>(`${this.apiUrl}/update-profile`, profileData, { headers })
+    return this.http.put<UserProfile>(`${this.apiUrl}/api/update-profile`, profileData, { headers })
       .pipe(
         catchError(this.handleError.bind(this))
       );

@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthStateService } from './auth-state.service';
+import { environment } from '../../environments/environment';
 
 export interface AuthResponse {
   token: string;
@@ -35,7 +36,7 @@ export interface ValidationResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_BASE_URL = 'http://localhost:8080/api/auth';
+  private readonly API_BASE_URL = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -50,11 +51,11 @@ export class AuthService {
   }
 
   signUp(userData: SignUpRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/sign-up`, userData);
+    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/api/auth/sign-up`, userData);
   }
 
   signIn(credentials: SignInRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/login`, credentials);
+    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/api/auth/sign-in`, credentials);
   }
 
   setToken(token: string, tokenType: string): void {
@@ -101,7 +102,7 @@ export class AuthService {
       return of(false);
     }
 
-    return this.http.get<ValidationResponse>(`${this.API_BASE_URL}/validate`, {
+    return this.http.get<ValidationResponse>(`${this.API_BASE_URL}/api/auth/validate`, {
       headers: { 'Authorization': token }
     }).pipe(
       map(response => response.valid),

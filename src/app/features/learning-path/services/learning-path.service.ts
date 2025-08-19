@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 export interface ApiResource {
   id: number;
@@ -38,7 +39,7 @@ export interface ApiLearningPath {
 
 @Injectable({ providedIn: 'root' })
 export class LearningPathService {
-  private readonly API_BASE = 'http://localhost:8080';
+  private readonly API_BASE = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

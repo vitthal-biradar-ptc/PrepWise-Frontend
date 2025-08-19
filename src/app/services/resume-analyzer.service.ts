@@ -5,12 +5,13 @@ import { catchError } from 'rxjs/operators';
 import { ResumeAnalysisResponse, ResumeAnalysisRequest } from '../models/resume-analysis.model';
 import { AuthService } from './authorization.service';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResumeAnalyzerService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -29,7 +30,7 @@ export class ResumeAnalyzerService {
     const formData = new FormData();
     formData.append('file', file);
     
-    return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/analyze-resume`, formData, {
+    return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/api/analyze-resume`, formData, {
       headers: this.getAuthHeaders()
     }).pipe(
       catchError(this.handleError)
@@ -39,7 +40,7 @@ export class ResumeAnalyzerService {
   analyzeResumeText(text: string): Observable<ResumeAnalysisResponse> {
     const request: ResumeAnalysisRequest = { prompt: text };
     
-    return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/analyze-text`, request, {
+    return this.http.post<ResumeAnalysisResponse>(`${this.baseUrl}/api/analyze-text`, request, {
       headers: this.getAuthHeaders()
     }).pipe(
       catchError(this.handleError)
