@@ -34,7 +34,7 @@ export class UserProfileService {
       'Content-Type': 'application/json'
     });
     
-    return this.http.get<UserProfile>(`${this.apiUrl}/apiget-user`, { headers })
+    return this.http.get<UserProfile>(`${this.apiUrl}/api/get-user`, { headers })
       .pipe(
         catchError(this.handleError.bind(this))
       );
