@@ -29,12 +29,23 @@ export class GeminiAgentService {
   private cameraInterval: any = null;
   private screenInterval: any = null;
 
+  // --- Added for mic auto-ducking ---
+  private isAgentSpeaking = false;
+  private ttsSilenceTimer: any = null;
+  // ----------------------------------
+
   constructor(
     private configService: ConfigService,
     private utilsService: UtilsService,
     private audioVisualizerService: AudioVisualizerService,
+    private injectedCameraManager: CameraManagerService,         // <-- inject shared instance
+    private injectedScreenManager: ScreenManagerService,         // <-- inject shared instance
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    // Wire injected singletons so the agent uses the same instances as the component
+    this.cameraManager = this.injectedCameraManager;
+    this.screenManager = this.injectedScreenManager;
+  }
 
   private initializeServices(): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -44,8 +55,9 @@ export class GeminiAgentService {
     // Create services only when needed in browser context
     this.audioRecorder = new AudioRecorderService(this.utilsService);
     this.audioStreamer = new AudioStreamerService(this.configService);
-    this.cameraManager = new CameraManagerService(this.utilsService, this.platformId);
-    this.screenManager = new ScreenManagerService(this.platformId);
+    // Remove per-instance creations; we now use injected singletons:
+    // this.cameraManager = new CameraManagerService(this.utilsService, this.platformId);
+    // this.screenManager = new ScreenManagerService(this.platformId);
     
     // Initialize Deepgram transcriber if API key is available
     const deepgramApiKey = this.configService.getDeepgramApiKey();
@@ -315,6 +327,59 @@ export class GeminiAgentService {
     return recording;
   }
 
+  // --- Helpers to pause/resume user mic while AI speaks ---
+  private async pauseUserMicForTts(): Promise<void> {
+    try {
+      if (this.audioRecorder?.isRecording() && !this.audioRecorder.isMicSuspended()) {
+        await this.audioRecorder.suspendMic();
+        console.info('User mic suspended during TTS');
+      }
+    } catch (e) {
+      console.warn('Failed to suspend mic during TTS:', e);
+    }
+  }
+
+  private async resumeUserMicAfterTts(): Promise<void> {
+    try {
+      if (this.audioRecorder?.isRecording() && this.audioRecorder.isMicSuspended()) {
+        await this.audioRecorder.resumeMic();
+        console.info('User mic resumed after TTS');
+      }
+    } catch (e) {
+      console.warn('Failed to resume mic after TTS:', e);
+    }
+  }
+
+  private markAgentSpeaking(): void {
+    this.isAgentSpeaking = true;
+    // Pause mic immediately to avoid interrupting TTS
+    this.pauseUserMicForTts();
+
+    // Notify listeners that AI started speaking
+    this.emit('agent_speaking', true);
+
+    // Reset silence timer; resume mic if no new audio from AI for 600ms
+    if (this.ttsSilenceTimer) clearTimeout(this.ttsSilenceTimer);
+    this.ttsSilenceTimer = setTimeout(() => {
+      this.isAgentSpeaking = false;
+      this.resumeUserMicAfterTts();
+      // Notify listeners that AI stopped speaking after silence
+      this.emit('agent_speaking', false);
+    }, 600);
+  }
+
+  private clearTtsStateAndResumeMic(): void {
+    this.isAgentSpeaking = false;
+    if (this.ttsSilenceTimer) {
+      clearTimeout(this.ttsSilenceTimer);
+      this.ttsSilenceTimer = null;
+    }
+    this.resumeUserMicAfterTts();
+    // Notify listeners that AI stopped speaking
+    this.emit('agent_speaking', false);
+  }
+  // --------------------------------------------------------
+
   private async startRecording(): Promise<void> {
     console.log('=== AGENT START RECORDING ===');
     if (!this.audioRecorder || !this.client) {
@@ -324,6 +389,13 @@ export class GeminiAgentService {
 
     try {
       await this.audioRecorder.start((audioData: string) => {
+        // Drop user audio frames while AI is speaking
+        if (this.isAgentSpeaking) {
+          // Avoid spamming logs; uncomment if needed
+          // console.debug('Dropping user audio while AI is speaking');
+          return;
+        }
+
         console.log('Audio data received, length:', audioData.length);
         if (this.client) {
           this.client.sendAudio(audioData);
@@ -435,6 +507,9 @@ export class GeminiAgentService {
   private setupEventListeners(): void {
     if (!this.client) return;
     this.client.on('audio', (data: ArrayBuffer) => {
+      // Mark AI as speaking and pause mic (auto-duck)
+      this.markAgentSpeaking();
+
       if (this.audioStreamer && this.audioStreamer.isInitialized) {
         const audioData = new Uint8Array(data);
         this.audioStreamer.streamAudio(audioData);
@@ -448,15 +523,22 @@ export class GeminiAgentService {
         }
       }
     });
+
     this.client.on('interrupted', () => {
       if (this.audioStreamer) {
         this.audioStreamer.stop();
       }
+      // If AI was interrupted by user speech, consider AI not speaking and keep mic available
+      this.clearTtsStateAndResumeMic();
       this.emit('interrupted');
     });
+
     this.client.on('turn_complete', () => {
+      // AI finished speaking; safely resume mic
+      this.clearTtsStateAndResumeMic();
       this.emit('turn_complete');
     });
+
     this.client.on('content', (content: any) => {
       if (content.modelTurn?.parts) {
         const textParts = content.modelTurn.parts.filter((p: any) => p.text);
@@ -500,6 +582,11 @@ export class GeminiAgentService {
     this.on('screenshare_stopped', callback);
   }
 
+  // New: Subscribe to AI speaking state changes
+  onAgentSpeaking(callback: (speaking: boolean) => void): void {
+    this.on('agent_speaking', callback);
+  }
+
   private emit(eventName: string, data?: any): void {
     if (!this.eventListeners.has(eventName)) return;
     
@@ -520,5 +607,10 @@ export class GeminiAgentService {
 
   isInitialized(): boolean {
     return this.initialized;
+  }
+
+  // New: expose current speaking state
+  isAgentSpeakingNow(): boolean {
+    return this.isAgentSpeaking;
   }
 }

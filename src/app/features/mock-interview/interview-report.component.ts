@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InterviewResult } from '../../models/interview.models';
 import { InterviewResultsService } from './services/interview-results.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-interview-report',
@@ -47,14 +49,14 @@ import { InterviewResultsService } from './services/interview-results.service';
               <div *ngIf="interviewResult.feedback.strengths.length > 0" class="feedback-group">
                 <h4>Strengths</h4>
                 <ul>
-                  <li *ngFor="let strength of interviewResult.feedback.strengths">{{ strength }}</li>
+                  <li *ngFor="let strength of interviewResult.feedback.strengths; trackBy: trackByIndex">{{ strength }}</li>
                 </ul>
               </div>
               
               <div *ngIf="interviewResult.feedback.improvementAreas.length > 0" class="feedback-group">
                 <h4>Areas for Improvement</h4>
                 <ul>
-                  <li *ngFor="let area of interviewResult.feedback.improvementAreas">{{ area }}</li>
+                  <li *ngFor="let area of interviewResult.feedback.improvementAreas; trackBy: trackByIndex">{{ area }}</li>
                 </ul>
               </div>
               
@@ -68,7 +70,7 @@ import { InterviewResultsService } from './services/interview-results.service';
           <div class="section">
             <h3>Question & Answer Analysis</h3>
             <div class="qa-list">
-              <div *ngFor="let qa of interviewResult.questions; let i = index" class="qa-item">
+              <div *ngFor="let qa of interviewResult.questions; let i = index; trackBy: trackByQuestion" class="qa-item">
                 <div class="question">
                   <span class="question-number">Q{{ i + 1 }}</span>
                   <p>{{ qa.question }}</p>
@@ -403,11 +405,13 @@ import { InterviewResultsService } from './services/interview-results.service';
         flex-direction: column;
       }
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InterviewReportComponent implements OnInit {
+export class InterviewReportComponent implements OnInit, OnDestroy {
   interviewResult: InterviewResult | null = null;
   loading = true;
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -415,12 +419,22 @@ export class InterviewReportComponent implements OnInit {
     private interviewResultsService: InterviewResultsService
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      await this.loadInterviewReport(id);
-    }
-    this.loading = false;
+  ngOnInit(): void {
+    this.route.paramMap
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(async params => {
+        const id = params.get('id');
+        this.loading = true;
+        if (id) {
+          await this.loadInterviewReport(id);
+        }
+        this.loading = false;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   private async loadInterviewReport(id: string): Promise<void> {
@@ -447,9 +461,11 @@ export class InterviewReportComponent implements OnInit {
   }
 
   downloadReport(): void {
-    // Implement PDF generation and download
-    console.log('Downloading report...');
-    // For now, just show an alert
-    alert('Report download feature coming soon!');
+    // Placeholder for future PDF export/print integration
+    console.info('Report download feature coming soon.');
   }
+
+  // TrackBy helpers for template
+  trackByIndex(i: number): number { return i; }
+  trackByQuestion(i: number, qa: { question: string }): string { return qa?.question || String(i); }
 }

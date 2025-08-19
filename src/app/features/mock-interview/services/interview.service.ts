@@ -95,54 +95,68 @@ export class InterviewService {
       'Hard': 'Challenge with advanced concepts, complex problem-solving, and industry-specific scenarios. Maintain professional rigor.'
     };
 
+    // New, more detailed and limiting prompt
     return `
-      You are conducting a ${setup.level.toLowerCase()} level mock interview for a ${setup.role} position.
-      
-      ${levelInstructions[setup.level as keyof typeof levelInstructions]}
-      
-      Please start by greeting the candidate warmly and asking them to introduce themselves.
-      Then proceed with relevant questions for this role and difficulty level.
-      
-      Keep track of the questions you ask and provide detailed feedback after each answer.
-      After the interview concludes, provide a comprehensive evaluation including:
-      - Overall performance score (1-10)
-      - Key strengths demonstrated
-      - Areas for improvement
-      - Specific recommendations for future interviews
-      
-      Remember to be professional, encouraging, and provide actionable feedback.
-    `;
+You are conducting a ${setup.level.toLowerCase()} level mock interview for a ${setup.role} position.
+
+${levelInstructions[setup.level as keyof typeof levelInstructions]}
+
+Rules:
+- Be concise and on-point; avoid digressions and long preambles.
+- Ask ONE question at a time.
+- Keep to a maximum of 6 total questions unless the candidate explicitly asks for more.
+- After each answer, you may briefly acknowledge or give a short nudge (≤ 1 sentence).
+- When finished with the planned questions, clearly suggest that the candidate can disconnect.
+- Then produce FINAL structured feedback as TEXT (not spoken) in PURE JSON ONLY with exactly the keys below (no backticks, no fences, no extra commentary):
+{
+  "overallSummary": "string",
+  "evaluationCriteria": [
+    { "skillArea": "string", "rating": 1-5, "comments": "string" }
+  ],
+  "strengths": ["string", "..."],
+  "areasForImprovement": ["string", "..."],
+  "suggestedResources": ["string", "..."],
+  "finalVerdict": "string"
+}
+Important: Do NOT read the JSON aloud. Include it as a text response part only. Output only the JSON for the final feedback.
+
+Start by greeting the candidate briefly and asking them to introduce themselves in one concise question.
+`.trim();
   }
 
   async endInterview(): Promise<InterviewResult | null> {
     try {
       if (this.isInterviewActive && this.currentSetup) {
-        // Send closing message
+        // Replace generic closing prompt with explicit JSON-only request
         const closingPrompt = `
-          Thank you for participating in this mock interview. Please provide a comprehensive summary including:
-          1. Overall performance score (1-10)
-          2. Key strengths demonstrated
-          3. Areas for improvement
-          4. Specific recommendations
-          5. List of all questions asked during the interview
-          
-          Format your response clearly so it can be stored for the candidate's review.
-        `;
-        
+Provide the FINAL structured feedback now as PURE JSON ONLY (no Markdown, no code fences, no extra text), with exactly this schema and keys:
+{
+  "overallSummary": "string",
+  "evaluationCriteria": [
+    { "skillArea": "string", "rating": 1-5, "comments": "string" }
+  ],
+  "strengths": ["string", "..."],
+  "areasForImprovement": ["string", "..."],
+  "suggestedResources": ["string", "..."],
+  "finalVerdict": "string"
+}
+Do NOT speak the JSON. Return it as a text response part only, and include nothing else.
+`.trim();
+
         await this.geminiAgent.sendText(closingPrompt);
-        
         // Wait a bit for the response to complete
         await new Promise(resolve => setTimeout(resolve, 3000));
-        
+
         // Generate interview result
         const result = this.generateInterviewResult();
-        // Build structured feedback in required JSON format
+
+        // Build structured feedback in required JSON format (uses parsed fields if available)
         result.structuredFeedback = this.buildStructuredFeedback(result);
-        
+
         this.isInterviewActive = false;
         this.currentSetup = null;
         this.currentInterviewId = null;
-        
+
         console.info('Mock interview ended, result generated:', result);
         return result;
       }
@@ -228,7 +242,39 @@ export class InterviewService {
   }
 
   private parseFeedbackFromMessage(message: string): any {
-    // Simple parsing logic - in production, use more sophisticated NLP
+    // First, attempt to parse the expected JSON directly (robust to extra text)
+    const tryParseJson = (text: string): any | null => {
+      try {
+        return JSON.parse(text);
+      } catch {
+        // Try to extract the first JSON object-like block
+        const match = text.match(/\{[\s\S]*\}$/m) || text.match(/\{[\s\S]*\}/m);
+        if (match) {
+          try { return JSON.parse(match[0]); } catch {}
+        }
+        return null;
+      }
+    };
+
+    const parsed = tryParseJson(message || '');
+    if (parsed && typeof parsed === 'object') {
+      // Map parsed JSON to our feedback shape
+      const evals = Array.isArray(parsed.evaluationCriteria) ? parsed.evaluationCriteria : [];
+      const ratings = evals
+        .map((e: any) => Number(e?.rating))
+        .filter((n: number) => Number.isFinite(n) && n >= 1 && n <= 5);
+      const avg5 = ratings.length ? (ratings.reduce((a: number, b: number) => a + b, 0) / ratings.length) : 3.5;
+      const overallScore = Math.max(1, Math.min(10, Math.round(avg5 * 2)));
+
+      return {
+        strengths: Array.isArray(parsed.strengths) ? parsed.strengths : [],
+        improvementAreas: Array.isArray(parsed.areasForImprovement) ? parsed.areasForImprovement : [],
+        overallScore,
+        detailedFeedback: typeof parsed.overallSummary === 'string' ? parsed.overallSummary : message
+      };
+    }
+
+    // Fallback: simple heuristic parsing (existing behavior)
     const feedback = {
       strengths: [] as string[],
       improvementAreas: [] as string[],
@@ -236,27 +282,22 @@ export class InterviewService {
       detailedFeedback: message
     };
 
-    // Extract score if present
     const scoreMatch = message.match(/score.*?(\d+)/i);
     if (scoreMatch) {
-      feedback.overallScore = parseInt(scoreMatch[1]);
+      const s = parseInt(scoreMatch[1]);
+      if (Number.isFinite(s)) feedback.overallScore = s;
     }
 
-    // Extract strengths and areas for improvement
-    const lines = message.split('\n');
+    const lines = (message || '').split('\n');
     let currentSection = '';
-    
     for (const line of lines) {
       if (line.toLowerCase().includes('strength')) {
         currentSection = 'strengths';
       } else if (line.toLowerCase().includes('improvement') || line.toLowerCase().includes('area')) {
         currentSection = 'improvement';
       } else if (line.trim() && currentSection) {
-        if (currentSection === 'strengths') {
-          feedback.strengths.push(line.trim());
-        } else if (currentSection === 'improvement') {
-          feedback.improvementAreas.push(line.trim());
-        }
+        if (currentSection === 'strengths') feedback.strengths.push(line.trim());
+        if (currentSection === 'improvement') feedback.improvementAreas.push(line.trim());
       }
     }
 

@@ -65,19 +65,7 @@
       </div>
       <div *ngIf="captionsEnabled && currentCaption" class="mi-captions" aria-live="polite">{{ currentCaption }}</div>
     </div>
-
-    <!-- Right Panel - Media Controls -->
-    <div class="mi-right">
-      <div class="mi-media-dock">
-        <button class="mi-btn mi-btn--circle" [class.active]="isCameraActive" (click)="toggleCamera()" aria-label="Camera">📷</button>
-        <button class="mi-btn mi-btn--circle" [class.active]="isScreenShareActive" (click)="toggleScreenShare()" aria-label="Screen Share">🖥️</button>
-        <button class="mi-btn mi-btn--circle" [class.active]="isMicActive" (click)="toggleMic()" aria-label="Microphone">🎤</button>
-      </div>
-    </div>
   </div>
-
-  <!-- Audio Visualizer - Fixed at bottom -->
-  <canvas id="visualizer" class="mi-visualizer"></canvas>
 
   <div class="mi-error" *ngIf="errorMessage">
     {{ errorMessage }}

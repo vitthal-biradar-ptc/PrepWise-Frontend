@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, ElementRef, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, NgZone, OnDestroy, OnInit, PLATFORM_ID, ViewChild, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,8 @@ import { SettingsService } from './services/settings.service';
   standalone: true,
   imports: [CommonModule, FormsModule, InterviewSetupComponent],
   templateUrl: './mock-interview.html',
-  styleUrls: ['./mock-interview.css']
+  styleUrls: ['./mock-interview.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MockInterviewComponent implements OnInit, OnDestroy {
   @ViewChild('messageInput') messageInput!: ElementRef<HTMLInputElement>;
@@ -41,6 +42,10 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
   // Accessibility captions for AI speech
   captionsEnabled = true;
   currentCaption = '';
+
+  // Track AI speaking state
+  private aiSpeaking = false;
+  private wasMicActiveBeforeTts = false;
 
   constructor(
     private geminiAgent: GeminiAgentService,
@@ -71,7 +76,14 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('resume') || urlParams.get('retake') || urlParams.get('restart')) {
         this.showSetup = false;
-        this.startInterviewFlow();
+        // Prepare media before starting flow
+        this.prepareMediaBeforeInterview()
+          .then(() => this.startInterviewFlow())
+          .catch(err => {
+            console.error('Media preparation failed:', err);
+            this.showError('Please grant camera, microphone, and screen permissions to continue.');
+          });
+        return;
       }
     }
   }
@@ -84,12 +96,13 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
     // Listen for model responses (transcriptions of model speech)
     this.geminiAgent.onTranscription((transcript: string) => {
       this.ngZone.run(() => {
-        this.chatManager.startModelMessage();
+        // Don't create a new message on every chunk; ChatManager will start one if needed
         this.chatManager.updateStreamingMessage(transcript);
         // Update live captions
         if (this.captionsEnabled && transcript?.trim()) {
           this.currentCaption = ((this.currentCaption + ' ' + transcript).trim());
         }
+        this.scrollToBottom();
       });
     });
 
@@ -98,6 +111,7 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       this.ngZone.run(() => {
         this.chatManager.finalizeStreamingMessage();
         this.currentCaption = '';
+        this.scrollToBottom();
       });
     });
 
@@ -106,6 +120,7 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       this.ngZone.run(() => {
         this.chatManager.finalizeStreamingMessage();
         this.chatManager.addUserMessage(text);
+        this.scrollToBottom();
       });
     });
 
@@ -116,29 +131,61 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
           this.chatManager.addUserMessage(transcript.trim());
           // Record the answer for the interview service
           this.interviewService.recordAnswer(transcript.trim());
+          this.scrollToBottom();
         }
       });
     });
 
     this.geminiAgent.onInterrupted(() => {
-      this.ngZone.run(() => this.chatManager.finalizeStreamingMessage());
+      this.ngZone.run(() => {
+        this.chatManager.finalizeStreamingMessage();
+        this.scrollToBottom();
+      });
     });
 
     this.geminiAgent.onScreenShareStopped(() => {
       this.ngZone.run(() => this.isScreenShareActive = false);
+    });
+
+    // Track AI speaking state
+    this.geminiAgent.onAgentSpeaking((speaking: boolean) => {
+      this.ngZone.run(() => {
+        this.aiSpeaking = speaking;
+        if (speaking) {
+          // Remember prior mic state and reflect as OFF in UI
+          if (this.isMicActive) {
+            this.wasMicActiveBeforeTts = true;
+            this.isMicActive = false;
+          }
+        } else {
+          // Restore mic active flag if it was active before TTS
+          if (this.wasMicActiveBeforeTts) {
+            this.isMicActive = true;
+            this.wasMicActiveBeforeTts = false;
+          }
+        }
+      });
     });
   }
 
   onSetupComplete(setup: InterviewSetup): void {
     this.currentSetup = setup;
     this.showSetup = false;
-    this.startInterviewFlow();
+    // Prepare media before connecting/starting interview
+    this.prepareMediaBeforeInterview()
+      .then(() => this.startInterviewFlow())
+      .catch(err => {
+        console.error('Media preparation failed:', err);
+        this.showError('Please grant camera, microphone, and screen permissions to continue.');
+      });
   }
 
   private async startInterviewFlow(): Promise<void> {
     try {
       await this.connect();
       if (this.connectionStatus === ConnectionStatus.CONNECTED) {
+        // Ensure agent media is active once connected
+        await this.ensureAgentMediaActive();
         await this.startInterview();
       }
     } catch (error) {
@@ -204,7 +251,11 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
   }
 
   async disconnect(): Promise<void> {
-    if (this.connectionStatus !== ConnectionStatus.CONNECTED) return;
+    if (this.connectionStatus !== ConnectionStatus.CONNECTED) {
+      // Also stop any local audio recorder if it was started pre-connection
+      try { this.localAudioRecorder.stop(); } catch {}
+      return;
+    }
 
     try {
       // End interview if it's active
@@ -222,6 +273,9 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       this.isCameraActive = false;
       this.isScreenShareActive = false;
       this.isInterviewActive = false;
+
+      // Ensure local recorder is stopped as well
+      try { this.localAudioRecorder.stop(); } catch {}
       
       // Clear chat when disconnecting
       this.chatManager.clear();
@@ -269,6 +323,12 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
 
   async toggleMic(): Promise<void> {
     try {
+      // Block mic toggling while AI is speaking
+      if (this.geminiAgent.isAgentSpeakingNow()) {
+        this.showError('Please wait until the AI finishes speaking.');
+        return;
+      }
+
       console.log('=== MIC TOGGLE START ===');
       console.log('Current state:', {
         connectionStatus: this.connectionStatus,
@@ -397,6 +457,7 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
       // Clear input and add to chat immediately
       messageInput.value = '';
       this.chatManager.addUserMessage(text);
+      this.scrollToBottom();
       
       // Check connection and send
       if (this.connectionStatus === ConnectionStatus.CONNECTED) {
@@ -446,10 +507,57 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
     }, duration);
   }
 
+  // Prepare camera, microphone, and screen BEFORE starting the interview
+  private async prepareMediaBeforeInterview(): Promise<void> {
+    console.log('Preparing media before interview...');
+    // Camera
+    if (!this.isCameraActive) {
+      await this.cameraManager.initialize();
+      this.isCameraActive = true;
+    }
+    // Screen share (requires user gesture; this is called from Start Interview button)
+    if (!this.isScreenShareActive) {
+      await this.screenManager.initialize();
+      this.isScreenShareActive = true;
+    }
+    // Mic - start local recorder to establish permission and keep active until agent takes over
+    if (!this.isMicActive) {
+      await this.localAudioRecorder.start(() => {
+        // Discard locally captured audio; used only to keep mic active pre-connection
+      });
+      this.isMicActive = true;
+    }
+    console.log('Media prepared.');
+  }
+
+  // Ensure agent-side media capture is active once connected, and stop the local recorder
+  private async ensureAgentMediaActive(): Promise<void> {
+    if (this.connectionStatus !== ConnectionStatus.CONNECTED) return;
+
+    console.log('Ensuring agent media is active...');
+    // Start agent camera capture
+    try { await this.geminiAgent.startCameraCapture(); } catch (e) { console.warn('Agent camera capture start failed:', e); }
+    // Start agent screen share
+    try { await this.geminiAgent.startScreenShare(); } catch (e) { console.warn('Agent screen share start failed:', e); }
+    // Start agent mic if not already
+    try {
+      if (!this.geminiAgent.isRecording()) {
+        await this.geminiAgent.toggleMic();
+      }
+    } catch (e) {
+      console.warn('Agent mic start failed:', e);
+    }
+    // Stop local recorder to avoid duplicate audio streams
+    try { this.localAudioRecorder.stop(); } catch {}
+    console.log('Agent media ensured.');
+  }
+
   get messages() {
-    const msgs = this.chatManager.getMessages();
-    console.log('Current messages:', msgs);
-    return msgs;
+    return this.chatManager.getMessages();
+  }
+
+  trackByMsg(index: number, msg: { id: string }): string {
+    return msg?.id ?? String(index);
   }
 
   // Add method to ensure UI updates
@@ -457,6 +565,23 @@ export class MockInterviewComponent implements OnInit, OnDestroy {
     this.ngZone.run(() => {
       // Force change detection
     });
+  }
+
+  @HostListener('window:beforeunload')
+  onBeforeUnload(): void {
+    // Best-effort cleanup to avoid dangling media/devices
+    try { this.geminiAgent.disconnect(); } catch {}
+    try { this.localAudioRecorder.stop(); } catch {}
+  }
+
+  // Auto-scroll helper
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      try {
+        const el = this.chatHistory?.nativeElement;
+        if (el) el.scrollTop = el.scrollHeight;
+      } catch {}
+    }, 0);
   }
 }
 

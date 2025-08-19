@@ -14,6 +14,7 @@ export class AudioRecorderService {
   private onAudioData: ((data: string) => void) | null = null;
   private isRecordingFlag = false;
   private isSuspendedFlag = false; // Renamed to avoid conflict
+  private silentGain: GainNode | null = null;
 
   constructor(private utilsService: UtilsService) {}
 
@@ -62,8 +63,14 @@ export class AudioRecorderService {
         }
         this.onAudioData(this.utilsService.arrayBufferToBase64(int16.buffer));
       };
+
+      // Connect graph: source -> processor -> silentGain(0) -> destination
+      this.silentGain = this.audioContext.createGain();
+      this.silentGain.gain.value = 0;
+
       this.source.connect(this.fallbackProcessor);
-      this.fallbackProcessor.connect(this.audioContext.destination);
+      this.fallbackProcessor.connect(this.silentGain);
+      this.silentGain.connect(this.audioContext.destination);
 
       this.isRecordingFlag = true;
       this.isSuspendedFlag = false;
@@ -106,6 +113,10 @@ export class AudioRecorderService {
         } catch {}
         this.fallbackProcessor.onaudioprocess = null as any;
         this.fallbackProcessor = null;
+      }
+      if (this.silentGain) {
+        try { this.silentGain.disconnect(); } catch {}
+        this.silentGain = null;
       }
       if (this.source) {
         this.source.disconnect();
