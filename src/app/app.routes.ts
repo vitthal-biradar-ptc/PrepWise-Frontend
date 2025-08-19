@@ -27,11 +27,11 @@ export const routes: Routes = [
   },
   {
     path: 'learning-paths/:user_id',
-    loadComponent: () => import('./features/learning-path/learning-paths.component').then(m => m.LearningPathsComponent),
+    loadComponent: () => import('./features/learning-paths/learning-paths.component').then(m => m.LearningPathsComponent),
   },
   {
     path: 'learning-path/:user_id/:path_id',
-    loadComponent: () => import('./features/learning-path/learning-path.component').then(m => m.LearningPathComponent),
+    loadComponent: () => import('./features/learning-paths/learning-path/learning-path.component').then(m => m.LearningPathComponent),
   },
   {
     path: '**',

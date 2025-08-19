@@ -3,28 +3,25 @@
 
   <div class="main-content">
     <div class="header-section">
-      <div class="breadcrumb">
-        <span class="breadcrumb-item">Dashboard</span>
-        <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-item current">Learning Paths</span>
-      </div>
       <h1 class="page-title">Learning Paths</h1>
-      <p class="subtitle" *ngIf="userId">
-        Showing results for user: {{ userId }}
-      </p>
+      @if (userId) {
+      <p class="subtitle">Showing results for user: {{ userId }}</p>
+      }
 
       <!-- Generate Button -->
-      <div *ngIf="userId">
+      @if (userId) {
+      <div>
         <button class="cta-button generate-btn" (click)="openGeneratorModal()">
           Generate New Learning Path
         </button>
       </div>
+      }
     </div>
 
     <!-- Modal: Generate Learning Path -->
+    @if (showGeneratorModal) {
     <div
       class="modal-backdrop"
-      *ngIf="showGeneratorModal"
       (click)="closeGeneratorModal()"
       (keydown.escape)="closeGeneratorModal()"
       tabindex="-1"
@@ -90,20 +87,18 @@
             </button>
           </div>
 
-          <div
-            class="state error"
-            *ngIf="!generationLoading && generationError"
-          >
-            Error: {{ generationError }}
-          </div>
+          @if (!generationLoading && generationError) {
+          <div class="state error">Error: {{ generationError }}</div>
+          }
         </form>
       </div>
     </div>
+    }
 
     <!-- Delete Confirmation Modal -->
+    @if (deleteTarget) {
     <div
       class="modal-backdrop"
-      *ngIf="deleteTarget"
       (click)="closeDeleteModal()"
       (keydown.escape)="closeDeleteModal()"
       tabindex="-1"
@@ -133,9 +128,9 @@
             action cannot be undone.
           </p>
 
-          <div class="state error" *ngIf="deleteError">
-            Error: {{ deleteError }}
-          </div>
+          @if (deleteError) {
+          <div class="state error">Error: {{ deleteError }}</div>
+          }
 
           <div class="modal-actions">
             <button
@@ -162,14 +157,14 @@
         </div>
       </div>
     </div>
-
-    <div class="state" *ngIf="loading">Loading learning paths...</div>
-    <div class="state error" *ngIf="!loading && error">Error: {{ error }}</div>
-    <div class="state empty" *ngIf="!loading && !error && paths.length === 0">
-      No learning paths found.
-    </div>
-
-    <div class="grid" *ngIf="!loading && !error && paths.length">
+    } @if (loading) {
+    <div class="state">Loading learning paths...</div>
+    } @if (!loading && error) {
+    <div class="state error">Error: {{ error }}</div>
+    } @if (!loading && !error && paths.length === 0) {
+    <div class="state empty">No learning paths found.</div>
+    } @if (!loading && !error && paths.length) {
+    <div class="grid">
       <div
         class="card"
         *ngFor="let lp of paths; trackBy: trackById"
@@ -198,12 +193,13 @@
         </button>
 
         <div class="card-title">{{ getTitle(lp) }}</div>
-        <div class="card-desc" *ngIf="lp.description; else noDesc">
+        @if (lp.description) {
+        <div class="card-desc">
           {{ lp.description }}
         </div>
-        <ng-template #noDesc>
-          <div class="card-desc muted">No description</div>
-        </ng-template>
+        } @else {
+        <div class="card-desc muted">No description</div>
+        }
 
         <div class="card-footer">
           <!-- Removed Delete text button -->
@@ -216,5 +212,6 @@
         </div>
       </div>
     </div>
+    }
   </div>
 </div>
