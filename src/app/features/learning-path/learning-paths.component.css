@@ -1,0 +1,251 @@
+.learning-paths-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: #f1f1f1;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  padding-top: 6rem;
+}
+
+.header-section {
+  margin-bottom: 1.5rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: #a7a7a7;
+}
+
+.breadcrumb-item.current {
+  color: #b03eff;
+  font-weight: 600;
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0.5rem;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: #a7a7a7;
+  margin: 0;
+}
+
+.state {
+  padding: 1rem;
+  background: rgba(176, 62, 255, 0.06);
+  border: 1px solid rgba(176, 62, 255, 0.2);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.state.error {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.state.empty {
+  background: rgba(176, 62, 255, 0.04);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid rgba(176, 62, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  position: relative;
+}
+
+.card:hover,
+.card:focus {
+  transform: translateY(-2px);
+  border-color: rgba(176, 62, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(176, 62, 255, 0.1);
+}
+
+.card-title {
+  font-weight: 700;
+  color: #f1f1f1;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  color: #cfcfcf;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  min-height: 2.6em;
+}
+
+.card-desc.muted {
+  color: #8a8a8a;
+}
+
+.card-footer {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.card-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+.card-delete-btn:hover:enabled {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+.card-delete-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: min(560px, 92vw);
+  background: rgba(26, 26, 26, 0.98);
+  border: 1px solid rgba(176, 62, 255, 0.3);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0 0.75rem 0;
+}
+
+.icon-button {
+  background: transparent;
+  border: none;
+  color: #cfcfcf;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.icon-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.modal-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal-form label {
+  font-size: 0.9rem;
+  color: #cfcfcf;
+}
+
+.modal-form input,
+.modal-form select {
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid rgba(176, 62, 255, 0.3);
+  border-radius: 0.5rem;
+  color: #f1f1f1;
+  padding: 0.55rem 0.75rem;
+  outline: none;
+}
+
+.modal-form input:focus,
+.modal-form select:focus {
+  border-color: rgba(176, 62, 255, 0.6);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.cta-button.generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.cta-button.generate-btn::before {
+  content: '✨';
+  font-size: 1rem;
+}
+
+.cta-button.generate-btn::after {
+  content: '↗';
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+    padding-top: 5rem;
+  }
+  .page-title {
+    font-size: 1.6rem;
+  }
+}

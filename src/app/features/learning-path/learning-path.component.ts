@@ -2,6 +2,10 @@ import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from "../../core/layout/header/header";
+import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { LearningPathService } from './services/learning-path.service';
+import { finalize } from 'rxjs';
 
 interface Resource {
   title: string;
@@ -32,7 +36,7 @@ interface LearningPath {
 @Component({
   selector: 'app-learning-path',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, HttpClientModule],
   templateUrl: './learning-path.component.html',
   styleUrls: ['./learning-path.component.css']
 })
@@ -42,7 +46,7 @@ export class LearningPathComponent implements OnInit {
   overallProgress = 0;
   periodProgress: number[] = [];
   
-  // Static JSON data for demonstration
+  // Static JSON data for fallback
   private staticLearningPath: LearningPath = {
     duration: 'medium-term',
     learningPath: [
@@ -261,17 +265,98 @@ export class LearningPathComponent implements OnInit {
     ]
   };
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  private userId = '';
+  private pathId = '';
+
+  // Modal + generation state
+  showGeneratorModal = false;
+  newSkill = '';
+  newLevel = '';
+  generationLoading = false;
+  generationError = '';
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private route: ActivatedRoute,
+    private lpService: LearningPathService
+  ) {}
 
   ngOnInit(): void {
-    this.loadLearningPath();
-    this.loadCompletionState();
-    this.calculateProgress();
+    // Load by route params, fallback to static on error
+    this.route.paramMap.subscribe((params) => {
+      this.userId = params.get('user_id') || '';
+      this.pathId = params.get('path_id') || '';
+      if (!this.userId || !this.pathId) {
+        this.learningPathData = this.staticLearningPath;
+        this.loadCompletionState();
+        this.calculateProgress();
+        return;
+      }
+
+      this.lpService.getUserLearningPaths(this.userId).subscribe({
+        next: (arr) => {
+          const match = Array.isArray(arr) ? arr.find((it: any) => String(it.id) === String(this.pathId)) : null;
+          if (match) {
+            this.learningPathData = this.lpService.mapToUiModel(match) as LearningPath;
+          } else {
+            this.learningPathData = this.staticLearningPath;
+          }
+          this.loadCompletionState();
+          this.calculateProgress();
+        },
+        error: () => {
+          this.learningPathData = this.staticLearningPath;
+          this.loadCompletionState();
+          this.calculateProgress();
+        }
+      });
+    });
   }
 
-  private loadLearningPath(): void {
-    // Using static data for now
-    this.learningPathData = this.staticLearningPath;
+  // Open/close modal
+  openGeneratorModal(): void {
+    this.generationError = '';
+    this.newSkill = '';
+    this.newLevel = '';
+    this.showGeneratorModal = true;
+  }
+
+  closeGeneratorModal(): void {
+    if (this.generationLoading) return;
+    this.showGeneratorModal = false;
+  }
+
+  // Generate new path and display it
+  generateNewPath(): void {
+    if (!this.userId) {
+      this.generationError = 'Missing userId.';
+      return;
+    }
+    const skill = this.newSkill.trim();
+    const level = this.newLevel.trim();
+    if (!skill || !level) return;
+
+    const userIdValue = /^\d+$/.test(this.userId) ? Number(this.userId) : this.userId;
+
+    this.generationLoading = true;
+    this.generationError = '';
+
+    this.lpService.generateLearningPath({ skill, level, userId: userIdValue })
+      .pipe(finalize(() => { this.generationLoading = false; }))
+      .subscribe({
+        next: (res) => {
+          // Map API response to UI model and show it
+          this.learningPathData = this.lpService.mapToUiModel(res) as any;
+          this.loadCompletionState();
+          this.calculateProgress();
+          this.showGeneratorModal = false;
+          this.newSkill = '';
+          this.newLevel = '';
+        },
+        error: (err) => {
+          this.generationError = err?.error?.message || err?.message || 'Failed to generate learning path.';
+        }
+      });
   }
 
   private loadCompletionState(): void {

@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../services/authorization.service';
 import { AuthStateService } from '../../../services/auth-state.service';
 import { Subscription } from 'rxjs';
+import { UserProfileService } from '../../../services/user-profile.service';
 
 interface NavItem {
   title: string;
@@ -25,6 +26,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isAuthLoading = true;
   profileDropdownOpen = false;
   private authSubscription?: Subscription;
+  private userIdSubscription?: Subscription;
+  userId: string | null = null;
   
   navItems: NavItem[] = [
     { title: 'Features', href: '/', icon: 'layout' },
@@ -36,7 +39,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router, 
     private authService: AuthService,
-    private authStateService: AuthStateService
+    private authStateService: AuthStateService,
+    private profileService: UserProfileService
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +55,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // Close dropdowns when auth state changes
         if (!isAuth) {
           this.profileDropdownOpen = false;
+          this.userId = null;
+        } else if (!this.userId) {
+          // Fetch once and cache in memory (no localStorage)
+          this.userIdSubscription?.unsubscribe();
+          this.userIdSubscription = this.profileService.getUserIdCached().subscribe(id => {
+            this.userId = id;
+          });
         }
       }
     );
@@ -67,6 +78,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.userIdSubscription) {
+      this.userIdSubscription.unsubscribe();
     }
   }
 
@@ -137,6 +151,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
+    this.profileService.clearCache(); // clear in-memory cached profile/id
+    this.userId = null;
     this.closeMobileMenu();
     this.closeProfileDropdown();
     // Redirect to home page after logout
@@ -154,5 +170,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       // Internal hash link - use existing scroll behavior
       this.navigateToSection(item.href);
     }
+  }
+
+  // Return cached value only; no async work here
+  getUserId(): string | null {
+    return this.userId;
   }
 }

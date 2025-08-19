@@ -1,25 +1,101 @@
 <div class="learning-path-container">
   <app-header></app-header>
-  
+
   <div class="main-content">
     <!-- Header Section -->
     <div class="header-section">
-      <div class="breadcrumb">
-        <span class="breadcrumb-item">Dashboard</span>
-        <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-item current">Learning Path</span>
-      </div>
-      
       <h1 class="page-title">Your Personalized Learning Path</h1>
-      
+
       <div class="learning-meta" *ngIf="learningPathData">
         <div class="duration-badge">
           {{ getDurationLabel() }}
         </div>
         <div class="time-estimate">
           <span class="time-icon">⏱️</span>
-          <span>{{ getCompletedHours() }}/{{ getTotalEstimatedHours() }} hours completed</span>
+          <span
+            >{{ getCompletedHours() }}/{{ getTotalEstimatedHours() }} hours
+            completed</span
+          >
         </div>
+      </div>
+    </div>
+
+    <!-- Modal: Generate New Learning Path -->
+    <div
+      class="modal-backdrop"
+      *ngIf="showGeneratorModal"
+      (click)="closeGeneratorModal()"
+      (keydown.escape)="closeGeneratorModal()"
+      tabindex="-1"
+    >
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="generatorTitle"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="modal-header">
+          <h2 id="generatorTitle">Generate New Learning Path</h2>
+          <button
+            class="icon-button"
+            (click)="closeGeneratorModal()"
+            [disabled]="generationLoading"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form class="modal-form" (ngSubmit)="generateNewPath()" novalidate>
+          <div class="field">
+            <label for="skill">Skill</label>
+            <input
+              id="skill"
+              type="text"
+              [(ngModel)]="newSkill"
+              name="skill"
+              placeholder="e.g., Python"
+              required
+              autofocus
+            />
+          </div>
+
+          <div class="field">
+            <label for="level">Level</label>
+            <select id="level" [(ngModel)]="newLevel" name="level" required>
+              <option value="" disabled>Select level</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </div>
+
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn-secondary"
+              (click)="closeGeneratorModal()"
+              [disabled]="generationLoading"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="cta-button"
+              [disabled]="generationLoading || !newSkill || !newLevel"
+            >
+              {{ generationLoading ? "Generating..." : "Generate" }}
+            </button>
+          </div>
+
+          <div
+            class="state error"
+            *ngIf="!generationLoading && generationError"
+          >
+            Error: {{ generationError }}
+          </div>
+        </form>
       </div>
     </div>
 
@@ -27,22 +103,23 @@
     <div class="progress-overview" *ngIf="learningPathData">
       <div class="progress-header">
         <h2 class="progress-title">Overall Progress</h2>
-        <span class="progress-percentage">{{ overallProgress.toFixed(1) }}%</span>
+        <span class="progress-percentage"
+          >{{ overallProgress.toFixed(1) }}%</span
+        >
       </div>
-      
+
       <div class="progress-bar-container">
         <div class="progress-bar">
-          <div 
-            class="progress-fill" 
-            [style.width.%]="overallProgress">
-          </div>
+          <div class="progress-fill" [style.width.%]="overallProgress"></div>
         </div>
       </div>
-      
+
       <div class="progress-stats">
         <div class="stat-item">
           <span class="stat-label">Periods:</span>
-          <span class="stat-value">{{ learningPathData.learningPath.length }}</span>
+          <span class="stat-value">{{
+            learningPathData.learningPath.length
+          }}</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
@@ -63,11 +140,11 @@
 
     <!-- Learning Path Periods -->
     <div class="periods-container" *ngIf="learningPathData">
-      <div 
-        class="period-card" 
+      <div
+        class="period-card"
         *ngFor="let period of learningPathData.learningPath; let i = index"
-        [class.expanded]="isPeriodExpanded(i)">
-        
+        [class.expanded]="isPeriodExpanded(i)"
+      >
         <!-- Period Header -->
         <div class="period-header" (click)="togglePeriod(i)">
           <div class="period-header-content">
@@ -75,21 +152,23 @@
               <h3 class="period-title">{{ period.period }}</h3>
               <p class="period-goal">{{ period.goal }}</p>
             </div>
-            
+
             <div class="period-stats">
               <div class="period-progress">
                 <div class="mini-progress-bar">
-                  <div 
-                    class="mini-progress-fill" 
-                    [style.width.%]="periodProgress[i]">
-                  </div>
+                  <div
+                    class="mini-progress-fill"
+                    [style.width.%]="periodProgress[i]"
+                  ></div>
                 </div>
-                <span class="mini-progress-text">{{ periodProgress[i].toFixed(0) }}%</span>
+                <span class="mini-progress-text"
+                  >{{ periodProgress[i].toFixed(0) }}%</span
+                >
               </div>
-              
+
               <div class="expand-icon" [class.rotated]="isPeriodExpanded(i)">
                 <svg viewBox="0 0 24 24" width="20" height="20">
-                  <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                  <path d="M7 10l5 5 5-5H7z" fill="currentColor" />
                 </svg>
               </div>
             </div>
@@ -99,7 +178,6 @@
         <!-- Period Content -->
         <div class="period-content" [class.expanded]="isPeriodExpanded(i)">
           <div class="period-content-inner">
-            
             <!-- Focus Areas -->
             <div class="section focus-areas-section">
               <h4 class="section-title">
@@ -107,7 +185,10 @@
                 Focus Areas
               </h4>
               <ul class="focus-areas-list">
-                <li class="focus-area-item" *ngFor="let area of period.focusAreas">
+                <li
+                  class="focus-area-item"
+                  *ngFor="let area of period.focusAreas"
+                >
                   {{ area }}
                 </li>
               </ul>
@@ -120,13 +201,16 @@
                 Resources
               </h4>
               <div class="resources-grid">
-                <a 
+                <a
                   *ngFor="let resource of period.resources"
                   [href]="resource.url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="resource-item">
-                  <span class="resource-icon">{{ getResourceIcon(resource.type) }}</span>
+                  class="resource-item"
+                >
+                  <span class="resource-icon">{{
+                    getResourceIcon(resource.type)
+                  }}</span>
                   <div class="resource-content">
                     <span class="resource-title">{{ resource.title }}</span>
                     <span class="resource-type">{{ resource.type }}</span>
@@ -143,22 +227,26 @@
                 Tasks & Milestones
               </h4>
               <div class="tasks-list">
-                <div 
+                <div
                   class="task-item"
                   *ngFor="let task of period.tasks; let taskIndex = index"
-                  [class.completed]="task.completed">
-                  
+                  [class.completed]="task.completed"
+                >
                   <label class="task-checkbox-label">
-                    <input 
+                    <input
                       type="checkbox"
                       class="task-checkbox"
                       [checked]="task.completed"
-                      (change)="toggleTask(i, taskIndex)">
+                      (change)="toggleTask(i, taskIndex)"
+                    />
                     <span class="checkbox-custom"></span>
                   </label>
-                  
+
                   <div class="task-content">
-                    <p class="task-description" [class.completed]="task.completed">
+                    <p
+                      class="task-description"
+                      [class.completed]="task.completed"
+                    >
                       {{ task.description }}
                     </p>
                     <div class="task-meta">
@@ -182,10 +270,10 @@
         <div class="empty-state-icon">📚</div>
         <h3 class="empty-state-title">No Learning Path Found</h3>
         <p class="empty-state-description">
-          Complete your resume analysis to generate a personalized learning path.
+          Create a personalized learning path.
         </p>
-        <button class="cta-button" routerLink="/resume-analyzer">
-          Analyze Resume
+        <button class="cta-button generate-btn" (click)="openGeneratorModal()">
+          Generate New Learning Path
         </button>
       </div>
     </div>
