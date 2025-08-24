@@ -37,6 +37,7 @@ export class MockInterview implements OnInit, OnDestroy {
 
   // Camera
   @ViewChild('cameraVideo') cameraVideoRef?: ElementRef<HTMLVideoElement>;
+  @ViewChild('chatContainer') chatContainerRef?: ElementRef<HTMLDivElement>;
   public cameraError: string | null = null;
   public cameraStream: MediaStream | null = null;
 
@@ -161,15 +162,18 @@ export class MockInterview implements OnInit, OnDestroy {
 
   private async beginInterview(): Promise<void> {
     this.aiStatus = 'thinking';
+    this.scrollOnThinking();
     try {
       const firstQuestion = await this.withTimeout(this.callStartInterview(this.jobRole, this.experienceLevel), this.requestTimeoutMs, 'startInterview');
       const firstItem: TranscriptItem = { id: Date.now(), speaker: 'ai', text: firstQuestion };
       this.transcript = [firstItem];
+      this.scrollToBottom();
       this.speak(firstQuestion);
     } catch (err) {
       console.error('[MockInterview] beginInterview failed', err);
       this.error = "I'm sorry, I'm having trouble starting the interview. Please check your network/API key and try again.";
       this.transcript = [{ id: Date.now(), speaker: 'ai', text: this.error }];
+      this.scrollToBottom();
       this.aiStatus = 'idle';
     }
   }
@@ -181,6 +185,8 @@ export class MockInterview implements OnInit, OnDestroy {
     this.stopListening();
     this.aiStatus = 'thinking';
     this.transcript = [...this.transcript, userItem];
+    this.scrollToBottom();
+    this.scrollOnThinking();
     this.getFollowUp([...this.transcript]);
   }
 
@@ -193,11 +199,13 @@ export class MockInterview implements OnInit, OnDestroy {
       }
       newItems.push({ id: Date.now() + 2, speaker: 'ai', text: next.nextQuestion });
       this.transcript = [...this.transcript, ...newItems];
+      this.scrollToBottom();
       this.speak(next.nextQuestion);
     } catch (err) {
       console.error('[MockInterview] getFollowUp failed', err);
       const errorItem: TranscriptItem = { id: Date.now() + 3, speaker: 'ai', text: "I'm sorry, I encountered an error. Let's try that again." };
       this.transcript = [...this.transcript, errorItem];
+      this.scrollToBottom();
       this.speak(errorItem.text);
     }
   }
@@ -230,6 +238,23 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   public trackById(_index: number, item: TranscriptItem): number { return item.id; }
+
+  // Auto-scroll chat to bottom
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      if (this.chatContainerRef?.nativeElement) {
+        const container = this.chatContainerRef.nativeElement;
+        container.scrollTop = container.scrollHeight;
+      }
+    }, 100);
+  }
+
+  // Scroll to bottom when AI starts thinking
+  private scrollOnThinking(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 50);
+  }
 
   // Camera
   private async setupCamera(): Promise<void> {
@@ -300,7 +325,7 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   private async callStartInterview(jobRole: string, experienceLevel: string): Promise<string> {
-    const prompt = `You are Alex, an expert AI interviewer hiring for a ${jobRole} position requiring a ${experienceLevel} level of experience. Start the mock interview by introducing yourself and asking the first, most relevant technical or behavioral question. Your response must be only the introduction and question, without any other text.`;
+    const prompt = `You are Alex, an expert AI interviewer hiring for a ${jobRole} position requiring a ${experienceLevel} level of experience. Start the mock interview with a VERY BRIEF introduction (1-2 lines maximum) and immediately ask the first, most relevant technical or behavioral question. Keep your entire response under 3 sentences total. Your response must be only the brief introduction and question, without any other text.`;
     const ai = this.getClient();
     const response: any = await ai.models.generateContent({ model: this.modelName, contents: prompt });
     return this.extractText(response);

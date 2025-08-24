@@ -24,17 +24,17 @@ export class GeminiService {
 
   async startInterview(jobRole: string, experienceLevel: string): Promise<string> {
     if (!this.apiKey) {
-      return `Hello! I'm Alex, your AI interviewer. I'll be conducting your ${jobRole} interview today for a ${experienceLevel} position. Let's start with our first question: Can you tell me about yourself and your experience with ${jobRole}?`;
+      return `Hi, I'm Alex. Let's begin your ${jobRole} interview. Can you tell me about yourself and your experience with ${jobRole}?`;
     }
 
-    const prompt = `You are Alex, an expert AI interviewer hiring for a ${jobRole} position requiring a ${experienceLevel} level of experience. Start the mock interview by introducing yourself and asking the first, most relevant technical or behavioral question. Keep your response concise and professional. Your response must be only the introduction and question, without any other text.`;
+    const prompt = `You are Alex, an expert AI interviewer hiring for a ${jobRole} position requiring a ${experienceLevel} level of experience. Start the mock interview with a VERY BRIEF introduction (1-2 lines maximum) and immediately ask the first, most relevant technical or behavioral question. Keep your entire response under 3 sentences total. Your response must be only the brief introduction and question, without any other text.`;
     
     try {
       const response = await this.makeRequest(prompt);
       return response.trim();
     } catch (error) {
       console.error('Error starting interview:', error);
-      return `Hello! I'm Alex, your AI interviewer. I'll be conducting your ${jobRole} interview today for a ${experienceLevel} position. Let's start with our first question: Can you tell me about yourself and your experience with ${jobRole}?`;
+      return `Hi, I'm Alex. Let's begin your ${jobRole} interview. Can you tell me about yourself and your experience with ${jobRole}?`;
     }
   }
 
