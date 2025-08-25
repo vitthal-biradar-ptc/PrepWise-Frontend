@@ -4,15 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ResumeParseService } from '../../services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
-import { HeaderComponent } from "../../core/layout/header/header";
-import { FooterComponent } from "../../core/layout/footer/footer";
-
+import { HeaderComponent } from '../../core/layout/header/header';
+import { FooterComponent } from '../../core/layout/footer/footer';
 
 @Component({
   selector: 'app-parse-resume',
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './parse-resume.html',
-  styleUrl: './parse-resume.css'
+  styleUrl: './parse-resume.css',
 })
 export class ParseResume {
   selectedFile: File | null = null;
@@ -21,7 +20,6 @@ export class ParseResume {
   isDragging = false;
   isFirstTime = true; // Check if this is first time setup
 
-  private ngZone = inject(NgZone);
   private cdr = inject(ChangeDetectorRef);
 
   constructor(
@@ -62,7 +60,7 @@ export class ParseResume {
     event.preventDefault();
     event.stopPropagation();
     this.isDragging = false;
-    
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       const file = files[0];
@@ -81,39 +79,34 @@ export class ParseResume {
       return;
     }
 
-    this.ngZone.run(() => {
-      this.isLoading = true;
-      this.error = '';
-    });
+    this.isLoading = true;
+    this.error = '';
 
     this.resumeParseService.parseResume(this.selectedFile).subscribe({
       next: (result: ParsedResumeResponse) => {
         console.log('Resume parsing successful:', result);
-        
-        this.ngZone.run(() => {
-          this.isLoading = false;
-          this.cdr.markForCheck();
-          
-          // Store result in session storage for dashboard notification
-          sessionStorage.setItem('resumeAnalysisResult', JSON.stringify(result));
-          
-          // Redirect to dashboard after a short delay
-          setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 1500);
-        });
+
+        this.isLoading = false;
+        this.cdr.markForCheck();
+
+        // Store result in session storage for dashboard notification
+        sessionStorage.setItem('resumeAnalysisResult', JSON.stringify(result));
+
+        // Redirect to dashboard after a short delay
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 1500);
       },
       error: (error) => {
         console.error('Error parsing resume:', error);
-        
-        this.ngZone.run(() => {
-          const errorMessage = error.error?.message || 'An error occurred while parsing the resume.';
-          this.error = errorMessage;
-          this.isLoading = false;
-          this.cdr.markForCheck();
-          this.cdr.detectChanges();
-        });
-      }
+
+        const errorMessage =
+          error.error?.message || 'An error occurred while parsing the resume.';
+        this.error = errorMessage;
+        this.isLoading = false;
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
+      },
     });
   }
 

@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 
+/**
+ * Application route definitions.
+ *
+ * Components are lazy-loaded for better initial load time.
+ * Protected routes require authentication via `AuthGuard`.
+ */
 export const routes: Routes = [
   {
     path: '',

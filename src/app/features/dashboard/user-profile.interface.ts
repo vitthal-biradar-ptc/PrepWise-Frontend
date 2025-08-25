@@ -1,3 +1,4 @@
+/** Backend user profile model returned by the API. */
 export interface UserProfile {
   user_id: string;
   name: string;
@@ -14,12 +15,14 @@ export interface UserProfile {
   domainData: DomainData;
 }
 
+/** Backend skill representation used in persistence. */
 export interface BackendSkill {
   id: number;
   name: string;
   proficiency: string;
 }
 
+/** Backend certification representation used in persistence. */
 export interface BackendCertification {
   id: number;
   name: string;
@@ -28,6 +31,7 @@ export interface BackendCertification {
   description?: string;
 }
 
+/** Backend achievement representation used in persistence. */
 export interface BackendAchievement {
   id: number;
   name: string;
@@ -35,6 +39,7 @@ export interface BackendAchievement {
   date: string;
 }
 
+/** Minimal chart dataset structure for the domain pie chart. */
 export interface DomainData {
   labels: string[];
   datasets: [{
@@ -42,7 +47,7 @@ export interface DomainData {
   }];
 }
 
-// Add interface for the complete update payload
+/** Complete update payload shape expected by the backend. */
 export interface UpdateProfilePayload {
   name: string;
   email: string;

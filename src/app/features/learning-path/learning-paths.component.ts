@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { HeaderComponent } from "../../core/layout/header/header";
-import { LearningPathService } from "./services/learning-path.service";
+import { HeaderComponent } from '../../core/layout/header/header';
+import { LearningPathService } from './services/learning-path.service';
 import { finalize } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from "../../core/layout/footer/footer";
+import { FooterComponent } from '../../core/layout/footer/footer';
 
+/** Minimal card data for listing user learning paths. */
 type LearningPathItem = {
   id: string | number;
   skill?: string;
@@ -21,13 +22,24 @@ type LearningPathItem = {
   description?: string;
 };
 
-const getId = (lp: LearningPathItem) => (lp.id)?.toString() ?? '';
-const getTitle = (lp: LearningPathItem) => lp.title ?? lp.skill ?? `Learning Path ${getId(lp)}`;
+const getId = (lp: LearningPathItem) => lp.id?.toString() ?? '';
+const getTitle = (lp: LearningPathItem) =>
+  lp.title ?? lp.skill ?? `Learning Path ${getId(lp)}`;
 
+/**
+ * Lists learning paths for a user with generator and delete actions.
+ */
 @Component({
   selector: 'app-learning-paths',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule, HeaderComponent, FormsModule, FooterComponent],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    HeaderComponent,
+    FormsModule,
+    FooterComponent,
+  ],
   templateUrl: './learning-paths.component.html',
   styleUrls: ['./learning-paths.component.css'],
 })
@@ -37,14 +49,14 @@ export class LearningPathsComponent implements OnInit {
   error = '';
   userId = '';
 
-  // New state for generator form
+  // Generator form state
   newSkill = '';
   newLevel = '';
   generationLoading = false;
   generationError = '';
   generationSuccess = '';
 
-  // Modal
+  // Modal state
   showGeneratorModal = false;
 
   // Track per-item delete state
@@ -72,11 +84,17 @@ export class LearningPathsComponent implements OnInit {
     });
   }
 
+  /** Retrieve learning paths and populate list. */
   fetchLearningPaths(userId: string) {
     this.loading = true;
     this.error = '';
-    this.lpService.getUserLearningPaths(userId)
-      .pipe(finalize(() => { this.loading = false; }))
+    this.lpService
+      .getUserLearningPaths(userId)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
       .subscribe({
         next: (raw) => {
           this.paths = this.lpService.toCardItems(raw) as any[];
@@ -88,6 +106,7 @@ export class LearningPathsComponent implements OnInit {
       });
   }
 
+  /** Call API to generate new path and refresh list. */
   generateNewPath() {
     if (!this.userId) {
       this.generationError = 'Missing userId in route.';
@@ -101,10 +120,17 @@ export class LearningPathsComponent implements OnInit {
     this.generationError = '';
     this.generationSuccess = '';
 
-    const userIdValue = /^\d+$/.test(this.userId) ? Number(this.userId) : this.userId;
+    const userIdValue = /^\d+$/.test(this.userId)
+      ? Number(this.userId)
+      : this.userId;
 
-    this.lpService.generateLearningPath({ skill, level, userId: userIdValue })
-      .pipe(finalize(() => { this.generationLoading = false; }))
+    this.lpService
+      .generateLearningPath({ skill, level, userId: userIdValue })
+      .pipe(
+        finalize(() => {
+          this.generationLoading = false;
+        })
+      )
       .subscribe({
         next: () => {
           this.generationSuccess = 'Learning path generated successfully.';
@@ -114,8 +140,11 @@ export class LearningPathsComponent implements OnInit {
           this.showGeneratorModal = false; // close modal on success
         },
         error: (err) => {
-          this.generationError = err?.error?.message || err?.message || 'Failed to generate learning path.';
-        }
+          this.generationError =
+            err?.error?.message ||
+            err?.message ||
+            'Failed to generate learning path.';
+        },
       });
   }
 
@@ -136,7 +165,7 @@ export class LearningPathsComponent implements OnInit {
     this.deleteError = '';
   }
 
-  // Confirm deletion via API
+  /** Confirm deletion via API and update local list. */
   confirmDelete() {
     if (!this.deleteTarget || !this.userId) return;
     const id = this.deleteTarget.id;
@@ -147,12 +176,15 @@ export class LearningPathsComponent implements OnInit {
       .pipe(finalize(() => this.deletingIds.delete(id)))
       .subscribe({
         next: () => {
-          this.paths = this.paths.filter(p => getId(p) !== id);
+          this.paths = this.paths.filter((p) => getId(p) !== id);
           this.deleteTarget = null;
         },
         error: (err) => {
-          this.deleteError = err?.error?.message || err?.message || 'Failed to delete learning path.';
-        }
+          this.deleteError =
+            err?.error?.message ||
+            err?.message ||
+            'Failed to delete learning path.';
+        },
       });
   }
 

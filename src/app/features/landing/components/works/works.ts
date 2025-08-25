@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/authorization.service';
 
+/**
+ * "How it works" section. Alters content based on auth state.
+ */
 @Component({
   selector: 'app-works',
   standalone: true,

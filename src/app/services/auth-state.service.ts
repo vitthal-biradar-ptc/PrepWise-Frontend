@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+/**
+ * Central reactive store for authentication state.
+ */
 @Injectable({
   providedIn: 'root'
 })

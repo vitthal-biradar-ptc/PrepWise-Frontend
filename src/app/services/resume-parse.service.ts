@@ -5,6 +5,9 @@ import { AuthService } from './authorization.service';
 import { ParsedResumeResponse } from '../models/parsed-resume.model';
 import { environment } from '../../environments/environment';
 
+/**
+ * Uploads resumes to the backend for structured parsing.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -16,6 +19,7 @@ export class ResumeParseService {
     private authService: AuthService
   ) {}
 
+  /** Build Authorization headers from stored token. */
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({

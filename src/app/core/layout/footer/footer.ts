@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * App footer with navigation groups and legal links.
+ */
 @Component({
   selector: 'app-footer',
   imports: [CommonModule],
@@ -8,6 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./footer.css']
 })
 export class FooterComponent {
+  /** Primary navigation shortcuts to sections on the landing page. */
   navigationLinks = [
     { name: 'Features', href: '#features' },
     { name: 'How It Works', href: '#how-it-works' },
@@ -16,6 +20,7 @@ export class FooterComponent {
     { name: 'Terms', href: '#' }
   ];
 
+  /** Key product features available in the application. */
   features = [
     { name: 'Resume Analysis', href: '/resume-analyzer' },
     { name: 'Mock Interviews', href: '/mock-interview' },
@@ -24,6 +29,7 @@ export class FooterComponent {
     { name: 'Progress Tracking', href: '/dashboard' }
   ];
 
+  /** Helpful resources (static links or future content). */
   resources = [
     { name: 'Interview Tips', href: '#' },
     { name: 'Career Guide', href: '#' },
@@ -32,6 +38,7 @@ export class FooterComponent {
     { name: 'Success Stories', href: '#' }
   ];
 
+  /** Company-related pages. */
   companyLinks = [
     { name: 'About Us', href: '#' },
     { name: 'Contact', href: '#' },
@@ -40,6 +47,7 @@ export class FooterComponent {
     { name: 'Help Center', href: '#' }
   ];
 
+  /** Legal and policy links. */
   legalLinks = [
     { name: 'Privacy Policy', href: '#' },
     { name: 'Terms of Service', href: '#' },
