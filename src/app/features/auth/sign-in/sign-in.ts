@@ -60,10 +60,11 @@ export class SignIn implements OnDestroy {
 
   // Enhanced validation methods
   validateUsernameOrEmail(input: string): { valid: boolean; message?: string } {
-    if (!input.trim()) {
+    const trimmedInput = input.trim();
+    if (!trimmedInput) {
       return { valid: false, message: 'Username or email is required' };
     }
-    if (input.trim().length < 3) {
+    if (trimmedInput.length < 3) {
       return { valid: false, message: 'Username or email must be at least 3 characters' };
     }
     return { valid: true };
@@ -72,9 +73,6 @@ export class SignIn implements OnDestroy {
   validatePassword(password: string): { valid: boolean; message?: string } {
     if (!password) {
       return { valid: false, message: 'Password is required' };
-    }
-    if (password.length < 1) {
-      return { valid: false, message: 'Password cannot be empty' };
     }
     return { valid: true };
   }
@@ -111,39 +109,6 @@ export class SignIn implements OnDestroy {
     const usernameValid = this.validateUsernameOrEmail(this.usernameOrEmail).valid;
     const passwordValid = this.validatePassword(this.password).valid;
     return usernameValid && passwordValid;
-  }
-
-  // Form validation - make this pure (no side effects)
-  private checkFormValidity(): boolean {
-    const fields = ['usernameOrEmail', 'password'];
-    let isValid = true;
-
-    // Check if any errors exist
-    if (Object.keys(this.formErrors).length > 0) {
-      isValid = false;
-    }
-
-    // Validate each field without side effects
-    for (const field of fields) {
-      let validation: { valid: boolean; message?: string };
-      
-      switch (field) {
-        case 'usernameOrEmail':
-          validation = this.validateUsernameOrEmail(this.usernameOrEmail);
-          break;
-        case 'password':
-          validation = this.validatePassword(this.password);
-          break;
-        default:
-          continue;
-      }
-
-      if (!validation.valid) {
-        isValid = false;
-      }
-    }
-
-    return isValid;
   }
 
   // Enhanced validation for form submission
@@ -186,14 +151,14 @@ export class SignIn implements OnDestroy {
   // Rate limiting - with browser check
   checkIfBlocked(): void {
     if (!this.isBrowser) return;
-    
+
     try {
       const blockData = localStorage.getItem('signInBlock');
       if (blockData) {
         const { until, attempts } = JSON.parse(blockData);
         this.blockUntil = new Date(until);
         this.attemptCount = attempts;
-        
+
         if (new Date() < this.blockUntil) {
           this.isBlocked = true;
         } else {
@@ -206,23 +171,22 @@ export class SignIn implements OnDestroy {
   }
 
   addFailedAttempt(): void {
-    if (!this.isBrowser) return;
-    
     this.attemptCount++;
-    
+
     if (this.attemptCount >= this.maxAttempts) {
       this.blockUntil = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
       this.isBlocked = true;
-      
-      try {
-        localStorage.setItem('signInBlock', JSON.stringify({
-          until: this.blockUntil.toISOString(),
-          attempts: this.attemptCount
-        }));
-      } catch (error) {
-        console.warn('Error setting localStorage:', error);
-      }
 
+      if (this.isBrowser) {
+        try {
+          localStorage.setItem('signInBlock', JSON.stringify({
+            until: this.blockUntil.toISOString(),
+            attempts: this.attemptCount
+          }));
+        } catch (error) {
+          console.warn('Error setting localStorage:', error);
+        }
+      }
     }
   }
 
@@ -230,7 +194,7 @@ export class SignIn implements OnDestroy {
     this.attemptCount = 0;
     this.isBlocked = false;
     this.blockUntil = null;
-    
+
     if (this.isBrowser) {
       try {
         localStorage.removeItem('signInBlock');
@@ -242,15 +206,15 @@ export class SignIn implements OnDestroy {
 
   getBlockTimeRemaining(): string {
     if (!this.blockUntil) return '';
-    
+
     const now = new Date();
     const diff = this.blockUntil.getTime() - now.getTime();
-    
+
     if (diff <= 0) {
       this.clearBlock();
       return '';
     }
-    
+
     const minutes = Math.ceil(diff / (1000 * 60));
     return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
   }
@@ -268,7 +232,7 @@ export class SignIn implements OnDestroy {
         return;
       }
     }
-    
+
     if (!this.validateFormForSubmission()) {
       this.generalError = 'Please fix the errors below and try again';
       this.showError = true;
@@ -286,12 +250,12 @@ export class SignIn implements OnDestroy {
       const subscription = this.authService.signIn(credentials).subscribe({
         next: (response) => {
           console.log('Sign in successful:', response);
-          
+
           // Clear any blocking on successful login
           this.clearBlock();
-          
+
           this.authService.setToken(response.token, response.tokenType);
-          
+
           const tokenValidation = this.authService.validateToken().subscribe({
             next: () => {
               this.isLoading = false;
@@ -303,10 +267,11 @@ export class SignIn implements OnDestroy {
             error: (error) => {
               console.error('Token validation error:', error);
               this.isLoading = false;
-              this.handleSignInError({ status: 500, error: { message: 'Authentication error' } });
+              this.generalError = 'Authentication error';
+              this.showError = true;
             }
           });
-          
+
           this.subscriptions.push(tokenValidation);
         },
         error: (error) => {
@@ -325,26 +290,18 @@ export class SignIn implements OnDestroy {
   private handleSignInError(error: any): void {
     // Always reset loading state first
     this.isLoading = false;
-    
+
     let errorMessage = 'An error occurred during sign in';
-    
+
     if (error.status === 401) {
       errorMessage = 'Invalid username/email or password';
       this.addFailedAttempt();
-      
-      // Don't clear the form values, just mark fields as having errors
-      this.formErrors['usernameOrEmail'] = 'Invalid credentials';
-      this.formErrors['password'] = 'Invalid credentials';
-      this.touchedFields['usernameOrEmail'] = true;
-      this.touchedFields['password'] = true;
-      
-      // Clear password for security but keep username/email
+      // Clear password for security
       this.password = '';
     } else if (error.status === 400) {
       if (error.error?.message) {
         errorMessage = error.error.message;
       } else if (error.error?.error) {
-        // Handle the specific format from your server
         errorMessage = error.error.error;
       } else {
         errorMessage = 'Please check your input and try again';
@@ -357,7 +314,7 @@ export class SignIn implements OnDestroy {
     } else if (error.status >= 500) {
       errorMessage = 'Server error. Please try again later.';
     }
-    
+
     this.generalError = errorMessage;
     this.showError = true;
   }
