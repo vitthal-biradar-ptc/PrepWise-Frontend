@@ -257,7 +257,6 @@ export class SignIn implements OnDestroy {
 
       const subscription = this.authService.signIn(credentials).subscribe({
         next: (response) => {
-          console.log('Sign in successful:', response);
 
           // Clear any blocking on successful login
           this.clearBlock();

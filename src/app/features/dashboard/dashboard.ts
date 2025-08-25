@@ -108,7 +108,6 @@ export class DashboardComponent implements OnInit {
   showAddAchievementDialog = false;
 
   // Resume analysis result (optional)
-  resumeAnalysisResult: any = null;
   showAnalysisNotification: boolean = false;
 
   error: string = '';
@@ -126,24 +125,11 @@ export class DashboardComponent implements OnInit {
     // Initialize charts first
     this.initPerformanceChart();
     this.initCharts();
-
-    // Check for resume analysis result
-    this.checkForResumeAnalysisResult();
-
-    // Then load user profile
     this.loadUserProfile();
   }
 
   /** Display a brief notification if resume analysis was just completed. */
-  checkForResumeAnalysisResult() {
-    try {
-      console.log('Resume analysis complete');
-    } catch (error) {
-      console.error('Error parsing resume analysis result:', error);
-      sessionStorage.removeItem('resumeAnalysisResult');
-    }
-
-  }
+ 
 
   /** Fetch and populate user profile and related lists. */
   loadUserProfile() {
@@ -603,7 +589,6 @@ export class DashboardComponent implements OnInit {
     
     this.userProfileService.updateUserProfile(updatePayload).subscribe({
       next: (response: UserProfile) => {
-        console.log('Profile updated successfully');
         this.isDataModified = false;
         this.refreshProfileData();
       },

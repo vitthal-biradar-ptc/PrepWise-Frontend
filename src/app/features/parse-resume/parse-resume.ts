@@ -84,7 +84,6 @@ export class ParseResume {
 
     this.resumeParseService.parseResume(this.selectedFile).subscribe({
       next: (result: ParsedResumeResponse) => {
-        console.log('Resume parsing successful:', result);
 
         this.isLoading = false;
         this.cdr.markForCheck();

@@ -97,31 +97,31 @@
 
 /* Profile editing input styling */
 .edit-input {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border: 2px solid rgba(52, 152, 219, 0.3) !important;
+  background: rgba(var(--rgb-bg), 0.9) !important;
+  border: 2px solid rgba(var(--rgb-primary), 0.3) !important;
   border-radius: 0.75rem !important;
   padding: 0.75rem 1rem !important;
-  color: #2C3E50 !important;
+  color: var(--color-text) !important;
   outline: none !important;
   transition: all 0.3s ease !important;
   font-weight: 500 !important;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1) !important;
+  box-shadow: 0 2px 8px rgba(var(--rgb-primary), 0.1) !important;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
 .edit-input:focus {
-  border-color: #3498DB !important;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2), 0 4px 12px rgba(52, 152, 219, 0.15) !important;
-  background: rgba(255, 255, 255, 1) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(var(--rgb-primary), 0.2), 0 4px 12px rgba(var(--rgb-primary), 0.15) !important;
+  background: rgba(var(--rgb-bg), 1) !important;
   transform: translateY(-1px) !important;
 }
 
 .edit-input:hover {
-  border-color: rgba(52, 152, 219, 0.5) !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15) !important;
+  border-color: rgba(var(--rgb-primary), 0.5) !important;
+  background: rgba(var(--rgb-bg), 0.95) !important;
+  box-shadow: 0 4px 12px rgba(var(--rgb-primary), 0.15) !important;
 }
 
 .edit-input::placeholder {
@@ -133,15 +133,15 @@
 .profile-name-input {
   font-size: 2rem !important;
   font-weight: 700 !important;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.9) 100%) !important;
-  border: 3px solid rgba(52, 152, 219, 0.3) !important;
-  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.15) !important;
+  background: linear-gradient(135deg, rgba(var(--rgb-bg), 0.95) 0%, rgba(248, 249, 250, 0.9) 100%) !important;
+  border: 3px solid rgba(var(--rgb-primary), 0.3) !important;
+  box-shadow: 0 4px 16px rgba(var(--rgb-primary), 0.15) !important;
 }
 
 .profile-name-input:focus {
-  border-color: #3498DB !important;
-  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.25), 0 6px 20px rgba(52, 152, 219, 0.2) !important;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 249, 250, 0.95) 100%) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 4px rgba(var(--rgb-primary), 0.25), 0 6px 20px rgba(var(--rgb-primary), 0.2) !important;
+  background: linear-gradient(135deg, rgba(var(--rgb-bg), 1) 0%, rgba(248, 249, 250, 0.95) 100%) !important;
 }
 
 /* Skills grid */
@@ -221,43 +221,43 @@
 
 /* Dialog Styles matching light theme */
 :host ::ng-deep .p-dialog {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(var(--rgb-bg), 0.95);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(52, 152, 219, 0.2);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
   border-radius: 1rem;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 :host ::ng-deep .p-dialog-header {
   background: transparent;
-  border-bottom: 1px solid rgba(52, 152, 219, 0.2);
-  color: #2C3E50;
+  border-bottom: 1px solid rgba(var(--rgb-primary), 0.2);
+  color: var(--color-text);
   font-weight: 600;
   padding: 1.5rem 2rem;
 }
 
 :host ::ng-deep .p-dialog-content {
   background: transparent;
-  color: #2C3E50;
+  color: var(--color-text);
   padding: 2rem;
 }
 
 :host ::ng-deep .p-dialog-footer {
   background: transparent;
-  border-top: 1px solid rgba(52, 152, 219, 0.2);
+  border-top: 1px solid rgba(var(--rgb-primary), 0.2);
   padding: 1.5rem 2rem;
 }
 
 /* Enhanced dialog content styling */
 :host ::ng-deep .enhanced-dialog .p-dialog {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.95) 100%);
-  border: 2px solid rgba(52, 152, 219, 0.2);
-  box-shadow: 0 25px 50px rgba(52, 152, 219, 0.15);
+  background: linear-gradient(135deg, rgba(var(--rgb-bg), 0.98) 0%, rgba(248, 249, 250, 0.95) 100%);
+  border: 2px solid rgba(var(--rgb-primary), 0.2);
+  box-shadow: 0 25px 50px rgba(var(--rgb-primary), 0.15);
 }
 
 :host ::ng-deep .enhanced-dialog .p-dialog-header {
-  background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
-  border-bottom: 2px solid rgba(52, 152, 219, 0.2);
+  background: linear-gradient(135deg, rgba(var(--rgb-primary), 0.05) 0%, rgba(var(--rgb-secondary), 0.05) 100%);
+  border-bottom: 2px solid rgba(var(--rgb-primary), 0.2);
   font-size: 1.25rem;
 }
 
@@ -267,11 +267,11 @@
 .form-group textarea {
   width: 100%;
   max-width: 100%;
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid rgba(52, 152, 219, 0.2);
+  background: rgba(var(--rgb-bg), 0.9);
+  border: 2px solid rgba(var(--rgb-primary), 0.2);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
-  color: #2C3E50;
+  color: var(--color-text);
   outline: none;
   transition: all 0.3s ease;
   font-size: 1rem;
@@ -282,17 +282,17 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #3498DB;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-  background: rgba(255, 255, 255, 1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(var(--rgb-primary), 0.1);
+  background: rgba(var(--rgb-bg), 1);
   transform: translateY(-1px);
 }
 
 .form-group input:hover,
 .form-group select:hover,
 .form-group textarea:hover {
-  border-color: rgba(52, 152, 219, 0.4);
-  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(var(--rgb-primary), 0.4);
+  background: rgba(var(--rgb-bg), 0.95);
 }
 
 .form-group input::placeholder,
@@ -302,7 +302,7 @@
 }
 
 .form-group label {
-  color: #2C3E50;
+  color: var(--color-text);
   font-weight: 600;
   margin-bottom: 0.5rem;
   display: block;
@@ -320,8 +320,8 @@
 }
 
 .form-group select option {
-  background: rgba(255, 255, 255, 0.95);
-  color: #2C3E50;
+  background: rgba(var(--rgb-bg), 0.95);
+  color: var(--color-text);
   padding: 0.5rem;
 }
 
@@ -392,7 +392,7 @@
 
 /* Animation for dialog show */
 :host ::ng-deep .p-dialog-mask {
-  background: rgba(44, 62, 80, 0.4);
+  background: rgba(var(--rgb-text), 0.4);
   backdrop-filter: blur(8px);
 }
 

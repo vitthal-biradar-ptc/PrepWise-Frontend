@@ -196,18 +196,15 @@ export class SignUp {
       portfolioLink: this.portfolioUrl.trim() || null
     };
 
-    console.log('Sending sign-up data:', userData);
 
     this.authService.signUp(userData).subscribe({
       next: (response) => {
-        console.log('Sign up successful:', response);
         
         this.authService.setToken(response.token, response.tokenType);
         
         this.authService.validateToken().subscribe(() => {
           this.isLoading = false;
           this.resetForm();
-          console.log('Account created successfully! Welcome to PrepWise.');
           setTimeout(() => {
             this.router.navigate(['/parse-resume'], { state: { firstTime: true } });
           }, 1500);

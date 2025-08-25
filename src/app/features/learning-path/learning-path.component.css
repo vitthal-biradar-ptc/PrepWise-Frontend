@@ -1,7 +1,7 @@
 .learning-path-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
-  color: #2C3E50;
+  background: linear-gradient(135deg, var(--color-bg-50) 0%, var(--color-bg-100) 100%);
+  color: var(--color-text);
 }
 
 .main-content {
@@ -29,11 +29,11 @@
 }
 
 .breadcrumb-item:hover:not(.current) {
-  color: #3498DB;
+  color: var(--color-primary);
 }
 
 .breadcrumb-item.current {
-  color: #3498DB;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -45,7 +45,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6C757D;
+  color: var(--color-muted);
   font-size: 0.875rem;
 }
 
@@ -81,8 +81,8 @@
 
 /* Progress Overview */
 .progress-overview {
-  background: rgba(52, 152, 219, 0.1);
-  border: 1px solid rgba(52, 152, 219, 0.2);
+  background: rgba(var(--rgb-primary), 0.1);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
   border-radius: 1rem;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -105,7 +105,7 @@
 .progress-percentage {
   font-size: 2rem;
   font-weight: 700;
-  color: #3498DB;
+  color: var(--color-primary);
 }
 
 .progress-bar-container {
@@ -115,14 +115,14 @@
 .progress-bar {
   width: 100%;
   height: 1rem;
-  background: rgba(52, 152, 219, 0.2);
+  background: rgba(var(--rgb-primary), 0.2);
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3498DB, #6C5CE7);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   border-radius: 0.5rem;
   transition: width 0.6s ease;
   position: relative;
@@ -135,7 +135,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--rgb-bg), 0.2), transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -163,14 +163,14 @@
 }
 
 .stat-value {
-  color: #3498DB;
+  color: var(--color-primary);
   font-weight: 600;
 }
 
 .stat-divider {
   width: 1px;
   height: 1rem;
-  background: rgba(52, 152, 219, 0.3);
+  background: rgba(var(--rgb-primary), 0.3);
 }
 
 /* Period Cards */
@@ -181,8 +181,8 @@
 }
 
 .period-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(52, 152, 219, 0.2);
+  background: var(--color-bg-0);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
   border-radius: 1rem;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -191,13 +191,13 @@
 }
 
 .period-card:hover {
-  border-color: rgba(52, 152, 219, 0.4);
+  border-color: rgba(var(--rgb-primary), 0.4);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.15);
+  box-shadow: 0 8px 32px rgba(var(--rgb-primary), 0.15);
 }
 
 .period-card.expanded {
-  border-color: rgba(52, 152, 219, 0.5);
+  border-color: rgba(var(--rgb-primary), 0.5);
 }
 
 .period-header {
@@ -207,7 +207,7 @@
 }
 
 .period-header:hover {
-  background: rgba(52, 152, 219, 0.05);
+  background: rgba(var(--rgb-primary), 0.05);
 }
 
 .period-header-content {
@@ -226,12 +226,12 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
-  color: #3498DB;
+  color: var(--color-primary);
 }
 
 .period-goal {
   margin: 0;
-  color: #2C3E50;
+  color: var(--color-text);
   font-size: 1rem;
 }
 
@@ -250,21 +250,21 @@
 .mini-progress-bar {
   width: 60px;
   height: 4px;
-  background: rgba(52, 152, 219, 0.2);
+  background: rgba(var(--rgb-primary), 0.2);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .mini-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #3498DB, #6C5CE7);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
 .mini-progress-text {
   font-size: 0.75rem;
-  color: #6C757D;
+  color: var(--color-muted);
   font-weight: 600;
   min-width: 30px;
 }
@@ -291,7 +291,7 @@
 
 .period-content-inner {
   padding: 0 1.5rem 1.5rem 1.5rem;
-  border-top: 1px solid rgba(52, 152, 219, 0.2);
+  border-top: 1px solid rgba(var(--rgb-primary), 0.2);
 }
 
 .section {
@@ -309,7 +309,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin: 1.5rem 0 1rem 0;
-  color: #2C3E50;
+  color: var(--color-text);
 }
 
 /* Focus Areas */
@@ -321,8 +321,8 @@
 
 .focus-area-item {
   padding: 0.75rem 1rem;
-  background: rgba(52, 152, 219, 0.05);
-  border: 1px solid rgba(52, 152, 219, 0.1);
+  background: rgba(var(--rgb-primary), 0.05);
+  border: 1px solid rgba(var(--rgb-primary), 0.1);
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
   position: relative;
@@ -330,14 +330,14 @@
 }
 
 .focus-area-item:hover {
-  background: rgba(52, 152, 219, 0.1);
-  border-color: rgba(52, 152, 219, 0.2);
+  background: rgba(var(--rgb-primary), 0.1);
+  border-color: rgba(var(--rgb-primary), 0.2);
   transform: translateX(4px);
 }
 
 .focus-area-item::before {
   content: '•';
-  color: #3498DB;
+  color: var(--color-primary);
   font-weight: bold;
   margin-right: 0.5rem;
 }
@@ -353,8 +353,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(52, 152, 219, 0.05);
-  border: 1px solid rgba(52, 152, 219, 0.1);
+  background: rgba(var(--rgb-primary), 0.05);
+  border: 1px solid rgba(var(--rgb-primary), 0.1);
   border-radius: 0.5rem;
   text-decoration: none;
   color: inherit;
@@ -362,10 +362,10 @@
 }
 
 .resource-item:hover {
-  background: rgba(52, 152, 219, 0.1);
-  border-color: rgba(52, 152, 219, 0.3);
+  background: rgba(var(--rgb-primary), 0.1);
+  border-color: rgba(var(--rgb-primary), 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.1);
+  box-shadow: 0 4px 16px rgba(var(--rgb-primary), 0.1);
 }
 
 .resource-icon {
@@ -381,19 +381,19 @@
 .resource-title {
   display: block;
   font-weight: 600;
-  color: #2C3E50;
+  color: var(--color-text);
   margin-bottom: 0.25rem;
 }
 
 .resource-type {
   display: block;
   font-size: 0.875rem;
-  color: #6C757D;
+  color: var(--color-muted);
   text-transform: capitalize;
 }
 
 .external-link-icon {
-  color: #3498DB;
+  color: var(--color-primary);
   font-size: 1.25rem;
   flex-shrink: 0;
 }
