@@ -172,3 +172,31 @@
 .chat-scroll-container::-webkit-scrollbar-thumb:hover {
   background-color: rgba(52, 152, 219, 0.5);
 }
+
+/* Enhanced input and select styling */
+input[type="text"]:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+select {
+  background-image: none;
+}
+
+.appearance-none {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.w-5 { width: 1.25rem; }
+.h-5 { height: 1.25rem; }
+.pointer-events-none { pointer-events: none; }
+.cursor-pointer { cursor: pointer; }
+.transition-all { transition-property: all; }
+.duration-200 { transition-duration: 200ms; }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.border-2 { border-width: 2px; }
+.text-base { font-size: 1rem; line-height: 1.5rem; }
+.placeholder-gray-400::placeholder { color: #9CA3AF; }
+.space-y-6 > :not([hidden]) ~ :not([hidden]) { --tw-space-y-reverse: 0; margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse))); margin-bottom: calc(1.5rem * var(--tw-space-y-reverse)); }

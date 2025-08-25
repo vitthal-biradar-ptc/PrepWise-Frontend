@@ -1,4 +1,7 @@
+@if (currentView === AppView.SETUP) {
 <app-header></app-header>
+}
+
 <div class="min-h-[70vh] w-full flex flex-col items-center p-4 theme-dark-bg">
   <!-- Decorative gradient bubbles like hero -->
   <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
@@ -31,34 +34,56 @@
       <p class="text-center text-sm theme-muted mb-5">
         Enter your role and level to tailor the conversation.
       </p>
-      <form (ngSubmit)="startInterviewFromSetup()" class="space-y-4">
+      <form (ngSubmit)="startInterviewFromSetup()" class="space-y-6">
         <div>
-          <label class="block text-sm font-medium mb-1 theme-light"
-            >Job Role</label
+          <label class="block text-sm font-semibold mb-2 theme-light"
+            >Job Role *</label
           >
           <input
             type="text"
             [(ngModel)]="jobRole"
             name="role"
-            placeholder="e.g., Senior Frontend Engineer"
+            placeholder="Enter your job role"
             required
-            class="mt-1 block w-full border border-[#B03EFF]/30 bg-[#1A1A1A] text-[#F1F1F1] rounded-md py-2 px-3"
+            class="w-full border-2 border-[#3498DB]/20 bg-white text-[#2C3E50] rounded-lg py-3 px-4 text-base placeholder-gray-400 transition-all duration-200 focus:border-[#3498DB] focus:ring-2 focus:ring-[#3498DB]/20 focus:outline-none"
           />
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1 theme-light"
-            >Experience Level</label
+          <label class="block text-sm font-semibold mb-2 theme-light"
+            >Experience Level *</label
           >
-          <select
-            [(ngModel)]="experienceLevel"
-            name="experience"
-            class="mt-1 block w-full border border-[#B03EFF]/30 bg-[#1A1A1A] text-[#F1F1F1] rounded-md py-2 px-3"
-          >
-            <option>Entry-Level</option>
-            <option>Mid-Level</option>
-            <option>Senior</option>
-            <option>Lead / Principal</option>
-          </select>
+          <div class="relative">
+            <select
+              [(ngModel)]="experienceLevel"
+              name="experience"
+              class="w-full border-2 border-[#3498DB]/20 bg-white text-[#2C3E50] rounded-lg py-3 px-4 text-base appearance-none transition-all duration-200 focus:border-[#3498DB] focus:ring-2 focus:ring-[#3498DB]/20 focus:outline-none cursor-pointer"
+            >
+              <option value="" disabled>Select your experience level</option>
+              <option value="Entry-Level">Entry-Level (0-2 years)</option>
+              <option value="Mid-Level">Mid-Level (2-5 years)</option>
+              <option value="Senior">Senior (5+ years)</option>
+              <option value="Lead / Principal">
+                Lead / Principal (8+ years)
+              </option>
+            </select>
+            <div
+              class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none"
+            >
+              <svg
+                class="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
         <button
           type="submit"
@@ -142,7 +167,11 @@
           }
         </div>
 
-        <div #chatContainer class="flex-1 overflow-y-auto p-4 chat-scroll-container" style="max-height: calc(70vh - 200px);">
+        <div
+          #chatContainer
+          class="flex-1 overflow-y-auto p-4 chat-scroll-container"
+          style="max-height: calc(70vh - 200px)"
+        >
           <div class="space-y-4">
             <ng-container *ngFor="let item of transcript; trackBy: trackById">
               @if (item.speaker === 'feedback') {
@@ -231,7 +260,47 @@
         </div>
       </div>
     </div>
-    }
+
+    <!-- Fullscreen Exit Warning Modal -->
+    @if (showFullscreenExitWarning) {
+    <div
+      class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-gray-800 border border-gray-600 rounded-lg p-6 max-w-md mx-4"
+      >
+        <div class="text-center">
+          <div
+            class="w-12 h-12 mx-auto mb-4 bg-yellow-600 rounded-full flex items-center justify-center"
+          >
+            ⚠️
+          </div>
+          <h3 class="text-xl font-bold text-black mb-2">
+            Interview Must Be In Fullscreen
+          </h3>
+          <p class="text-gray-300 mb-6">
+            For the best interview experience and to maintain focus, this
+            interview must be conducted in fullscreen mode. Exiting fullscreen
+            will end the interview without generating a report.
+          </p>
+          <div class="flex gap-3 justify-center">
+            <button
+              (click)="confirmExitInterview()"
+              class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+            >
+              Exit Interview
+            </button>
+            <button
+              (click)="continueInterviewInFullscreen()"
+              class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+            >
+              Continue in Fullscreen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    } }
 
     <!-- REPORT VIEW -->
     @if (currentView === AppView.REPORT) {

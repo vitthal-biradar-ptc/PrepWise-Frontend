@@ -56,10 +56,27 @@ export class MockInterview implements OnInit, OnDestroy {
   private readonly requestTimeoutMs = 45000;
   private readonly zone = inject(NgZone);
 
+  // Fullscreen state
+  public isFullscreen = false;
+  public showFullscreenExitWarning = false;
+  private fullscreenChangeHandler?: () => void;
+
   ngOnInit(): void {
     if (!this.isBrowser) {
       return;
     }
+
+    // Setup fullscreen change listener
+    this.fullscreenChangeHandler = () => {
+      this.zone.run(() => {
+        this.handleFullscreenChange();
+      });
+    };
+    
+    document.addEventListener('fullscreenchange', this.fullscreenChangeHandler);
+    document.addEventListener('webkitfullscreenchange', this.fullscreenChangeHandler);
+    document.addEventListener('mozfullscreenchange', this.fullscreenChangeHandler);
+    document.addEventListener('MSFullscreenChange', this.fullscreenChangeHandler);
 
     // Setup Speech Recognition
     const SpeechRecognitionImpl: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -109,6 +126,17 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    // Remove fullscreen listeners
+    if (this.fullscreenChangeHandler) {
+      document.removeEventListener('fullscreenchange', this.fullscreenChangeHandler);
+      document.removeEventListener('webkitfullscreenchange', this.fullscreenChangeHandler);
+      document.removeEventListener('mozfullscreenchange', this.fullscreenChangeHandler);
+      document.removeEventListener('MSFullscreenChange', this.fullscreenChangeHandler);
+    }
+    
+    // Exit fullscreen if active
+    this.exitFullscreen();
+    
     // Stop camera
     this.cameraStream?.getTracks().forEach(t => t.stop());
     this.cameraStream = null;
@@ -121,8 +149,17 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   // Setup View actions
-  protected startInterviewFromSetup(): void {
+  protected async startInterviewFromSetup(): Promise<void> {
     if (!this.jobRole.trim()) return;
+    
+    // Enter fullscreen before starting interview
+    try {
+      await this.enterFullscreen();
+    } catch (error) {
+      console.warn('Could not enter fullscreen:', error);
+      // Continue with interview even if fullscreen fails
+    }
+    
     this.transcript = [];
     this.report = null;
     this.error = null;
@@ -211,6 +248,9 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   protected endInterview(): void {
+    // Exit fullscreen when ending interview
+    this.exitFullscreen();
+    
     this.currentView = this.AppView.REPORT;
     this.isLoading = true;
     this.error = null;
@@ -221,6 +261,9 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   protected startAgain(): void {
+    // Exit fullscreen when starting again
+    this.exitFullscreen();
+    
     this.jobRole = '';
     this.experienceLevel = 'Mid-Level';
     this.transcript = [];
@@ -229,6 +272,7 @@ export class MockInterview implements OnInit, OnDestroy {
     this.aiStatus = 'idle';
     this.isListening = false;
     this.currentView = this.AppView.SETUP;
+    this.showFullscreenExitWarning = false;
   }
 
   protected getScoreColor(score: number): string {
@@ -238,6 +282,90 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   public trackById(_index: number, item: TranscriptItem): number { return item.id; }
+
+  // Fullscreen warning handlers
+  protected continueInterviewInFullscreen(): void {
+    this.showFullscreenExitWarning = false;
+    this.enterFullscreen().catch(() => {
+      // If can't re-enter fullscreen, force exit interview
+      this.forceExitInterview();
+    });
+  }
+
+  protected confirmExitInterview(): void {
+    this.showFullscreenExitWarning = false;
+    this.forceExitInterview();
+  }
+
+  private forceExitInterview(): void {
+    // Stop all interview activities
+    this.stopListening();
+    if (this.isBrowser && (window as any).speechSynthesis) {
+      (window as any).speechSynthesis.cancel();
+    }
+    
+    // Reset to setup without generating report
+    this.startAgain();
+  }
+
+  // Fullscreen management
+  private async enterFullscreen(): Promise<void> {
+    if (!this.isBrowser) return;
+    
+    const element = document.documentElement;
+    try {
+      if (element.requestFullscreen) {
+        await element.requestFullscreen();
+      } else if ((element as any).webkitRequestFullscreen) {
+        await (element as any).webkitRequestFullscreen();
+      } else if ((element as any).mozRequestFullScreen) {
+        await (element as any).mozRequestFullScreen();
+      } else if ((element as any).msRequestFullscreen) {
+        await (element as any).msRequestFullscreen();
+      }
+    } catch (error) {
+      throw new Error('Fullscreen request failed');
+    }
+  }
+
+  private exitFullscreen(): void {
+    if (!this.isBrowser) return;
+    
+    try {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if ((document as any).webkitExitFullscreen) {
+        (document as any).webkitExitFullscreen();
+      } else if ((document as any).mozCancelFullScreen) {
+        (document as any).mozCancelFullScreen();
+      } else if ((document as any).msExitFullscreen) {
+        (document as any).msExitFullscreen();
+      }
+    } catch (error) {
+      console.warn('Exit fullscreen failed:', error);
+    }
+  }
+
+  private isDocumentInFullscreen(): boolean {
+    if (!this.isBrowser) return false;
+    
+    return !!(
+      document.fullscreenElement ||
+      (document as any).webkitFullscreenElement ||
+      (document as any).mozFullScreenElement ||
+      (document as any).msFullscreenElement
+    );
+  }
+
+  private handleFullscreenChange(): void {
+    const wasFullscreen = this.isFullscreen;
+    this.isFullscreen = this.isDocumentInFullscreen();
+    
+    // If we exited fullscreen during interview, show warning
+    if (wasFullscreen && !this.isFullscreen && this.currentView === this.AppView.INTERVIEW) {
+      this.showFullscreenExitWarning = true;
+    }
+  }
 
   // Auto-scroll chat to bottom
   private scrollToBottom(): void {
