@@ -123,14 +123,17 @@ export class SignIn implements OnDestroy {
     const fields = ['usernameOrEmail', 'password'];
     let isValid = true;
 
+    // Clear any stale errors from previous interactions
+    this.formErrors = {};
+
     // Mark all fields as touched and validate
     fields.forEach(field => {
       this.touchedFields[field] = true;
       this.validateField(field);
     });
 
-    // Check if any errors exist
-    if (Object.keys(this.formErrors).length > 0) {
+    // Check if any errors exist for the current fields
+    if (fields.some(field => !!this.formErrors[field])) {
       isValid = false;
     }
 

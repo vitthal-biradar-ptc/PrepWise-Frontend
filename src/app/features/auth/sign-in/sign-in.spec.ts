@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { of, throwError } from 'rxjs';
@@ -11,7 +12,7 @@ describe('SignIn', () => {
   let component: SignIn;
   let fixture: ComponentFixture<SignIn>;
   let mockAuthService: jasmine.SpyObj<AuthService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let router: Router;
   let originalLocalStorage: Storage;
 
   beforeEach(async () => {
@@ -41,19 +42,19 @@ describe('SignIn', () => {
 
     // Create service spies
     mockAuthService = jasmine.createSpyObj('AuthService', ['signIn', 'setToken', 'validateToken']);
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-
     await TestBed.configureTestingModule({
-      imports: [SignIn, FormsModule, HttpClientTestingModule],
+      imports: [SignIn, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
         { provide: AuthService, useValue: mockAuthService },
-        { provide: Router, useValue: mockRouter },
-        { provide: PLATFORM_ID, useValue: 'browser' }
+        { provide: PLATFORM_ID, useValue: 'browser' },
+        provideRouter([])
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignIn);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -166,7 +167,7 @@ describe('SignIn', () => {
       it('should return false for hasFieldError when field is not touched', () => {
         component.formErrors['usernameOrEmail'] = 'Error message';
 
-        expect(component.hasFieldError('usernameOrEmail')).toBe(false);
+        expect(component.hasFieldError('usernameOrEmail')).toBeFalsy();
       });
     });
 
@@ -324,7 +325,7 @@ describe('SignIn', () => {
       expect(mockAuthService.setToken).toHaveBeenCalledWith('test-token', 'Bearer');
 
       tick(1500);
-      expect(mockRouter.navigate).toHaveBeenCalledWith(['/dashboard']);
+      expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
     }));
 
     it('should handle sign in error (401)', fakeAsync(() => {
@@ -414,6 +415,7 @@ describe('SignIn', () => {
       component.handleSubmit(mockEvent);
       tick();
       tick(1500);
+      tick();
 
       expect(component.usernameOrEmail).toBe('');
       expect(component.password).toBe('');
@@ -443,10 +445,9 @@ describe('SignIn', () => {
     it('should not access localStorage on server platform', async () => {
       TestBed.resetTestingModule();
       await TestBed.configureTestingModule({
-        imports: [SignIn, FormsModule, HttpClientTestingModule],
+        imports: [SignIn, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
         providers: [
           { provide: AuthService, useValue: mockAuthService },
-          { provide: Router, useValue: mockRouter },
           { provide: PLATFORM_ID, useValue: 'server' }
         ]
       }).compileComponents();
