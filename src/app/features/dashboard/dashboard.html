@@ -1,381 +1,574 @@
-<div class="dashboard-container" style="background-color: #1A1A1A; color: #F1F1F1;">
+<div
+  class="dashboard-container bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF] min-h-screen"
+>
   <app-header></app-header>
-  
-  <!-- Resume Analysis Result Notification -->
-  @if (showAnalysisNotification && resumeAnalysisResult) {
-    <div class="analysis-notification-container mb-6">
-      <div class="analysis-notification bg-gradient-to-r from-[#7F00FF]/10 to-[#C400FF]/10 border border-[#B03EFF]/30 rounded-xl p-6 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5"></div>
-        <div class="relative z-10">
+
+  <!-- Background decorations matching resume analyzer -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <div
+      class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#3498DB]/10 rounded-full blur-[100px]"
+    ></div>
+    <div
+      class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#6C5CE7]/10 rounded-full blur-[100px]"
+    ></div>
+    <div
+      class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#3498DB]/8 rounded-full blur-[80px]"
+    ></div>
+  </div>
+
+  <div class="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl pt-8">
+    <!-- Resume Analysis Result Notification -->
+    @if (showAnalysisNotification && resumeAnalysisResult) {
+    <div class="analysis-notification-container mb-8">
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+        ></div>
+        <div
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg"
+        >
           <div class="flex items-start justify-between">
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full flex items-center justify-center mr-4">
-                <i class="pi pi-check text-white text-xl"></i>
+              <div
+                class="w-12 h-12 bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] rounded-full flex items-center justify-center mr-4 shadow-lg"
+              >
+                <span class="text-white text-xl">✓</span>
               </div>
               <div>
-                <h3 class="text-xl font-bold text-[#F1F1F1] mb-1">Resume Analysis Complete!</h3>
-                <p class="text-[#A7A7A7]">Your profile has been updated with the analysis results</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
-              <h4 class="text-[#B03EFF] font-semibold mb-2">Identified Domain</h4>
-              <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.domain || 'General' }}</p>
-            </div>
-            <div class="bg-[#1A1A1A]/50 rounded-lg p-4 border border-[#B03EFF]/20">
-              <h4 class="text-[#B03EFF] font-semibold mb-2">Suggestions Generated</h4>
-              <p class="text-[#F1F1F1] text-lg">{{ resumeAnalysisResult.suggestions?.length || 0 }} recommendations</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
-
-  <!-- Profile Section -->
-  <div class="profile-container">
-    <div class="profile-card" style="background-color: #1A1A1A; border: 1px solid rgba(176, 62, 255, 0.3); border-radius: 1rem; box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);">
-      <div class="profile-header">
-        <!-- Profile Photo Section -->
-        <div class="profile-photo-section">
-          <p-avatar 
-            [image]="profile.photo || 'https://via.placeholder.com/150'" 
-            size="xlarge" 
-            shape="circle"
-            class="profile-photo"
-            [style]="{'width': '120px', 'height': '120px', 'object-fit': 'cover', 'border': '2px solid rgba(176, 62, 255, 0.5)'}"
-            imageAriaLabel="Profile photo">
-          </p-avatar>
-          <div class="profile-info">
-            <div class="name-section">
-              @if (!isProfileEditing) {
-                <h1 class="profile-name" style="margin-bottom: 0.25rem;">{{ profile.name || 'Loading...' }}</h1>
-              }
-              @if (isProfileEditing) {
-                <input 
-                  pInputText 
-                  [(ngModel)]="profile.name" 
-                  class="edit-input profile-name-input"
-                  placeholder="Enter your name">
-              }
-            </div>
-            
-            <div class="email-section" style="margin-bottom: 0.25rem;">
-              @if (!isProfileEditing) {
-                <p class="profile-email" style="margin: 0;">{{ profile.email || 'Loading...' }}</p>
-              }
-              @if (isProfileEditing) {
-                <input 
-                  pInputText 
-                  [(ngModel)]="profile.email" 
-                  class="edit-input"
-                  placeholder="Enter your email">
-              }
-            </div>
-
-            <div class="location-section">
-              @if (!isProfileEditing) {
-                <p class="profile-location" style="margin: 0;">
-                  <i class="pi pi-map-marker"></i> {{ profile.location || 'Loading...' }}
+                <h3 class="text-xl font-bold text-[#2C3E50] mb-1">
+                  Resume Analysis Complete!
+                </h3>
+                <p class="text-[#6C757D]">
+                  Your profile has been updated with the analysis results
                 </p>
-              }
-              @if (isProfileEditing) {
-                <input 
-                  pInputText 
-                  [(ngModel)]="profile.location" 
-                  class="edit-input"
-                  placeholder="Enter your location">
-              }
-            </div>
-          </div>
-        </div>
-
-        <div class="profile-actions">
-          <div class="domain-badge">
-            <p-chip 
-              [label]="profile.domain || 'General'" 
-              icon="pi pi-briefcase"
-              class="domain-chip"
-              [style]="{'background': 'linear-gradient(135deg, #7F00FF, #C400FF)', 'color': '#ffffff', 'border': 'none', 'font-weight': '600', 'padding': '8px 16px', 'border-radius': '12px'}">
-            </p-chip>
-          </div>
-          
-          <div class="profile-buttons" style="background: transparent;">
-             <p-button 
-              [label]="isProfileEditing ? 'Save Profile' : 'Edit Profile'"
-              (onClick)="isProfileEditing ? saveProfile() : toggleProfileEditing()"
-              class="profile-btn upload-btn"
-              [style]="{
-                'background': isProfileEditing ? 'linear-gradient(135deg, #22c55e, #16a34a)' : 'rgba(176, 62, 255, 0.2)',
-                'border': 'none',
-                'color': '#ffffff',
-                'font-weight': '600',
-                'padding': '12px 24px',
-                'border-radius': '12px',
-                'min-width': '160px'
-              }">
-            </p-button>
-            <p-button 
-              icon="pi pi-upload"
-              label="Update Resume"
-              (onClick)="navigateToParseResume()"
-              class="profile-btn upload-btn"
-              [style]="{
-                'background': 'linear-gradient(135deg, #7F00FF, #C400FF)',
-                'border': 'none',
-                'color': '#ffffff',
-                'font-weight': '600',
-                'padding': '12px 24px',
-                'border-radius': '12px',
-                'min-width': '160px'
-              }">
-            </p-button>
-          </div>
-        </div>
-      </div>
-
-      <div class="social-links">
-        @if (!isProfileEditing && profile.githubUrl) {
-          <div class="social-link">
-            <a [href]="profile.githubUrl" target="_blank" class="social-btn github">
-              <i class="pi pi-github"></i>
-              <span>GitHub</span>
-            </a>
-          </div>
-        }
-        @if (!isProfileEditing && profile.linkedinUrl) {
-          <div class="social-link">
-            <a [href]="profile.linkedinUrl" target="_blank" class="social-btn linkedin">
-              <i class="pi pi-linkedin"></i>
-              <span>LinkedIn</span>
-            </a>
-          </div>
-        }
-        @if (!isProfileEditing && profile.portfolioUrl) {
-          <div class="social-link">
-            <a [href]="profile.portfolioUrl" target="_blank" class="social-btn portfolio">
-              <i class="pi pi-globe"></i>
-              <span>Portfolio</span>
-            </a>
-          </div>
-        }
-
-        <!-- Social links editing -->
-        @if (isProfileEditing) {
-          <div class="social-links-edit">
-            <div class="social-input-group">
-              <label>GitHub URL:</label>
-              <input pInputText [(ngModel)]="profile.githubUrl" placeholder="https://github.com/username">
-            </div>
-            <div class="social-input-group">
-              <label>LinkedIn URL:</label>
-              <input pInputText [(ngModel)]="profile.linkedinUrl" placeholder="https://linkedin.com/in/username">
-            </div>
-            <div class="social-input-group">
-              <label>Portfolio URL:</label>
-              <input pInputText [(ngModel)]="profile.portfolioUrl" placeholder="https://your-portfolio.com">
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-  </div>
-
-  <!-- Charts Section -->
-  <div class="charts-section">
-    <div class="chart-container">
-      <p-card class="chart-card" [style]="{'background-color': '#1A1A1A', 'border': '1px solid rgba(176, 62, 255, 0.3)', 'border-radius': '1rem'}">
-        <ng-template pTemplate="header">
-          <div class="chart-header" style="color: #F5F5DC;">
-            <h3>Domain Analysis</h3>
-            <i class="pi pi-chart-pie" style="color: #B03EFF;"></i>
-          </div>
-        </ng-template>
-        <div class="chart-content">
-          @if (domainChartData) {
-            <p-chart 
-              type="pie" 
-              [data]="domainChartData" 
-              [options]="domainChartOptions"
-              class="w-full">
-            </p-chart>
-          }
-        </div>
-      </p-card>
-    </div>
-
-    <div class="chart-container">
-      <p-card class="chart-card" [style]="{'background-color': '#1A1A1A', 'border': '1px solid rgba(176, 62, 255, 0.3)', 'border-radius': '1rem'}">
-        <ng-template pTemplate="header">
-          <div class="chart-header" style="color: #F5F5DC;">
-            <h3>Performance Metrics</h3>
-            <i class="pi pi-chart-line" style="color: #B03EFF;"></i>
-          </div>
-        </ng-template>
-        <div class="chart-content">
-          @if (atsChartData) {
-            <p-chart 
-              type="polarArea" 
-              [data]="atsChartData" 
-              [options]="atsChartOptions"
-              class="w-full">
-            </p-chart>
-          }
-        </div>
-      </p-card>
-    </div>
-  </div>
-
-  <!-- Skills Section -->
-  <div class="skills-section">
-    <p-card class="skills-card" [style]="{'background-color': '#1A1A1A', 'border': '1px solid rgba(176, 62, 255, 0.3)', 'border-radius': '1rem'}">
-      <ng-template pTemplate="header">
-        <div class="section-header" style="color: #F5F5DC;">
-          <h3>Skills</h3>
-          <p-button 
-            icon="pi pi-plus" 
-            label="Add Skill"
-            (onClick)="showAddSkillDialog = true"
-            class="add-btn"
-            [style]="{'background': 'linear-gradient(to right, #7F00FF, #C400FF)', 'border': 'none'}">
-          </p-button>
-        </div>
-      </ng-template>
-      
-      <div class="skills-grid">
-        @for (skill of skills; track skill.id) {
-          <div class="skill-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem;">
-            <div class="skill-content">
-              <div class="skill-info">
-                <h4 class="skill-name">{{ skill.name }}</h4>
-                <p class="skill-category">{{ skill.category }}</p>
-              </div>
-              <div class="skill-level">
-                <p-badge 
-                  [value]="skill.level" 
-                  [style]="{'background-color': getLevelColor(skill.level)}">
-                </p-badge>
               </div>
             </div>
           </div>
-        }
-        
-        <!-- Show message if no skills -->
-        @if (skills.length === 0) {
-          <div style="text-align: center; color: #A7A7A7; padding: 2rem;">
-            <p>No skills added yet. Click "Add Skill" to get started!</p>
-          </div>
-        }
-      </div>
-    </p-card>
-  </div>
 
-  <!-- Certifications and Achievements Section -->
-  <div class="certifications-section">
-    <div class="certifications-container">
-      <p-card class="certifications-card" [style]="{'background-color': '#1A1A1A', 'border': '1px solid rgba(176, 62, 255, 0.3)', 'border-radius': '1rem'}">
-        <ng-template pTemplate="header">
-          <div class="section-header" style="color: #F5F5DC;">
-            <h3>Certifications</h3>
-            <p-button 
-              icon="pi pi-plus" 
-              label="Add Certification"
-              (onClick)="showAddCertificationDialog = true"
-              class="add-btn"
-              [style]="{'background': 'linear-gradient(to right, #7F00FF, #C400FF)', 'border': 'none'}">
-            </p-button>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div
+              class="bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 rounded-xl p-4 border border-[#3498DB]/20"
+            >
+              <h4 class="text-[#3498DB] font-semibold mb-2">
+                Identified Domain
+              </h4>
+              <p class="text-[#2C3E50] text-lg font-medium">
+                {{ resumeAnalysisResult.domain || "General" }}
+              </p>
+            </div>
+            <div
+              class="bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 rounded-xl p-4 border border-[#3498DB]/20"
+            >
+              <h4 class="text-[#3498DB] font-semibold mb-2">
+                Suggestions Generated
+              </h4>
+              <p class="text-[#2C3E50] text-lg font-medium">
+                {{
+                  resumeAnalysisResult.suggestions?.length || 0
+                }}
+                recommendations
+              </p>
+            </div>
           </div>
-        </ng-template>
-        
-        <div class="certifications-list">
-          @for (cert of certifications; track cert.id) {
-            <div class="certification-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
-              <div class="certification-content">
-                <div class="certification-info">
-                  <h4 class="certification-name">{{ cert.name }}</h4>
-                  <p class="certification-issuer">{{ cert.issuer }}</p>
-                  <p class="certification-date">{{ formatDate(cert.date) }}</p>
-                  <p class="certification-description">{{ cert.description }}</p>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Profile Section -->
+    <div class="profile-container mb-8">
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+        ></div>
+        <div
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg"
+        >
+          <div class="profile-header">
+            <!-- Profile Photo Section -->
+            <div class="profile-photo-section">
+              <div class="relative">
+                <div
+                  class="absolute -inset-1 bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] rounded-full blur opacity-50"
+                ></div>
+                <p-avatar
+                  [image]="profile.photo || 'https://via.placeholder.com/150'"
+                  size="xlarge"
+                  shape="circle"
+                  class="relative profile-photo border-4 border-white shadow-2xl"
+                  [style]="{
+                    width: '120px',
+                    height: '120px',
+                    'object-fit': 'cover'
+                  }"
+                  imageAriaLabel="Profile photo"
+                >
+                </p-avatar>
+              </div>
+              <div class="profile-info">
+                <div class="name-section">
+                  @if (!isProfileEditing) {
+                  <h1
+                    class="profile-name text-3xl font-bold text-[#2C3E50] mb-2"
+                  >
+                    {{ profile.name || "Loading..." }}
+                  </h1>
+                  } @if (isProfileEditing) {
+                  <input
+                    pInputText
+                    [(ngModel)]="profile.name"
+                    class="edit-input profile-name-input text-3xl font-bold bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                    placeholder="Enter your name"
+                  />
+                  }
+                </div>
+
+                <div class="email-section mb-2">
+                  @if (!isProfileEditing) {
+                  <p class="profile-email text-lg text-[#6C757D]">
+                    {{ profile.email || "Loading..." }}
+                  </p>
+                  } @if (isProfileEditing) {
+                  <input
+                    pInputText
+                    [(ngModel)]="profile.email"
+                    class="edit-input bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                    placeholder="Enter your email"
+                  />
+                  }
+                </div>
+
+                <div class="location-section">
+                  @if (!isProfileEditing) {
+                  <p
+                    class="profile-location text-[#6C757D] flex items-center gap-2"
+                  >
+                    <span class="text-[#3498DB]">📍</span>
+                    {{ profile.location || "Loading..." }}
+                  </p>
+                  } @if (isProfileEditing) {
+                  <input
+                    pInputText
+                    [(ngModel)]="profile.location"
+                    class="edit-input bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                    placeholder="Enter your location"
+                  />
+                  }
                 </div>
               </div>
             </div>
-          }
+
+            <div class="profile-actions">
+              <div class="domain-badge mb-4">
+                <div
+                  class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+                >
+                  <span class="flex items-center gap-2">
+                    <span>💼</span>
+                    {{ profile.domain || "General" }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="profile-buttons flex flex-col gap-3">
+                <button
+                  class="bg-gradient-to-r hover:shadow-2xl hover:shadow-[#3498DB]/25 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                  [class]="
+                    isProfileEditing
+                      ? 'from-[#22C55E] to-[#16A34A]'
+                      : 'from-[#3498DB] to-[#6C5CE7]'
+                  "
+                  (click)="
+                    isProfileEditing ? saveProfile() : toggleProfileEditing()
+                  "
+                >
+                  <span class="flex items-center justify-center gap-2">
+                    <span>{{ isProfileEditing ? "💾" : "✏️" }}</span>
+                    {{ isProfileEditing ? "Save Profile" : "Edit Profile" }}
+                  </span>
+                </button>
+                <button
+                  class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 transform hover:scale-105"
+                  (click)="navigateToParseResume()"
+                >
+                  <span class="flex items-center justify-center gap-2">
+                    <span>📄</span>
+                    Update Resume
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-links mt-6">
+            @if (!isProfileEditing && profile.githubUrl) {
+            <a
+              [href]="profile.githubUrl"
+              target="_blank"
+              class="social-btn bg-white/80 hover:bg-[#E9ECEF] border border-[#3498DB]/20 hover:border-[#3498DB]/40 text-[#2C3E50] px-4 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg"
+            >
+              <span class="flex items-center gap-2">
+                <span>💻</span>
+                GitHub
+              </span>
+            </a>
+            } @if (!isProfileEditing && profile.linkedinUrl) {
+            <a
+              [href]="profile.linkedinUrl"
+              target="_blank"
+              class="social-btn bg-white/80 hover:bg-[#E9ECEF] border border-[#3498DB]/20 hover:border-[#3498DB]/40 text-[#2C3E50] px-4 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg"
+            >
+              <span class="flex items-center gap-2">
+                <span>💼</span>
+                LinkedIn
+              </span>
+            </a>
+            } @if (!isProfileEditing && profile.portfolioUrl) {
+            <a
+              [href]="profile.portfolioUrl"
+              target="_blank"
+              class="social-btn bg-white/80 hover:bg-[#E9ECEF] border border-[#3498DB]/20 hover:border-[#3498DB]/40 text-[#2C3E50] px-4 py-2 rounded-xl font-semibold transition-all duration-300 shadow-lg"
+            >
+              <span class="flex items-center gap-2">
+                <span>🌐</span>
+                Portfolio
+              </span>
+            </a>
+            }
+
+            <!-- Social links editing -->
+            @if (isProfileEditing) {
+            <div class="social-links-edit grid grid-cols-1 gap-4">
+              <div class="social-input-group">
+                <label class="block text-[#2C3E50] font-semibold mb-2"
+                  >GitHub URL:</label
+                >
+                <input
+                  pInputText
+                  [(ngModel)]="profile.githubUrl"
+                  placeholder="https://github.com/username"
+                  class="w-full bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                />
+              </div>
+              <div class="social-input-group">
+                <label class="block text-[#2C3E50] font-semibold mb-2"
+                  >LinkedIn URL:</label
+                >
+                <input
+                  pInputText
+                  [(ngModel)]="profile.linkedinUrl"
+                  placeholder="https://linkedin.com/in/username"
+                  class="w-full bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                />
+              </div>
+              <div class="social-input-group">
+                <label class="block text-[#2C3E50] font-semibold mb-2"
+                  >Portfolio URL:</label
+                >
+                <input
+                  pInputText
+                  [(ngModel)]="profile.portfolioUrl"
+                  placeholder="https://your-portfolio.com"
+                  class="w-full bg-white/80 border border-[#3498DB]/20 rounded-xl text-[#2C3E50] p-3"
+                />
+              </div>
+            </div>
+            }
+          </div>
         </div>
-      </p-card>
+      </div>
     </div>
 
-    <div class="achievements-container">
-      <p-card class="achievements-card" [style]="{'background-color': '#1A1A1A', 'border': '1px solid rgba(176, 62, 255, 0.3)', 'border-radius': '1rem'}">
-        <ng-template pTemplate="header">
-          <div class="section-header" style="color: #F5F5DC;">
-            <h3>Achievements</h3>
-            <p-button 
-              icon="pi pi-plus" 
-              label="Add Achievement"
-              (onClick)="showAddAchievementDialog = true"
-              class="add-btn"
-              [style]="{'background': 'linear-gradient(to right, #7F00FF, #C400FF)', 'border': 'none'}">
-            </p-button>
+    <!-- Charts Section -->
+    <div
+      class="charts-section grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8"
+    >
+      <div class="chart-container">
+        <div class="relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+          ></div>
+          <div
+            class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg h-full"
+          >
+            <div class="chart-header flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-bold text-[#2C3E50]">Domain Analysis</h3>
+              <span class="text-2xl">📊</span>
+            </div>
+            <div class="chart-content">
+              @if (domainChartData) {
+              <p-chart
+                type="pie"
+                [data]="domainChartData"
+                [options]="domainChartOptions"
+                class="w-full"
+              >
+              </p-chart>
+              }
+            </div>
           </div>
-        </ng-template>
-        
-        <div class="achievements-list">
-          @for (achievement of achievements; track achievement.id) {
-            <div class="achievement-item" style="background-color: rgba(176, 62, 255, 0.1); border: 1px solid rgba(176, 62, 255, 0.2); border-radius: 0.5rem; margin-bottom: 1rem;">
-              <div class="achievement-content">
-                <div class="achievement-info">
-                  <h4 class="achievement-title" style="color: #F5F5DC;">{{ achievement.title }}</h4>
-                  <p class="achievement-date" style="color: #A7A7A7;">{{ formatDate(achievement.date) }}</p>
-                  <p class="achievement-description" style="color: #F1F1F1;">{{ achievement.description }}</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <div class="relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+          ></div>
+          <div
+            class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg h-full"
+          >
+            <div class="chart-header flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-bold text-[#2C3E50]">
+                Performance Metrics
+              </h3>
+              <span class="text-2xl">⚡</span>
+            </div>
+            <div class="chart-content">
+              @if (atsChartData) {
+              <p-chart
+                type="polarArea"
+                [data]="atsChartData"
+                [options]="atsChartOptions"
+                class="w-full"
+              >
+              </p-chart>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="skills-section mb-8">
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+        ></div>
+        <div
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg"
+        >
+          <div class="section-header flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-[#2C3E50]">Skills</h3>
+            <button
+              class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 transform hover:scale-105"
+              (click)="showAddSkillDialog = true"
+            >
+              <span class="flex items-center gap-2">
+                <span>➕</span>
+                Add Skill
+              </span>
+            </button>
+          </div>
+
+          <div
+            class="skills-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            @for (skill of skills; track skill.id) {
+            <div
+              class="skill-item bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 border border-[#3498DB]/20 rounded-xl p-4 hover:bg-[#3498DB]/10 hover:border-[#3498DB]/40 transition-all duration-300"
+            >
+              <div class="skill-content">
+                <div class="skill-info flex-1">
+                  <h4
+                    class="skill-name text-lg font-semibold text-[#2C3E50] mb-1"
+                  >
+                    {{ skill.name }}
+                  </h4>
+                  <p class="skill-category text-sm text-[#6C757D]">
+                    {{ skill.category }}
+                  </p>
+                </div>
+                <div class="skill-level mt-2">
+                  <span
+                    class="inline-block px-3 py-1 rounded-full text-xs font-semibold text-white"
+                    [style]="{ 'background-color': getLevelColor(skill.level) }"
+                  >
+                    {{ skill.level }}
+                  </span>
                 </div>
               </div>
             </div>
-          }
+            } @if (skills.length === 0) {
+            <div class="col-span-full text-center text-[#6C757D] py-12">
+              <p class="text-xl">
+                No skills added yet. Click "Add Skill" to get started!
+              </p>
+            </div>
+            }
+          </div>
         </div>
-      </p-card>
+      </div>
+    </div>
+
+    <!-- Certifications and Achievements Section -->
+    <div
+      class="certifications-section grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8"
+    >
+      <div class="certifications-container">
+        <div class="relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+          ></div>
+          <div
+            class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg h-full"
+          >
+            <div class="section-header flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-bold text-[#2C3E50]">Certifications</h3>
+              <button
+                class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 transform hover:scale-105"
+                (click)="showAddCertificationDialog = true"
+              >
+                <span class="flex items-center gap-2">
+                  <span>➕</span>
+                  Add Certification
+                </span>
+              </button>
+            </div>
+
+            <div class="certifications-list">
+              @for (cert of certifications; track cert.id) {
+              <div
+                class="certification-item bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 border border-[#3498DB]/20 rounded-xl p-4 mb-4 hover:bg-[#3498DB]/10 hover:border-[#3498DB]/40 transition-all duration-300"
+              >
+                <div class="certification-content">
+                  <div class="certification-info">
+                    <h4
+                      class="certification-name text-lg font-semibold text-[#2C3E50] mb-1"
+                    >
+                      {{ cert.name }}
+                    </h4>
+                    <p
+                      class="certification-issuer text-[#3498DB] font-medium mb-1"
+                    >
+                      {{ cert.issuer }}
+                    </p>
+                    <p class="certification-date text-sm text-[#6C757D] mb-2">
+                      {{ formatDate(cert.date) }}
+                    </p>
+                    <p class="certification-description text-[#2C3E50]">
+                      {{ cert.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="achievements-container">
+        <div class="relative group">
+          <div
+            class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+          ></div>
+          <div
+            class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg h-full"
+          >
+            <div class="section-header flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-bold text-[#2C3E50]">Achievements</h3>
+              <button
+                class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 transform hover:scale-105"
+                (click)="showAddAchievementDialog = true"
+              >
+                <span class="flex items-center gap-2">
+                  <span>➕</span>
+                  Add Achievement
+                </span>
+              </button>
+            </div>
+
+            <div class="achievements-list">
+              @for (achievement of achievements; track achievement.id) {
+              <div
+                class="achievement-item bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 border border-[#3498DB]/20 rounded-xl p-4 mb-4 hover:bg-[#3498DB]/10 hover:border-[#3498DB]/40 transition-all duration-300"
+              >
+                <div class="achievement-content">
+                  <div class="achievement-info">
+                    <h4
+                      class="achievement-title text-lg font-semibold text-[#2C3E50] mb-1"
+                    >
+                      {{ achievement.title }}
+                    </h4>
+                    <p class="achievement-date text-sm text-[#6C757D] mb-2">
+                      {{ formatDate(achievement.date) }}
+                    </p>
+                    <p class="achievement-description text-[#2C3E50]">
+                      {{ achievement.description }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Add Skill Dialog -->
-  <p-dialog 
-    header="Add New Skill" 
-    [(visible)]="showAddSkillDialog" 
+  <p-dialog
+    header="Add New Skill"
+    [(visible)]="showAddSkillDialog"
     [modal]="true"
-    [style]="{width: '600px', 'max-width': '90vw'}"
+    [style]="{ width: '600px', 'max-width': '90vw' }"
     styleClass="enhanced-dialog"
-    class="add-dialog">
+    class="add-dialog"
+  >
     <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Skill Name:</label>
-        <input 
-          pInputText 
-          [(ngModel)]="newSkill.name" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Skill Name:</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="newSkill.name"
           placeholder="e.g., JavaScript, Python, React"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Category:</label>
-        <input 
-          pInputText 
-          [(ngModel)]="newSkill.category" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Category:</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="newSkill.category"
           placeholder="e.g., Programming Languages, Frameworks, Tools"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Proficiency Level:</label>
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Proficiency Level:</label
+        >
         <div class="relative">
-          <select 
-            [(ngModel)]="newSkill.level" 
-            class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white appearance-none cursor-pointer focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 bg-gradient-to-br from-gray-800 to-gray-900">
-            <option value="" class="bg-gray-800 text-gray-400">Select your proficiency level</option>
-            <option value="Beginner" class="bg-gray-800 text-white py-2">Beginner - Just starting out</option>
-            <option value="Intermediate" class="bg-gray-800 text-white py-2">Intermediate - Comfortable with basics</option>
-            <option value="Advanced" class="bg-gray-800 text-white py-2">Advanced - Highly proficient</option>
-            <option value="Expert" class="bg-gray-800 text-white py-2">Expert - Master level</option>
+          <select
+            [(ngModel)]="newSkill.level"
+            class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white appearance-none cursor-pointer focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 bg-gradient-to-br from-gray-800 to-gray-900"
+          >
+            <option value="" class="bg-gray-800 text-gray-400">
+              Select your proficiency level
+            </option>
+            <option value="Beginner" class="bg-gray-800 text-white py-2">
+              Beginner - Just starting out
+            </option>
+            <option value="Intermediate" class="bg-gray-800 text-white py-2">
+              Intermediate - Comfortable with basics
+            </option>
+            <option value="Advanced" class="bg-gray-800 text-white py-2">
+              Advanced - Highly proficient
+            </option>
+            <option value="Expert" class="bg-gray-800 text-white py-2">
+              Expert - Master level
+            </option>
           </select>
-          <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+          <div
+            class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none"
+          >
             <i class="pi pi-chevron-down text-purple-500"></i>
           </div>
         </div>
@@ -383,139 +576,168 @@
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end">
-        <p-button 
-          label="Cancel" 
-          icon="pi pi-times" 
-          (onClick)="showAddSkillDialog = false" 
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          (onClick)="showAddSkillDialog = false"
           severity="secondary"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
-        <p-button 
-          label="Add Skill" 
-          icon="pi pi-check" 
-          (onClick)="addSkill()" 
+        <p-button
+          label="Add Skill"
+          icon="pi pi-check"
+          (onClick)="addSkill()"
           severity="success"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
       </div>
     </ng-template>
   </p-dialog>
 
   <!-- Add Certification Dialog -->
-  <p-dialog 
-    header="Add New Certification" 
-    [(visible)]="showAddCertificationDialog" 
+  <p-dialog
+    header="Add New Certification"
+    [(visible)]="showAddCertificationDialog"
     [modal]="true"
-    [style]="{width: '600px', 'max-width': '90vw'}"
+    [style]="{ width: '600px', 'max-width': '90vw' }"
     styleClass="enhanced-dialog"
-    class="add-dialog">
+    class="add-dialog"
+  >
     <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Certification Name:</label>
-        <input 
-          pInputText 
-          [(ngModel)]="newCertification.name" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Certification Name:</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="newCertification.name"
           placeholder="e.g., AWS Certified Solutions Architect, Google Cloud Professional"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Issuing Organization:</label>
-        <input 
-          pInputText 
-          [(ngModel)]="newCertification.issuer" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Issuing Organization:</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="newCertification.issuer"
           placeholder="e.g., Amazon Web Services, Google, Microsoft"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Certification Date:</label>
-        <input 
-          pInputText 
-          type="date" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Certification Date:</label
+        >
+        <input
+          pInputText
+          type="date"
           [(ngModel)]="newCertification.date"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Description:</label>
-        <textarea 
-          pInputTextarea 
-          [(ngModel)]="newCertification.description" 
-          rows="4" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Description:</label
+        >
+        <textarea
+          pInputTextarea
+          [(ngModel)]="newCertification.description"
+          rows="4"
           placeholder="Brief description of the certification and its significance"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none"
+        >
         </textarea>
       </div>
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end">
-        <p-button 
-          label="Cancel" 
-          icon="pi pi-times" 
-          (onClick)="showAddCertificationDialog = false" 
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          (onClick)="showAddCertificationDialog = false"
           severity="secondary"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
-        <p-button 
-          label="Add Certification" 
-          icon="pi pi-check" 
-          (onClick)="addCertification()" 
+        <p-button
+          label="Add Certification"
+          icon="pi pi-check"
+          (onClick)="addCertification()"
           severity="success"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
       </div>
     </ng-template>
   </p-dialog>
 
   <!-- Add Achievement Dialog -->
-  <p-dialog 
-    header="Add New Achievement" 
-    [(visible)]="showAddAchievementDialog" 
+  <p-dialog
+    header="Add New Achievement"
+    [(visible)]="showAddAchievementDialog"
     [modal]="true"
-    [style]="{width: '600px', 'max-width': '90vw'}"
+    [style]="{ width: '600px', 'max-width': '90vw' }"
     styleClass="enhanced-dialog"
-    class="add-dialog">
+    class="add-dialog"
+  >
     <div class="dialog-content space-y-6">
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Achievement Title:</label>
-        <input 
-          pInputText 
-          [(ngModel)]="newAchievement.title" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Achievement Title:</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="newAchievement.title"
           placeholder="e.g., Best Developer Award, Hackathon Winner, Project Lead"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Achievement Date:</label>
-        <input 
-          pInputText 
-          type="date" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Achievement Date:</label
+        >
+        <input
+          pInputText
+          type="date"
           [(ngModel)]="newAchievement.date"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50"
+        />
       </div>
       <div class="form-group">
-        <label class="block text-white font-semibold mb-3 text-base">Description:</label>
-        <textarea 
-          pInputTextarea 
-          [(ngModel)]="newAchievement.description" 
-          rows="4" 
+        <label class="block text-white font-semibold mb-3 text-base"
+          >Description:</label
+        >
+        <textarea
+          pInputTextarea
+          [(ngModel)]="newAchievement.description"
+          rows="4"
           placeholder="Describe your achievement and its impact"
-          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none">
+          class="w-full px-4 py-3 bg-gray-800 border-2 border-purple-500/30 rounded-xl text-white placeholder-gray-400 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20 transition-all duration-300 hover:border-purple-500/50 resize-none"
+        >
         </textarea>
       </div>
     </div>
     <ng-template pTemplate="footer">
       <div class="flex gap-3 justify-end">
-        <p-button 
-          label="Cancel" 
-          icon="pi pi-times" 
-          (onClick)="showAddAchievementDialog = false" 
+        <p-button
+          label="Cancel"
+          icon="pi pi-times"
+          (onClick)="showAddAchievementDialog = false"
           severity="secondary"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
-        <p-button 
-          label="Add Achievement" 
-          icon="pi pi-check" 
-          (onClick)="addAchievement()" 
+        <p-button
+          label="Add Achievement"
+          icon="pi pi-check"
+          (onClick)="addAchievement()"
           severity="success"
-          class="px-6 py-2">
+          class="px-6 py-2"
+        >
         </p-button>
       </div>
     </ng-template>

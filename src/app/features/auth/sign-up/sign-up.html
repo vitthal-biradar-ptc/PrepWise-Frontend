@@ -1,237 +1,369 @@
-<div class="min-h-screen flex flex-col relative bg-[#0D0D0D] auth-section">
-  <!-- Background decorations -->
-  <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-    <div class="absolute top-1/4 -left-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-1/3 -right-40 w-96 h-96 bg-[#C400FF]/20 rounded-full blur-[100px]"></div>
-    <div class="absolute -bottom-20 left-1/4 w-64 h-64 bg-[#B03EFF]/10 rounded-full blur-[80px]"></div>
+<div
+  class="min-h-screen flex flex-col relative bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF] auth-section"
+>
+  <!-- Background decorations matching resume analyzer -->
+  <div class="absolute inset-0 overflow-hidden z-0">
+    <div
+      class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#3498DB]/10 rounded-full blur-[100px]"
+    ></div>
+    <div
+      class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#6C5CE7]/10 rounded-full blur-[100px]"
+    ></div>
+    <div
+      class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#3498DB]/8 rounded-full blur-[80px]"
+    ></div>
   </div>
 
   <!-- Back Button -->
   <div class="absolute top-6 left-6 z-20">
-    <a routerLink="/" class="flex items-center text-[#F1F1F1] hover:text-[#B03EFF] transition-colors font-medium">
-      <svg class="h-5 w-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    <a
+      routerLink="/"
+      class="flex items-center text-[#2C3E50] hover:text-[#3498DB] transition-colors font-medium"
+    >
+      <svg
+        class="h-5 w-5 mr-1"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        />
       </svg>
       Back
     </a>
   </div>
 
-  <div class="flex flex-col items-center justify-center flex-grow p-4 relative z-10">
+  <div
+    class="flex flex-col items-center justify-center flex-grow p-4 relative z-10"
+  >
     <!-- Main Card -->
-    <div class="auth-card card-border-glow w-full max-w-md relative">
-      <!-- Decorative elements -->
-      <div class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/40 to-[#C400FF]/40 rounded-xl blur-xl opacity-70 transition-all duration-300"></div>
-      <div class="absolute -inset-2 bg-gradient-to-r from-transparent via-[#B03EFF]/20 to-transparent rounded-lg"></div>
+    <div class="auth-card w-full max-w-2xl relative">
+      <!-- Glass morphism card matching resume analyzer -->
+      <div class="relative group">
+        <div
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
+        ></div>
+        <div
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 shadow-lg transition-colors duration-300"
+        >
+          <!-- Header -->
+          <div class="text-center mb-8">
+            <div
+              class="inline-flex items-center gap-2 bg-gradient-to-r from-[#3498DB]/10 to-[#6C5CE7]/10 border border-[#3498DB]/30 rounded-full px-4 py-2 mb-4"
+            >
+              <span class="w-2 h-2 bg-[#3498DB] rounded-full"></span>
+              <span class="text-[#3498DB] text-sm font-medium"
+                >Join PrepWise</span
+              >
+            </div>
 
-      <!-- Card Content -->
-      <div class="relative bg-[#0D0D0D] border border-[#B03EFF]/30 shadow-lg shadow-[#B03EFF]/10 text-[#F1F1F1] rounded-xl" style="backdrop-filter: blur(20px);">
-        
-        <!-- Header -->
-        <div class="space-y-1 text-center pb-4 pt-8 px-8">
-          <div class="flex items-center justify-center mb-2">
-            <div class="w-12 h-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full card-decoration"></div>
-          </div>
-          <h1 class="auth-title text-4xl font-bold bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-transparent bg-clip-text">
-            Create Account
-          </h1>
-          <p class="text-sm text-[#A7A7A7]">
-            Enter your information to create an account
-          </p>
-        </div>
-
-        <!-- Form Content -->
-        <div class="px-8 pb-6">
-          <!-- Error Message -->
-          <div 
-            class="bg-[#1A1A1A] border border-red-500/30 text-red-400 text-sm p-4 rounded-lg mb-4 flex items-start"
-            [style.display]="showError ? 'flex' : 'none'"
-            id="error-message">
-            <i class="pi pi-exclamation-triangle mr-2 mt-0.5 text-red-400"></i>
-            <span class="font-medium">{{ error }}</span>
-            <button 
-              type="button" 
-              (click)="hideError()"
-              class="ml-auto text-red-400 hover:text-red-300">
-              <i class="pi pi-times"></i>
-            </button>
+            <h1
+              class="text-3xl sm:text-4xl font-bold mb-4 text-[#2C3E50] leading-tight"
+            >
+              <span
+                class="bg-clip-text text-transparent bg-gradient-to-r from-[#3498DB] via-[#6C5CE7] to-[#8B5CF6] animate-gradient"
+                >Create Account</span
+              >
+            </h1>
+            <p class="text-lg text-[#6C757D] leading-relaxed">
+              Enter your information to create an account and start your journey
+            </p>
           </div>
 
-          <form (ngSubmit)="handleSubmit($event)" class="space-y-4" novalidate>
-            <!-- Form Fields in Flex Layout -->
-            <div class="flex flex-wrap gap-4">
-              <!-- Name Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="name" class="text-sm font-medium text-[#F1F1F1]">
-                  Name <span class="required-star">*</span>
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your full name"
-                  required
-                  [(ngModel)]="name"
-                  name="name"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('name')"
-                  (input)="validateField('name')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('name') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('name') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('name') }}</span>
+          <!-- Form Content -->
+          <div class="space-y-6">
+            <!-- Error Message -->
+            <div
+              class="bg-gradient-to-r from-[#E74C3C]/10 to-[#C0392B]/10 border border-[#E74C3C]/30 text-[#E74C3C] p-3 md:p-4 rounded-xl flex items-center gap-3"
+              [style.display]="showError ? 'flex' : 'none'"
+              id="error-message"
+            >
+              <span class="text-xl">⚠️</span>
+              <span class="text-sm md:text-base flex-1">{{ error }}</span>
+              <button
+                type="button"
+                (click)="hideError()"
+                class="text-[#E74C3C] hover:text-[#C0392B] transition-colors"
+              >
+                <span class="text-lg">×</span>
+              </button>
+            </div>
+
+            <form
+              (ngSubmit)="handleSubmit($event)"
+              class="space-y-6"
+              novalidate
+            >
+              <!-- Form Fields in Grid Layout -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Name Field -->
+                <div class="space-y-2">
+                  <label
+                    for="name"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Name <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    placeholder="Enter your full name"
+                    required
+                    [(ngModel)]="name"
+                    name="name"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('name')"
+                    (input)="validateField('name')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('name')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="hasFieldError('name') ? 'block' : 'none'"
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("name")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Username Field -->
+                <div class="space-y-2">
+                  <label
+                    for="username"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Username <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    placeholder="Choose a username"
+                    required
+                    [(ngModel)]="username"
+                    name="username"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('username')"
+                    (input)="validateField('username')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('username')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="
+                      hasFieldError('username') ? 'block' : 'none'
+                    "
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("username")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="space-y-2">
+                  <label
+                    for="email"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Email address <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="name@example.com"
+                    required
+                    [(ngModel)]="email"
+                    name="email"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('email')"
+                    (input)="validateField('email')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('email')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="hasFieldError('email') ? 'block' : 'none'"
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("email")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Location Field -->
+                <div class="space-y-2">
+                  <label
+                    for="location"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Location <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="location"
+                    type="text"
+                    placeholder="City, Country"
+                    required
+                    [(ngModel)]="location"
+                    name="location"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('location')"
+                    (input)="validateField('location')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('location')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="
+                      hasFieldError('location') ? 'block' : 'none'
+                    "
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("location")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="space-y-2">
+                  <label
+                    for="password"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Password <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    required
+                    [(ngModel)]="password"
+                    name="password"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('password')"
+                    (input)="validateField('password')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('password')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="
+                      hasFieldError('password') ? 'block' : 'none'
+                    "
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("password")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div class="space-y-2">
+                  <label
+                    for="confirmPassword"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    Confirm Password <span class="text-[#E74C3C]">*</span>
+                  </label>
+                  <input
+                    id="confirmPassword"
+                    type="password"
+                    placeholder="••••••••"
+                    required
+                    [(ngModel)]="confirmPassword"
+                    name="confirmPassword"
+                    [disabled]="isLoading"
+                    (blur)="markFieldAsTouched('confirmPassword')"
+                    (input)="validateField('confirmPassword')"
+                    [class]="
+                      'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                      (hasFieldError('confirmPassword')
+                        ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                        : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                    "
+                  />
+                  <div
+                    class="error-message"
+                    [style.display]="
+                      hasFieldError('confirmPassword') ? 'block' : 'none'
+                    "
+                  >
+                    <span class="text-[#E74C3C] text-xs">{{
+                      getFieldError("confirmPassword")
+                    }}</span>
+                  </div>
+                </div>
+
+                <!-- GitHub Username Field -->
+                <div class="space-y-2">
+                  <label
+                    for="githubUsername"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    GitHub Username
+                  </label>
+                  <input
+                    id="githubUsername"
+                    type="text"
+                    placeholder="GitHub username"
+                    [(ngModel)]="githubUsername"
+                    name="githubUsername"
+                    [disabled]="isLoading"
+                    class="w-full px-4 py-3 bg-[#F8F9FA] border border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20 rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none"
+                  />
+                </div>
+
+                <!-- LinkedIn Username Field -->
+                <div class="space-y-2">
+                  <label
+                    for="linkedinUsername"
+                    class="block text-sm font-semibold text-[#2C3E50]"
+                  >
+                    LinkedIn Username
+                  </label>
+                  <input
+                    id="linkedinUsername"
+                    type="text"
+                    placeholder="LinkedIn username"
+                    [(ngModel)]="linkedinUsername"
+                    name="linkedinUsername"
+                    [disabled]="isLoading"
+                    class="w-full px-4 py-3 bg-[#F8F9FA] border border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20 rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none"
+                  />
                 </div>
               </div>
 
-              <!-- Username Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="username" class="text-sm font-medium text-[#F1F1F1]">
-                  Username <span class="required-star">*</span>
-                </label>
-                <input
-                  id="username"
-                  type="text"
-                  placeholder="Choose a username"
-                  required
-                  [(ngModel)]="username"
-                  name="username"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('username')"
-                  (input)="validateField('username')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('username') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('username') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('username') }}</span>
-                </div>
-              </div>
-
-              <!-- Email Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="email" class="text-sm font-medium text-[#F1F1F1]">
-                  Email address <span class="required-star">*</span>
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  required
-                  [(ngModel)]="email"
-                  name="email"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('email')"
-                  (input)="validateField('email')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('email') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('email') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('email') }}</span>
-                </div>
-              </div>
-
-              <!-- Location Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="location" class="text-sm font-medium text-[#F1F1F1]">
-                  Location <span class="required-star">*</span>
-                </label>
-                <input
-                  id="location"
-                  type="text"
-                  placeholder="City, Country"
-                  required
-                  [(ngModel)]="location"
-                  name="location"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('location')"
-                  (input)="validateField('location')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('location') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('location') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('location') }}</span>
-                </div>
-              </div>
-
-              <!-- Password Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="password" class="text-sm font-medium text-[#F1F1F1]">
-                  Password <span class="required-star">*</span>
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                  [(ngModel)]="password"
-                  name="password"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('password')"
-                  (input)="validateField('password')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('password') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('password') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('password') }}</span>
-                </div>
-              </div>
-
-              <!-- Confirm Password Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="confirmPassword" class="text-sm font-medium text-[#F1F1F1]">
-                  Confirm Password <span class="required-star">*</span>
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  required
-                  [(ngModel)]="confirmPassword"
-                  name="confirmPassword"
-                  [disabled]="isLoading"
-                  (blur)="markFieldAsTouched('confirmPassword')"
-                  (input)="validateField('confirmPassword')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('confirmPassword') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
-                />
-                <div class="error-message" [style.display]="hasFieldError('confirmPassword') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('confirmPassword') }}</span>
-                </div>
-              </div>
-
-              <!-- GitHub Username Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="githubUsername" class="text-sm font-medium text-[#F1F1F1]">
-                  GitHub Username
-                </label>
-                <input
-                  id="githubUsername"
-                  type="text"
-                  placeholder="GitHub username"
-                  [(ngModel)]="githubUsername"
-                  name="githubUsername"
-                  [disabled]="isLoading"
-                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-                />
-              </div>
-
-              <!-- LinkedIn Username Field -->
-              <div class="space-y-1 flex-1 min-w-[45%]">
-                <label for="linkedinUsername" class="text-sm font-medium text-[#F1F1F1]">
-                  LinkedIn Username
-                </label>
-                <input
-                  id="linkedinUsername"
-                  type="text"
-                  placeholder="LinkedIn username"
-                  [(ngModel)]="linkedinUsername"
-                  name="linkedinUsername"
-                  [disabled]="isLoading"
-                  class="input-glow w-full px-3 py-2 bg-[#1A1A1A] border border-[#B03EFF]/30 rounded-lg focus:border-[#B03EFF] focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200"
-                />
-              </div>
-
-              <!-- Portfolio URL Field -->
-              <div class="space-y-1 w-full">
-                <label for="portfolioUrl" class="text-sm font-medium text-[#F1F1F1]">
+              <!-- Portfolio URL Field (full width) -->
+              <div class="space-y-2">
+                <label
+                  for="portfolioUrl"
+                  class="block text-sm font-semibold text-[#2C3E50]"
+                >
                   Portfolio URL
                 </label>
                 <input
@@ -243,76 +375,114 @@
                   [disabled]="isLoading"
                   (blur)="markFieldAsTouched('portfolioUrl')"
                   (input)="validateField('portfolioUrl')"
-                  [class]="'input-glow w-full px-3 py-2 bg-[#1A1A1A] border rounded-lg focus:ring-2 focus:ring-[#B03EFF]/20 focus:outline-none text-[#F1F1F1] placeholder:text-[#A7A7A7] transition-all duration-200 ' + 
-                    (hasFieldError('portfolioUrl') ? 'border-red-500 focus:border-red-500' : 'border-[#B03EFF]/30 focus:border-[#B03EFF]')"
+                  [class]="
+                    'w-full px-4 py-3 bg-[#F8F9FA] border rounded-xl text-[#2C3E50] placeholder-[#6C757D] transition-all duration-300 focus:outline-none ' +
+                    (hasFieldError('portfolioUrl')
+                      ? 'border-[#E74C3C] focus:border-[#E74C3C] focus:ring-4 focus:ring-[#E74C3C]/20'
+                      : 'border-[#3498DB]/20 hover:border-[#3498DB]/40 focus:border-[#3498DB] focus:ring-4 focus:ring-[#3498DB]/20')
+                  "
                 />
-                <div class="error-message" [style.display]="hasFieldError('portfolioUrl') ? 'block' : 'none'">
-                  <span class="text-red-400 text-xs">{{ getFieldError('portfolioUrl') }}</span>
+                <div
+                  class="error-message"
+                  [style.display]="
+                    hasFieldError('portfolioUrl') ? 'block' : 'none'
+                  "
+                >
+                  <span class="text-[#E74C3C] text-xs">{{
+                    getFieldError("portfolioUrl")
+                  }}</span>
                 </div>
               </div>
-            </div>
 
-            <!-- Terms Checkbox -->
-            <div class="flex items-start space-x-2 pt-2">
-              <input
-                type="checkbox"
-                id="terms"
-                [(ngModel)]="termsAccepted"
-                name="terms"
-                [class]="'mt-1 w-4 h-4 rounded border bg-[#1A1A1A] text-[#B03EFF] focus:ring-[#B03EFF]/20 focus:ring-2 transition-all ' + 
-                  (hasFieldError('terms') ? 'border-red-500' : 'border-[#B03EFF]/30')"
-                required
-              />
-              <label for="terms" class="text-sm text-[#A7A7A7] leading-relaxed">
-                I agree to the
-                <a href="#" class="text-[#B03EFF] hover:text-[#C400FF] hover:underline transition-colors ml-1">
-                  Terms of Service
-                </a>
-                and
-                <a href="#" class="text-[#B03EFF] hover:text-[#C400FF] hover:underline transition-colors ml-1">
-                  Privacy Policy
-                </a>
-              </label>
-            </div>
-            <div class="error-message" [style.display]="hasFieldError('terms') ? 'block' : 'none'">
-              <span class="text-red-400 text-xs">{{ getFieldError('terms') }}</span>
-            </div>
+              <!-- Terms Checkbox -->
+              <div class="flex items-start space-x-3 pt-2">
+                <input
+                  type="checkbox"
+                  id="terms"
+                  [(ngModel)]="termsAccepted"
+                  name="terms"
+                  [class]="
+                    'mt-1 w-4 h-4 rounded border bg-[#F8F9FA] text-[#3498DB] focus:ring-[#3498DB]/20 focus:ring-2 transition-all ' +
+                    (hasFieldError('terms')
+                      ? 'border-[#E74C3C]'
+                      : 'border-[#3498DB]/30')
+                  "
+                  required
+                />
+                <label
+                  for="terms"
+                  class="text-sm text-[#6C757D] leading-relaxed"
+                >
+                  I agree to the
+                  <a
+                    href="#"
+                    class="text-[#3498DB] hover:text-[#6C5CE7] hover:underline transition-colors font-medium"
+                  >
+                    Terms of Service
+                  </a>
+                  and
+                  <a
+                    href="#"
+                    class="text-[#3498DB] hover:text-[#6C5CE7] hover:underline transition-colors font-medium"
+                  >
+                    Privacy Policy
+                  </a>
+                </label>
+              </div>
+              <div
+                class="error-message"
+                [style.display]="hasFieldError('terms') ? 'block' : 'none'"
+              >
+                <span class="text-[#E74C3C] text-xs">{{
+                  getFieldError("terms")
+                }}</span>
+              </div>
 
-            <!-- Submit Button -->
-            <button
-              type="submit"
-              [disabled]="isLoading"
-              class="gradient-button w-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:opacity-90 text-[#F1F1F1] font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group mt-4"
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                [disabled]="isLoading"
+                class="w-full bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 disabled:hover:scale-100"
+              >
+                <span class="flex items-center justify-center gap-2">
+                  @if (isLoading) {
+                  <span class="animate-spin">⏳</span>
+                  } @else {
+                  <span>🚀</span>
+                  }
+                  {{ isLoading ? "Creating account..." : "Create Account" }}
+                </span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Footer -->
+          <div class="text-center mt-8 pt-6 border-t border-[#3498DB]/20">
+            <a
+              routerLink="/sign-in"
+              class="text-sm text-[#3498DB] hover:text-[#6C5CE7] hover:underline font-medium transition-colors"
             >
-              <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-[#7F00FF] to-[#C400FF] transition-all group-hover:scale-[1.05] opacity-0 group-hover:opacity-100 duration-300"></span>
-              <span class="relative flex items-center justify-center">
-                <i class="pi pi-spinner pi-spin mr-2" [style.display]="isLoading ? 'inline' : 'none'"></i>
-                {{ isLoading ? "Creating account..." : "Sign up" }}
-              </span>
-            </button>
-          </form>
+              Already have an account? Sign in
+            </a>
+          </div>
         </div>
-
-        <!-- Footer -->
-        <div class="flex justify-center border-t border-[#B03EFF]/10 p-6">
-          <a routerLink="/sign-in" class="text-sm text-[#B03EFF] hover:text-[#C400FF] hover:underline font-medium transition-colors">
-            Already have an account? Sign in
-          </a>
-        </div>
-
-        <!-- Bottom glow effect -->
-        <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-[1px] w-4/5 bg-gradient-to-r from-transparent via-[#B03EFF]/50 to-transparent blur-sm"></div>
       </div>
     </div>
 
     <!-- Bottom Decorative Section -->
     <div class="mt-8 text-center">
       <div class="flex items-center justify-center space-x-2 mb-3">
-        <div class="w-8 h-1 bg-gradient-to-r from-[#7F00FF]/30 to-[#C400FF]/30 rounded-full card-decoration"></div>
-        <div class="w-2 h-2 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] rounded-full card-decoration"></div>
-        <div class="w-8 h-1 bg-gradient-to-r from-[#C400FF]/30 to-[#7F00FF]/30 rounded-full card-decoration"></div>
+        <div
+          class="w-8 h-1 bg-gradient-to-r from-[#3498DB]/30 to-[#6C5CE7]/30 rounded-full"
+        ></div>
+        <div
+          class="w-2 h-2 bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] rounded-full"
+        ></div>
+        <div
+          class="w-8 h-1 bg-gradient-to-r from-[#6C5CE7]/30 to-[#3498DB]/30 rounded-full"
+        ></div>
       </div>
-      <p class="text-sm text-[#A7A7A7]">
+      <p class="text-sm text-[#6C757D]">
         Create your professional resume in minutes
       </p>
     </div>

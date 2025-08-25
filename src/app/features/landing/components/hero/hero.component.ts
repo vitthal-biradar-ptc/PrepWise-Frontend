@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule ,RouterLink} from '@angular/router';
+import { RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-hero',
   templateUrl: './hero.html',
   styleUrls: ['./hero.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule,RouterLink]
+  imports: [CommonModule, RouterModule]
 })
 export class HeroComponent {
+isAuthenticated: any;
 }

@@ -1,18 +1,18 @@
 <section
-  class="pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-12 lg:pb-20 min-h-screen relative overflow-hidden bg-[#0A0A0A]"
+  class="pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-12 lg:pb-20 min-h-screen relative overflow-hidden bg-gradient-to-br from-[#F8F9FA] to-[#E9ECEF]"
 >
   <app-header></app-header>
 
   <!-- Simplified background decorations -->
   <div class="absolute inset-0 overflow-hidden z-0">
     <div
-      class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#7F00FF]/20 rounded-full blur-[100px]"
+      class="absolute top-1/4 -left-40 w-72 md:w-96 h-72 md:h-96 bg-[#3498DB]/10 rounded-full blur-[100px]"
     ></div>
     <div
-      class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#C400FF]/20 rounded-full blur-[100px]"
+      class="absolute bottom-1/3 -right-40 w-72 md:w-96 h-72 md:h-96 bg-[#6C5CE7]/10 rounded-full blur-[100px]"
     ></div>
     <div
-      class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#B03EFF]/10 rounded-full blur-[80px]"
+      class="absolute -bottom-20 left-1/4 w-48 md:w-64 h-48 md:h-64 bg-[#3498DB]/8 rounded-full blur-[80px]"
     ></div>
   </div>
 
@@ -20,26 +20,26 @@
     <!-- Header -->
     <div class="text-center mb-8 md:mb-12">
       <div
-        class="inline-flex items-center gap-2 bg-gradient-to-r from-[#7F00FF]/20 to-[#C400FF]/20 border border-[#B03EFF]/30 rounded-full px-4 py-2 mb-4"
+        class="inline-flex items-center gap-2 bg-gradient-to-r from-[#3498DB]/10 to-[#6C5CE7]/10 border border-[#3498DB]/30 rounded-full px-4 py-2 mb-4"
       >
-        <span class="w-2 h-2 bg-[#B03EFF] rounded-full"></span>
-        <span class="text-[#B03EFF] text-sm font-medium"
+        <span class="w-2 h-2 bg-[#3498DB] rounded-full"></span>
+        <span class="text-[#3498DB] text-sm font-medium"
           >AI-Powered Analysis</span
         >
       </div>
 
       <h1
-        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-white leading-tight"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 text-[#2C3E50] leading-tight"
       >
         <span
-          class="bg-clip-text text-transparent bg-gradient-to-r from-[#7F00FF] via-[#B03EFF] to-[#C400FF] animate-gradient"
+          class="bg-clip-text text-transparent bg-gradient-to-r from-[#3498DB] via-[#6C5CE7] to-[#8B5CF6] animate-gradient"
           >Smart Resume</span
         >
         <br class="hidden sm:block" />
-        <span class="text-white">Analyzer</span>
+        <span class="text-[#2C3E50]">Analyzer</span>
       </h1>
       <p
-        class="text-lg sm:text-xl md:text-2xl text-[#A7A7A7] max-w-3xl mx-auto leading-relaxed"
+        class="text-lg sm:text-xl md:text-2xl text-[#6C757D] max-w-3xl mx-auto leading-relaxed"
       >
         Get instant AI-powered insights and personalized recommendations to make
         your resume stand out
@@ -50,19 +50,21 @@
       <!-- Left Side - Upload Area -->
       <div class="relative group">
         <div
-          class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/30 to-[#C400FF]/30 rounded-2xl blur-xl opacity-75"
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
         ></div>
         <div
-          class="relative bg-[#1A1A1A]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-2xl"
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-lg"
         >
           <!-- Tab Buttons -->
-          <div class="flex mb-6 md:mb-8 bg-[#0A0A0A]/50 rounded-xl p-1">
+          <div
+            class="flex mb-6 md:mb-8 bg-[#F8F9FA] rounded-xl p-1 border border-[#DEE2E6]"
+          >
             <button
               class="flex-1 py-3 md:py-4 px-4 md:px-6 rounded-lg font-semibold transition-all duration-300 text-sm sm:text-base relative overflow-hidden"
               [class]="
                 activeTab === 'file'
-                  ? 'bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white shadow-lg'
-                  : 'text-[#A7A7A7] hover:text-white hover:bg-[#B03EFF]/10'
+                  ? 'bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] text-white shadow-lg'
+                  : 'text-[#6C757D] hover:text-[#2C3E50] hover:bg-[#3498DB]/10'
               "
               (click)="switchTab('file')"
             >
@@ -75,8 +77,8 @@
               class="flex-1 py-3 md:py-4 px-4 md:px-6 rounded-lg font-semibold transition-all duration-300 text-sm sm:text-base relative overflow-hidden"
               [class]="
                 activeTab === 'text'
-                  ? 'bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white shadow-lg'
-                  : 'text-[#A7A7A7] hover:text-white hover:bg-[#B03EFF]/10'
+                  ? 'bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] text-white shadow-lg'
+                  : 'text-[#6C757D] hover:text-[#2C3E50] hover:bg-[#3498DB]/10'
               "
               (click)="switchTab('text')"
             >
@@ -94,10 +96,10 @@
               class="flex-1 border-2 border-dashed rounded-xl p-6 md:p-8 text-center transition-all duration-300 flex items-center justify-center relative overflow-hidden"
               [class]="
                 selectedFile
-                  ? 'border-green-500 bg-green-500/5'
+                  ? 'border-[#27AE60] bg-[#27AE60]/5'
                   : isDragging
-                  ? 'border-[#B03EFF] bg-[#B03EFF]/10'
-                  : 'border-[#B03EFF]/20 hover:border-[#B03EFF]/60 bg-gradient-to-br from-[#7F00FF]/5 to-[#C400FF]/5'
+                  ? 'border-[#3498DB] bg-[#3498DB]/10'
+                  : 'border-[#3498DB]/30 hover:border-[#3498DB]/60 bg-gradient-to-br from-[#3498DB]/5 to-[#6C5CE7]/5'
               "
               (dragover)="onDragOver($event)"
               (dragleave)="onDragLeave($event)"
@@ -109,21 +111,21 @@
               >
                 <div class="text-6xl md:text-8xl mb-4 md:mb-6">
                   <div
-                    class="bg-gradient-to-br from-[#7F00FF] to-[#C400FF] bg-clip-text text-transparent"
+                    class="bg-gradient-to-br from-[#3498DB] to-[#6C5CE7] bg-clip-text text-transparent"
                   >
                     📄
                   </div>
                 </div>
-                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">
+                <h3 class="text-xl md:text-2xl font-bold text-[#2C3E50] mb-2">
                   Drop your resume here
                 </h3>
-                <p class="text-[#A7A7A7] mb-4 text-base md:text-lg">
+                <p class="text-[#6C757D] mb-4 text-base md:text-lg">
                   Drag and drop your PDF resume or click to browse
                 </p>
 
                 <label
                   for="file-input"
-                  class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:from-[#9A1FFF] hover:to-[#D61FFF] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold cursor-pointer transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#B03EFF]/25 transform hover:scale-105 text-base md:text-lg"
+                  class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold cursor-pointer transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#3498DB]/25 transform hover:scale-105 text-base md:text-lg"
                 >
                   <span class="flex items-center gap-2">
                     <span>📁</span>
@@ -139,40 +141,42 @@
                 </label>
 
                 <div class="mt-6 space-y-2">
-                  <p class="text-[#A7A7A7] text-sm">
+                  <p class="text-[#6C757D] text-sm">
                     Supported format: PDF only
                   </p>
-                  <p class="text-[#A7A7A7] text-xs">Maximum file size: 10MB</p>
+                  <p class="text-[#6C757D] text-xs">Maximum file size: 10MB</p>
                 </div>
               </div>
               } @else {
               <!-- Selected File Display -->
               <div
-                class="flex items-center bg-gradient-to-r from-[#B03EFF]/10 to-[#7F00FF]/10 p-4 md:p-6 rounded-xl border border-[#B03EFF]/30 w-full backdrop-blur-sm"
+                class="flex items-center bg-gradient-to-r from-[#3498DB]/10 to-[#6C5CE7]/10 p-4 md:p-6 rounded-xl border border-[#3498DB]/30 w-full backdrop-blur-sm"
               >
                 <div class="text-3xl md:text-4xl mr-4 md:mr-6">
                   <div
-                    class="bg-gradient-to-br from-[#7F00FF] to-[#C400FF] bg-clip-text text-transparent"
+                    class="bg-gradient-to-br from-[#3498DB] to-[#6C5CE7] bg-clip-text text-transparent"
                   >
                     📄
                   </div>
                 </div>
                 <div class="flex-1">
-                  <p class="text-white font-semibold text-base md:text-lg mb-1">
+                  <p
+                    class="text-[#2C3E50] font-semibold text-base md:text-lg mb-1"
+                  >
                     {{ selectedFile.name }}
                   </p>
-                  <p class="text-[#A7A7A7] text-sm">
+                  <p class="text-[#6C757D] text-sm">
                     {{ (selectedFile.size / 1024 / 1024).toFixed(2) }} MB
                   </p>
                   <div class="flex items-center gap-2 mt-2">
-                    <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-                    <span class="text-green-400 text-xs font-medium"
+                    <div class="w-2 h-2 bg-[#27AE60] rounded-full"></div>
+                    <span class="text-[#27AE60] text-xs font-medium"
                       >Ready for analysis</span
                     >
                   </div>
                 </div>
                 <button
-                  class="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white w-10 h-10 rounded-full transition-all duration-300 hover:scale-110 flex items-center justify-center"
+                  class="bg-[#E74C3C]/20 hover:bg-[#E74C3C] text-[#E74C3C] hover:text-white w-10 h-10 rounded-full transition-all duration-300 hover:scale-110 flex items-center justify-center"
                   (click)="selectedFile = null"
                 >
                   <span class="text-lg">×</span>
@@ -190,11 +194,11 @@
               <textarea
                 [(ngModel)]="resumeText"
                 placeholder="Paste your resume text here... Include all sections like experience, education, skills, etc."
-                class="w-full h-full bg-[#0A0A0A]/50 border border-[#B03EFF]/20 rounded-xl p-4 md:p-6 text-white placeholder-[#A7A7A7] focus:border-[#B03EFF] focus:outline-none resize-none text-sm md:text-base min-h-[400px] md:min-h-[500px] transition-colors duration-300 backdrop-blur-sm"
+                class="w-full h-full bg-[#F8F9FA] border border-[#3498DB]/20 rounded-xl p-4 md:p-6 text-[#2C3E50] placeholder-[#6C757D] focus:border-[#3498DB] focus:outline-none resize-none text-sm md:text-base min-h-[400px] md:min-h-[500px] transition-colors duration-300"
               >
               </textarea>
               <div
-                class="absolute bottom-4 right-4 text-xs text-[#A7A7A7] bg-[#1A1A1A]/80 px-2 py-1 rounded"
+                class="absolute bottom-4 right-4 text-xs text-[#6C757D] bg-white/80 px-2 py-1 rounded"
               >
                 {{ resumeText.length }} characters
               </div>
@@ -205,7 +209,7 @@
           <!-- Error Display -->
           @if (error) {
           <div
-            class="bg-gradient-to-r from-red-500/10 to-red-600/10 border border-red-500/30 text-red-400 p-3 md:p-4 rounded-xl mt-4 md:mt-6 flex items-center gap-3 backdrop-blur-sm"
+            class="bg-gradient-to-r from-[#E74C3C]/10 to-[#C0392B]/10 border border-[#E74C3C]/30 text-[#E74C3C] p-3 md:p-4 rounded-xl mt-4 md:mt-6 flex items-center gap-3"
           >
             <span class="text-xl">⚠️</span>
             <span class="text-sm md:text-base">{{ error }}</span>
@@ -215,7 +219,7 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 md:mt-8">
             <button
-              class="flex-1 bg-gradient-to-r from-[#7F00FF] to-[#C400FF] hover:from-[#9A1FFF] hover:to-[#D61FFF] text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#B03EFF]/25 disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg transform hover:scale-105 disabled:hover:scale-100 relative overflow-hidden"
+              class="flex-1 bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] hover:from-[#2980B9] hover:to-[#5A4FCF] text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 hover:shadow-2xl hover:shadow-[#3498DB]/25 disabled:opacity-50 disabled:cursor-not-allowed text-base md:text-lg transform hover:scale-105 disabled:hover:scale-100"
               (click)="analyzeResume()"
               [disabled]="isLoading || (!selectedFile && !resumeText.trim())"
             >
@@ -227,7 +231,7 @@
               </span>
             </button>
             <button
-              class="bg-[#1A1A1A]/80 hover:bg-[#2A2A2A] border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 text-white py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 text-base md:text-lg backdrop-blur-sm"
+              class="bg-white/80 hover:bg-[#E9ECEF] border border-[#3498DB]/20 hover:border-[#3498DB]/40 text-[#2C3E50] py-3 md:py-4 px-6 md:px-8 rounded-xl font-semibold transition-all duration-300 text-base md:text-lg"
               (click)="clearAll()"
             >
               <span class="flex items-center justify-center gap-2">
@@ -242,10 +246,10 @@
       <!-- Right Side - Results Area -->
       <div class="relative group">
         <div
-          class="absolute -inset-1 bg-gradient-to-br from-[#7F00FF]/30 to-[#C400FF]/30 rounded-2xl blur-xl opacity-75"
+          class="absolute -inset-1 bg-gradient-to-br from-[#3498DB]/20 to-[#6C5CE7]/20 rounded-2xl blur-xl opacity-50"
         ></div>
         <div
-          class="relative bg-[#1A1A1A]/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#B03EFF]/20 hover:border-[#B03EFF]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-2xl"
+          class="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-[#3498DB]/20 hover:border-[#3498DB]/40 min-h-[600px] md:min-h-[700px] lg:h-[800px] flex flex-col transition-colors duration-300 shadow-lg"
         >
           <!-- No Results State -->
           @if (!analysisResult && !isLoading) {
@@ -253,11 +257,13 @@
             class="text-center flex-1 flex flex-col justify-center py-12 md:py-20"
           >
             <div class="text-6xl md:text-8xl mb-6 md:mb-8">🎯</div>
-            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6">
+            <h3
+              class="text-2xl md:text-3xl font-bold text-[#2C3E50] mb-4 md:mb-6"
+            >
               Ready for Analysis
             </h3>
             <p
-              class="text-lg md:text-xl text-[#A7A7A7] leading-relaxed max-w-md mx-auto"
+              class="text-lg md:text-xl text-[#6C757D] leading-relaxed max-w-md mx-auto"
             >
               Upload your resume or paste the text, then click "Analyze Resume"
               to get AI-powered insights and suggestions.
@@ -265,19 +271,19 @@
 
             <div class="mt-8 space-y-3">
               <div
-                class="flex items-center justify-center gap-3 text-[#B03EFF]"
+                class="flex items-center justify-center gap-3 text-[#3498DB]"
               >
                 <span>✨</span>
                 <span class="text-sm">AI-powered content analysis</span>
               </div>
               <div
-                class="flex items-center justify-center gap-3 text-[#B03EFF]"
+                class="flex items-center justify-center gap-3 text-[#3498DB]"
               >
                 <span>🎯</span>
                 <span class="text-sm">Personalized recommendations</span>
               </div>
               <div
-                class="flex items-center justify-center gap-3 text-[#B03EFF]"
+                class="flex items-center justify-center gap-3 text-[#3498DB]"
               >
                 <span>⚡</span>
                 <span class="text-sm">Instant results</span>
@@ -292,38 +298,40 @@
             class="text-center flex-1 flex flex-col justify-center py-12 md:py-20"
           >
             <div class="text-6xl md:text-8xl mb-6 md:mb-8">🧠</div>
-            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4 md:mb-6">
+            <h3
+              class="text-2xl md:text-3xl font-bold text-[#2C3E50] mb-4 md:mb-6"
+            >
               AI Analysis in Progress
             </h3>
-            <p class="text-lg md:text-xl text-[#A7A7A7] mb-6">
+            <p class="text-lg md:text-xl text-[#6C757D] mb-6">
               Our AI is carefully analyzing your resume and generating
               personalized suggestions...
             </p>
 
             <!-- Progress Animation -->
             <div class="w-full max-w-md mx-auto mb-6">
-              <div class="bg-[#B03EFF]/20 rounded-full h-2 overflow-hidden">
+              <div class="bg-[#3498DB]/20 rounded-full h-2 overflow-hidden">
                 <div
-                  class="progress-fill bg-gradient-to-r from-[#7F00FF] to-[#C400FF] h-full rounded-full"
+                  class="progress-fill bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] h-full rounded-full"
                 ></div>
               </div>
             </div>
 
-            <p class="text-[#B03EFF] font-semibold text-lg">
+            <p class="text-[#3498DB] font-semibold text-lg">
               Time elapsed: {{ getElapsedTime() }}s
             </p>
 
-            <div class="mt-6 space-y-2 text-sm text-[#A7A7A7]">
+            <div class="mt-6 space-y-2 text-sm text-[#6C757D]">
               <div class="flex items-center justify-center gap-2">
-                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <div class="w-2 h-2 bg-[#3498DB] rounded-full"></div>
                 <span>Parsing resume content</span>
               </div>
               <div class="flex items-center justify-center gap-2">
-                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <div class="w-2 h-2 bg-[#3498DB] rounded-full"></div>
                 <span>Analyzing structure and content</span>
               </div>
               <div class="flex items-center justify-center gap-2">
-                <div class="w-2 h-2 bg-[#B03EFF] rounded-full"></div>
+                <div class="w-2 h-2 bg-[#3498DB] rounded-full"></div>
                 <span>Generating recommendations</span>
               </div>
             </div>
@@ -335,26 +343,26 @@
           <div class="flex flex-col h-full">
             <!-- Results Header -->
             <div
-              class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 pb-4 md:pb-6 border-b border-[#B03EFF]/20 gap-4 lg:gap-0"
+              class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 md:mb-8 pb-4 md:pb-6 border-b border-[#3498DB]/20 gap-4 lg:gap-0"
             >
               <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#2C3E50] mb-2">
                   Analysis Complete
                 </h2>
-                <p class="text-[#A7A7A7] text-sm">
+                <p class="text-[#6C757D] text-sm">
                   Generated {{ getCurrentTime() }}
                 </p>
               </div>
               <div class="flex flex-wrap gap-2">
                 @if (analysisResult.domain) {
                 <div
-                  class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
+                  class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg"
                 >
                   {{ analysisResult.domain }}
                 </div>
                 }
                 <div
-                  class="bg-[#B03EFF]/20 text-[#B03EFF] px-4 py-2 rounded-full text-sm font-semibold"
+                  class="bg-[#3498DB]/20 text-[#3498DB] px-4 py-2 rounded-full text-sm font-semibold"
                 >
                   {{ analysisResult.suggestions.length || 0 }} Suggestions
                 </div>
@@ -366,11 +374,11 @@
             > 0) {
             <div class="flex flex-col flex-1 min-h-0">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-xl md:text-2xl font-bold text-white">
+                <h3 class="text-xl md:text-2xl font-bold text-[#2C3E50]">
                   Recommendations
                 </h3>
                 <div
-                  class="bg-[#B03EFF]/10 text-[#B03EFF] px-3 py-1 rounded-full text-sm"
+                  class="bg-[#3498DB]/10 text-[#3498DB] px-3 py-1 rounded-full text-sm"
                 >
                   High Priority
                 </div>
@@ -381,28 +389,31 @@
                   class="space-y-3 md:space-y-4 overflow-y-auto max-h-full pr-2 custom-scrollbar"
                 >
                   <div
-                    *ngFor="let suggestion of analysisResult.suggestions; let i = index; trackBy: trackBySuggestion"
-              
-                    class="flex items-start bg-gradient-to-r from-[#B03EFF]/5 to-[#7F00FF]/5 border border-[#B03EFF]/20 p-4 md:p-6 rounded-xl hover:bg-[#B03EFF]/10 hover:border-[#B03EFF]/40 transition-all duration-300"
+                    *ngFor="
+                      let suggestion of analysisResult.suggestions;
+                      let i = index;
+                      trackBy: trackBySuggestion
+                    "
+                    class="flex items-start bg-gradient-to-r from-[#3498DB]/5 to-[#6C5CE7]/5 border border-[#3498DB]/20 p-4 md:p-6 rounded-xl hover:bg-[#3498DB]/10 hover:border-[#3498DB]/40 transition-all duration-300"
                   >
                     <div
-                      class="bg-gradient-to-r from-[#7F00FF] to-[#C400FF] text-white w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm md:text-base font-bold mr-4 md:mr-6 flex-shrink-0 shadow-lg"
+                      class="bg-gradient-to-r from-[#3498DB] to-[#6C5CE7] text-white w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm md:text-base font-bold mr-4 md:mr-6 flex-shrink-0 shadow-lg"
                     >
                       {{ i + 1 }}
                     </div>
 
                     <div class="flex-1">
                       <div
-                        class="text-white leading-relaxed text-sm md:text-base"
+                        class="text-[#2C3E50] leading-relaxed text-sm md:text-base"
                       >
                         {{ suggestion }}
                       </div>
                       <div
-                        class="flex items-center gap-4 mt-3 text-xs text-[#A7A7A7]"
+                        class="flex items-center gap-4 mt-3 text-xs text-[#6C757D]"
                       >
                         <span class="flex items-center gap-1">
                           <span
-                            class="w-2 h-2 bg-[#B03EFF] rounded-full"
+                            class="w-2 h-2 bg-[#3498DB] rounded-full"
                           ></span>
                           AI Generated
                         </span>
@@ -420,8 +431,10 @@
             analysisResult.suggestions.length === 0) {
             <div class="text-center flex-1 flex flex-col justify-center py-12">
               <div class="text-4xl mb-4">✨</div>
-              <h3 class="text-xl font-bold text-white mb-2">Great Resume!</h3>
-              <p class="text-[#A7A7A7]">
+              <h3 class="text-xl font-bold text-[#2C3E50] mb-2">
+                Great Resume!
+              </h3>
+              <p class="text-[#6C757D]">
                 Your resume looks excellent. No major improvements needed at
                 this time.
               </p>
@@ -434,3 +447,4 @@
     </div>
   </div>
 </section>
+<app-footer></app-footer>

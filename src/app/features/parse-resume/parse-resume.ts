@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { ResumeParseService } from '../../services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
 import { HeaderComponent } from "../../core/layout/header/header";
+import { FooterComponent } from "../../core/layout/footer/footer";
 
 
 @Component({
   selector: 'app-parse-resume',
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './parse-resume.html',
   styleUrl: './parse-resume.css'
 })

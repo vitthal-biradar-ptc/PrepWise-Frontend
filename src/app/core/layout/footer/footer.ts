@@ -15,4 +15,35 @@ export class FooterComponent {
     { name: 'Privacy', href: '#' },
     { name: 'Terms', href: '#' }
   ];
+
+  features = [
+    { name: 'Resume Analysis', href: '/resume-analyzer' },
+    { name: 'Mock Interviews', href: '/mock-interview' },
+    { name: 'Learning Paths', href: '/learning-paths' },
+    { name: 'Profile Builder', href: '/parse-resume' },
+    { name: 'Progress Tracking', href: '/dashboard' }
+  ];
+
+  resources = [
+    { name: 'Interview Tips', href: '#' },
+    { name: 'Career Guide', href: '#' },
+    { name: 'Resume Templates', href: '#' },
+    { name: 'Industry Insights', href: '#' },
+    { name: 'Success Stories', href: '#' }
+  ];
+
+  companyLinks = [
+    { name: 'About Us', href: '#' },
+    { name: 'Contact', href: '#' },
+    { name: 'Careers', href: '#' },
+    { name: 'Blog', href: '#' },
+    { name: 'Help Center', href: '#' }
+  ];
+
+  legalLinks = [
+    { name: 'Privacy Policy', href: '#' },
+    { name: 'Terms of Service', href: '#' },
+    { name: 'Cookie Policy', href: '#' },
+    { name: 'Disclaimer', href: '#' }
+  ];
 }

@@ -6,6 +6,7 @@ import { HeaderComponent } from "../../core/layout/header/header";
 import { LearningPathService } from "./services/learning-path.service";
 import { finalize } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { FooterComponent } from "../../core/layout/footer/footer";
 
 type LearningPathItem = {
   id: string | number;
@@ -26,7 +27,7 @@ const getTitle = (lp: LearningPathItem) => lp.title ?? lp.skill ?? `Learning Pat
 @Component({
   selector: 'app-learning-paths',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule, HeaderComponent, FormsModule],
+  imports: [CommonModule, HttpClientModule, RouterModule, HeaderComponent, FormsModule, FooterComponent],
   templateUrl: './learning-paths.component.html',
   styleUrls: ['./learning-paths.component.css'],
 })

@@ -1,7 +1,7 @@
 .learning-paths-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  color: #f1f1f1;
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+  color: #2C3E50;
 }
 
 .main-content {
@@ -24,7 +24,7 @@
 }
 
 .breadcrumb-item.current {
-  color: #b03eff;
+  color: #3498DB;
   font-weight: 600;
 }
 
@@ -36,32 +36,32 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0.25rem 0 0.5rem;
-  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .subtitle {
-  color: #a7a7a7;
+  color: #6C757D;
   margin: 0;
 }
 
 .state {
   padding: 1rem;
-  background: rgba(176, 62, 255, 0.06);
-  border: 1px solid rgba(176, 62, 255, 0.2);
+  background: rgba(52, 152, 219, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.5rem;
   margin: 1rem 0;
 }
 
 .state.error {
-  background: rgba(239, 68, 68, 0.08);
-  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(231, 76, 60, 0.1);
+  border-color: rgba(231, 76, 60, 0.3);
 }
 
 .state.empty {
-  background: rgba(176, 62, 255, 0.04);
+  background: rgba(52, 152, 219, 0.05);
 }
 
 .grid {
@@ -71,38 +71,39 @@
 }
 
 .card {
-  background: rgba(26, 26, 26, 0.9);
-  border: 1px solid rgba(176, 62, 255, 0.2);
+  background: #FFFFFF;
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
   outline: none;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .card:hover,
 .card:focus {
   transform: translateY(-2px);
-  border-color: rgba(176, 62, 255, 0.4);
-  box-shadow: 0 8px 24px rgba(176, 62, 255, 0.1);
+  border-color: rgba(52, 152, 219, 0.4);
+  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.15);
 }
 
 .card-title {
   font-weight: 700;
-  color: #f1f1f1;
+  color: #2C3E50;
   margin-bottom: 0.5rem;
 }
 
 .card-desc {
-  color: #cfcfcf;
+  color: #495057;
   font-size: 0.95rem;
   line-height: 1.4;
   min-height: 2.6em;
 }
 
 .card-desc.muted {
-  color: #8a8a8a;
+  color: #6C757D;
 }
 
 .card-footer {
@@ -120,9 +121,9 @@
   height: 32px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  background: rgba(239, 68, 68, 0.08);
-  color: #ef4444;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  background: rgba(231, 76, 60, 0.1);
+  color: #E74C3C;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -130,8 +131,8 @@
 }
 
 .card-delete-btn:hover:enabled {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.6);
+  background: rgba(231, 76, 60, 0.2);
+  border-color: rgba(231, 76, 60, 0.6);
 }
 
 .card-delete-btn:disabled {
@@ -151,11 +152,11 @@
 
 .modal {
   width: min(560px, 92vw);
-  background: rgba(26, 26, 26, 0.98);
-  border: 1px solid rgba(176, 62, 255, 0.3);
+  background: #FFFFFF;
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -168,7 +169,7 @@
 .icon-button {
   background: transparent;
   border: none;
-  color: #cfcfcf;
+  color: #495057;
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -191,22 +192,22 @@
 
 .modal-form label {
   font-size: 0.9rem;
-  color: #cfcfcf;
+  color: #495057;
 }
 
 .modal-form input,
 .modal-form select {
-  background: rgba(26, 26, 26, 0.9);
-  border: 1px solid rgba(176, 62, 255, 0.3);
+  background: #F8F9FA;
+  border: 1px solid rgba(52, 152, 219, 0.3);
   border-radius: 0.5rem;
-  color: #f1f1f1;
+  color: #2C3E50;
   padding: 0.55rem 0.75rem;
   outline: none;
 }
 
 .modal-form input:focus,
 .modal-form select:focus {
-  border-color: rgba(176, 62, 255, 0.6);
+  border-color: rgba(52, 152, 219, 0.6);
 }
 
 .modal-actions {
@@ -221,10 +222,13 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  color: #FFFFFF;
+  border: 1px solid rgba(52, 152, 219, 0.2);
   position: relative;
   cursor: pointer;
   margin-top: 10px;
+  border-radius: 0.5rem;
 }
 
 .cta-button.generate-btn::before {

@@ -5,11 +5,12 @@ import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../../core/layout/header/header";
+import { FooterComponent } from "../../core/layout/footer/footer";
 
 @Component({
   selector: 'app-resume-analyzer',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './resume-analyzer.html',
   styleUrls: ['./resume-analyzer.css']
 })

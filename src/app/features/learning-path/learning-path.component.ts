@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { LearningPathService } from './services/learning-path.service';
 import { finalize } from 'rxjs';
+import { FooterComponent } from "../../core/layout/footer/footer";
 
 interface Resource {
   title: string;
@@ -36,7 +37,7 @@ interface LearningPath {
 @Component({
   selector: 'app-learning-path',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, HttpClientModule],
+  imports: [CommonModule, FormsModule, HeaderComponent, HttpClientModule, FooterComponent],
   templateUrl: './learning-path.component.html',
   styleUrls: ['./learning-path.component.css']
 })

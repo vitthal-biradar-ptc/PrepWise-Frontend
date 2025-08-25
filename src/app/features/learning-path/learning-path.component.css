@@ -1,7 +1,7 @@
 .learning-path-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  color: #f1f1f1;
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+  color: #2C3E50;
 }
 
 .main-content {
@@ -29,11 +29,11 @@
 }
 
 .breadcrumb-item:hover:not(.current) {
-  color: #b03eff;
+  color: #3498DB;
 }
 
 .breadcrumb-item.current {
-  color: #b03eff;
+  color: #3498DB;
   font-weight: 600;
 }
 
@@ -45,7 +45,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -59,7 +59,7 @@
 }
 
 .duration-badge {
-  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #a7a7a7;
+  color: #6C757D;
   font-size: 0.875rem;
 }
 
@@ -81,8 +81,8 @@
 
 /* Progress Overview */
 .progress-overview {
-  background: rgba(176, 62, 255, 0.1);
-  border: 1px solid rgba(176, 62, 255, 0.3);
+  background: rgba(52, 152, 219, 0.1);
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 1rem;
   padding: 2rem;
   margin-bottom: 2rem;
@@ -105,7 +105,7 @@
 .progress-percentage {
   font-size: 2rem;
   font-weight: 700;
-  color: #b03eff;
+  color: #3498DB;
 }
 
 .progress-bar-container {
@@ -115,14 +115,14 @@
 .progress-bar {
   width: 100%;
   height: 1rem;
-  background: rgba(176, 62, 255, 0.2);
+  background: rgba(52, 152, 219, 0.2);
   border-radius: 0.5rem;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7f00ff, #c400ff);
+  background: linear-gradient(90deg, #3498DB, #6C5CE7);
   border-radius: 0.5rem;
   transition: width 0.6s ease;
   position: relative;
@@ -163,14 +163,14 @@
 }
 
 .stat-value {
-  color: #b03eff;
+  color: #3498DB;
   font-weight: 600;
 }
 
 .stat-divider {
   width: 1px;
   height: 1rem;
-  background: rgba(176, 62, 255, 0.3);
+  background: rgba(52, 152, 219, 0.3);
 }
 
 /* Period Cards */
@@ -181,22 +181,23 @@
 }
 
 .period-card {
-  background: rgba(26, 26, 26, 0.9);
-  border: 1px solid rgba(176, 62, 255, 0.2);
+  background: #FFFFFF;
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 1rem;
   overflow: hidden;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .period-card:hover {
-  border-color: rgba(176, 62, 255, 0.4);
+  border-color: rgba(52, 152, 219, 0.4);
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(176, 62, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.15);
 }
 
 .period-card.expanded {
-  border-color: rgba(176, 62, 255, 0.5);
+  border-color: rgba(52, 152, 219, 0.5);
 }
 
 .period-header {
@@ -206,7 +207,7 @@
 }
 
 .period-header:hover {
-  background: rgba(176, 62, 255, 0.05);
+  background: rgba(52, 152, 219, 0.05);
 }
 
 .period-header-content {
@@ -225,12 +226,12 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 0.5rem 0;
-  color: #b03eff;
+  color: #3498DB;
 }
 
 .period-goal {
   margin: 0;
-  color: #f1f1f1;
+  color: #2C3E50;
   font-size: 1rem;
 }
 
@@ -249,28 +250,28 @@
 .mini-progress-bar {
   width: 60px;
   height: 4px;
-  background: rgba(176, 62, 255, 0.2);
+  background: rgba(52, 152, 219, 0.2);
   border-radius: 2px;
   overflow: hidden;
 }
 
 .mini-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7f00ff, #c400ff);
+  background: linear-gradient(90deg, #3498DB, #6C5CE7);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
 .mini-progress-text {
   font-size: 0.75rem;
-  color: #a7a7a7;
+  color: #6C757D;
   font-weight: 600;
   min-width: 30px;
 }
 
 .expand-icon {
   transition: transform 0.3s ease;
-  color: #b03eff;
+  color: #3498DB;
 }
 
 .expand-icon.rotated {
@@ -290,7 +291,7 @@
 
 .period-content-inner {
   padding: 0 1.5rem 1.5rem 1.5rem;
-  border-top: 1px solid rgba(176, 62, 255, 0.2);
+  border-top: 1px solid rgba(52, 152, 219, 0.2);
 }
 
 .section {
@@ -308,11 +309,7 @@
   font-size: 1.125rem;
   font-weight: 600;
   margin: 1.5rem 0 1rem 0;
-  color: #f1f1f1;
-}
-
-.section-icon {
-  font-size: 1.25rem;
+  color: #2C3E50;
 }
 
 /* Focus Areas */
@@ -324,8 +321,8 @@
 
 .focus-area-item {
   padding: 0.75rem 1rem;
-  background: rgba(176, 62, 255, 0.05);
-  border: 1px solid rgba(176, 62, 255, 0.1);
+  background: rgba(52, 152, 219, 0.05);
+  border: 1px solid rgba(52, 152, 219, 0.1);
   border-radius: 0.5rem;
   margin-bottom: 0.5rem;
   position: relative;
@@ -333,14 +330,14 @@
 }
 
 .focus-area-item:hover {
-  background: rgba(176, 62, 255, 0.1);
-  border-color: rgba(176, 62, 255, 0.2);
+  background: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.2);
   transform: translateX(4px);
 }
 
 .focus-area-item::before {
   content: '•';
-  color: #b03eff;
+  color: #3498DB;
   font-weight: bold;
   margin-right: 0.5rem;
 }
@@ -356,8 +353,8 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(176, 62, 255, 0.05);
-  border: 1px solid rgba(176, 62, 255, 0.1);
+  background: rgba(52, 152, 219, 0.05);
+  border: 1px solid rgba(52, 152, 219, 0.1);
   border-radius: 0.5rem;
   text-decoration: none;
   color: inherit;
@@ -365,10 +362,10 @@
 }
 
 .resource-item:hover {
-  background: rgba(176, 62, 255, 0.1);
-  border-color: rgba(176, 62, 255, 0.3);
+  background: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(176, 62, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.1);
 }
 
 .resource-icon {
@@ -384,19 +381,19 @@
 .resource-title {
   display: block;
   font-weight: 600;
-  color: #f1f1f1;
+  color: #2C3E50;
   margin-bottom: 0.25rem;
 }
 
 .resource-type {
   display: block;
   font-size: 0.875rem;
-  color: #a7a7a7;
+  color: #6C757D;
   text-transform: capitalize;
 }
 
 .external-link-icon {
-  color: #b03eff;
+  color: #3498DB;
   font-size: 1.25rem;
   flex-shrink: 0;
 }
@@ -413,20 +410,20 @@
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(176, 62, 255, 0.05);
-  border: 1px solid rgba(176, 62, 255, 0.1);
+  background: rgba(52, 152, 219, 0.05);
+  border: 1px solid rgba(52, 152, 219, 0.1);
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 }
 
 .task-item:hover {
-  background: rgba(176, 62, 255, 0.1);
-  border-color: rgba(176, 62, 255, 0.2);
+  background: rgba(52, 152, 219, 0.1);
+  border-color: rgba(52, 152, 219, 0.2);
 }
 
 .task-item.completed {
-  background: rgba(34, 197, 94, 0.1);
-  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(39, 174, 96, 0.1);
+  border-color: rgba(39, 174, 96, 0.3);
 }
 
 .task-checkbox-label {
@@ -447,7 +444,7 @@
 .checkbox-custom {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(176, 62, 255, 0.5);
+  border: 2px solid rgba(52, 152, 219, 0.5);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -457,8 +454,8 @@
 }
 
 .task-checkbox:checked + .checkbox-custom {
-  background: linear-gradient(135deg, #7f00ff, #c400ff);
-  border-color: #b03eff;
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  border-color: #3498DB;
 }
 
 .task-checkbox:checked + .checkbox-custom::after {
@@ -475,14 +472,14 @@
 
 .task-description {
   margin: 0 0 0.5rem 0;
-  color: #f1f1f1;
+  color: #2C3E50;
   line-height: 1.5;
   transition: all 0.3s ease;
 }
 
 .task-description.completed {
   text-decoration: line-through;
-  color: #a7a7a7;
+  color: #6C757D;
 }
 
 .task-meta {
@@ -496,7 +493,7 @@
   align-items: center;
   gap: 0.25rem;
   font-size: 0.875rem;
-  color: #a7a7a7;
+  color: #6C757D;
 }
 
 /* Empty State */
@@ -519,17 +516,17 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #f1f1f1;
+  color: #2C3E50;
 }
 
 .empty-state-description {
-  color: #a7a7a7;
+  color: #6C757D;
   margin-bottom: 2rem;
   line-height: 1.6;
 }
 
 .cta-button {
-  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  background: linear-gradient(135deg, #3498DB, #6C5CE7);
   color: white;
   border: none;
   padding: 0.75rem 2rem;
@@ -543,7 +540,7 @@
 
 .cta-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(176, 62, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.3);
 }
 
 .cta-button.generate-btn {
@@ -552,7 +549,7 @@
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 24px rgba(176, 62, 255, 0.35);
+  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.35);
   position: relative;
 }
 
@@ -571,7 +568,7 @@
 
 .cta-button.generate-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(176, 62, 255, 0.45);
+  box-shadow: 0 12px 36px rgba(52, 152, 219, 0.45);
 }
 
 .cta-button.generate-btn:hover::after {
@@ -582,8 +579,8 @@
 .cta-button.generate-btn:focus-visible {
   outline: none;
   box-shadow:
-    0 12px 36px rgba(176, 62, 255, 0.45),
-    0 0 0 3px rgba(176, 62, 255, 0.35);
+    0 12px 36px rgba(52, 152, 219, 0.45),
+    0 0 0 3px rgba(52, 152, 219, 0.35);
 }
 
 /* Modal */
@@ -598,11 +595,11 @@
 
 .modal {
   width: min(560px, 92vw);
-  background: rgba(26, 26, 26, 0.98);
-  border: 1px solid rgba(176, 62, 255, 0.3);
+  background: #FFFFFF;
+  border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -615,7 +612,7 @@
 .icon-button {
   background: transparent;
   border: none;
-  color: #cfcfcf;
+  color: #495057;
   font-size: 1.1rem;
   cursor: pointer;
 }
@@ -638,22 +635,22 @@
 
 .modal-form label {
   font-size: 0.9rem;
-  color: #cfcfcf;
+  color: #495057;
 }
 
 .modal-form input,
 .modal-form select {
-  background: rgba(26, 26, 26, 0.9);
-  border: 1px solid rgba(176, 62, 255, 0.3);
+  background: #F8F9FA;
+  border: 1px solid rgba(52, 152, 219, 0.3);
   border-radius: 0.5rem;
-  color: #f1f1f1;
+  color: #2C3E50;
   padding: 0.55rem 0.75rem;
   outline: none;
 }
 
 .modal-form input:focus,
 .modal-form select:focus {
-  border-color: rgba(176, 62, 255, 0.6);
+  border-color: rgba(52, 152, 219, 0.6);
 }
 
 .modal-actions {

@@ -1,13 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../../services/authorization.service';
 
 @Component({
   selector: 'app-works',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './works.html',
-  styleUrl: './works.css'
+  styleUrls: ['./works.css']
 })
-export class WorksComponent {
-  // Add any methods or properties needed for the component here
+export class WorksComponent implements OnInit {
+  isAuthenticated = false;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    this.authService.isAuthenticated$.subscribe(
+      isAuth => this.isAuthenticated = isAuth
+    );
+  }
 }

@@ -17,28 +17,28 @@
 	75%, 100% { transform: scale(2); opacity: 0; }
 }
 
-.bg-gray-800 { background-color: #1F2937; }
-.bg-gray-900 { background-color: #111827; }
-.bg-gray-700 { background-color: #374151; }
-.bg-black { background-color: #000000; }
-.text-gray-200 { color: #E5E7EB; }
-.text-gray-300 { color: #D1D5DB; }
-.text-gray-400 { color: #9CA3AF; }
-.text-red-400 { color: #F87171; }
-.text-green-400 { color: #34D399; }
-.text-yellow-400 { color: #FBBF24; }
-.text-blue-400 { color: #60A5FA; }
-.text-indigo-300 { color: #A5B4FC; }
-.bg-blue-500 { background-color: #3B82F6; }
-.bg-blue-500\/50 { background-color: rgba(59, 130, 246, 0.5); }
-.bg-yellow-900\/50 { background-color: rgba(120, 53, 15, 0.5); }
-.border-yellow-700 { border-color: #B45309; }
-.border-gray-300 { border-color: #D1D5DB; }
-.border-gray-700 { border-color: #374151; }
-.border-gray-600 { border-color: #4B5563; }
-.bg-indigo-600 { background-color: #4F46E5; }
-.bg-red-600 { background-color: #DC2626; }
-.bg-red-700 { background-color: #B91C1C; }
+.bg-gray-800 { background-color: #F8F9FA; }
+.bg-gray-900 { background-color: #FFFFFF; }
+.bg-gray-700 { background-color: #E9ECEF; }
+.bg-black { background-color: #F8F9FA; }
+.text-gray-200 { color: #495057; }
+.text-gray-300 { color: #6C757D; }
+.text-gray-400 { color: #ADB5BD; }
+.text-red-400 { color: #E74C3C; }
+.text-green-400 { color: #27AE60; }
+.text-yellow-400 { color: #F39C12; }
+.text-blue-400 { color: #3498DB; }
+.text-indigo-300 { color: #6C5CE7; }
+.bg-blue-500 { background-color: #3498DB; }
+.bg-blue-500\/50 { background-color: rgba(52, 152, 219, 0.5); }
+.bg-yellow-900\/50 { background-color: rgba(243, 156, 18, 0.1); }
+.border-yellow-700 { border-color: #F39C12; }
+.border-gray-300 { border-color: #DEE2E6; }
+.border-gray-700 { border-color: #CED4DA; }
+.border-gray-600 { border-color: #ADB5BD; }
+.bg-indigo-600 { background-color: #6C5CE7; }
+.bg-red-600 { background-color: #E74C3C; }
+.bg-red-700 { background-color: #C0392B; }
 .text-white { color: #FFFFFF; }
 .rounded-lg { border-radius: .5rem; }
 .rounded-xl { border-radius: .75rem; }
@@ -121,39 +121,39 @@
 .text-3xl { font-size: 1.875rem; }
 .rounded { border-radius: .25rem; }
 .border-transparent { border-color: transparent; }
-.hover\:bg-red-700:hover { background-color: #B91C1C; }
+.hover\:bg-red-700:hover { background-color: #C0392B; }
 .disabled\:bg-gray-400:disabled { background-color: #9CA3AF; }
 .disabled\:bg-gray-600:disabled { background-color: #4B5563; }
 .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
 
-/* Theme styles to match landing hero */
-.theme-dark-bg { position: relative; background-color: transparent; }
+/* Theme styles for light learning platform */
+.theme-dark-bg { position: relative; background-color: #F8F9FA; }
 .theme-card {
-	background-color: #1A1A1A;
-	border: 1px solid rgba(176, 62, 255, 0.3);
+	background-color: #FFFFFF;
+	border: 1px solid rgba(52, 152, 219, 0.2);
 	border-radius: .75rem;
-	box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+	box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .theme-gradient-text {
-	background-image: linear-gradient(90deg, #7F00FF, #C400FF);
+	background-image: linear-gradient(90deg, #3498DB, #6C5CE7);
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 }
 .theme-gradient-btn {
-	background-image: linear-gradient(90deg, #7F00FF, #C400FF);
-	color: #F1F1F1;
+	background-image: linear-gradient(90deg, #3498DB, #6C5CE7);
+	color: #FFFFFF;
 	border-radius: .5rem;
 	transition: transform .2s ease, opacity .2s ease;
 }
-.theme-gradient-btn:hover { transform: scale(1.02); opacity: .95; }
-.theme-muted { color: #A7A7A7; }
-.theme-light { color: #F1F1F1; }
+.theme-gradient-btn:hover { transform: scale(1.02); opacity: .9; }
+.theme-muted { color: #6C757D; }
+.theme-light { color: #2C3E50; }
 
 /* Chat scrollbar styling */
 .chat-scroll-container {
   scrollbar-width: thin;
-  scrollbar-color: rgba(176, 62, 255, 0.3) transparent;
+  scrollbar-color: rgba(52, 152, 219, 0.3) transparent;
 }
 
 .chat-scroll-container::-webkit-scrollbar {
@@ -165,10 +165,10 @@
 }
 
 .chat-scroll-container::-webkit-scrollbar-thumb {
-  background-color: rgba(176, 62, 255, 0.3);
+  background-color: rgba(52, 152, 219, 0.3);
   border-radius: 3px;
 }
 
 .chat-scroll-container::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(176, 62, 255, 0.5);
+  background-color: rgba(52, 152, 219, 0.5);
 }

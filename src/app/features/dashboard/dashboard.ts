@@ -246,31 +246,23 @@ export class DashboardComponent implements OnInit {
         {
           data: domainData.datasets[0].data,
           backgroundColor: [
-            '#8a2be2',
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa'
+            '#3498DB',
+            '#6C5CE7',
+            '#8B5CF6',
+            '#A855F7',
+            '#C084FC',
+            '#E879F9'
           ],
           borderColor: [
-            '#8a2be2',
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa'
+            '#3498DB',
+            '#6C5CE7',
+            '#8B5CF6',
+            '#A855F7',
+            '#C084FC',
+            '#E879F9'
           ],
-          borderWidth: 3,
-          hoverBorderWidth: 5,
-          hoverBackgroundColor: [
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa',
-            '#f0f8ff'
-          ]
+          borderWidth: 2,
+          hoverBorderWidth: 3
         }
       ]
     };
@@ -279,7 +271,7 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            color: '#ffffff',
+            color: '#2C3E50',
             font: {
               size: 14,
               weight: '600'
@@ -291,10 +283,10 @@ export class DashboardComponent implements OnInit {
           position: 'bottom'
         },
         tooltip: {
-          backgroundColor: 'rgba(30, 30, 63, 0.9)',
-          titleColor: '#ffffff',
-          bodyColor: '#e6e6fa',
-          borderColor: '#8a2be2',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          titleColor: '#2C3E50',
+          bodyColor: '#6C757D',
+          borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
           displayColors: true
@@ -310,7 +302,6 @@ export class DashboardComponent implements OnInit {
   }
 
   initPerformanceChart() {
-    // Keep dummy data for Performance Metrics as requested
     this.atsChartData = {
       labels: ['Resume Score', 'Skills Match', 'Experience Level', 'Education', 'Certifications', 'Projects'],
       datasets: [
@@ -318,23 +309,23 @@ export class DashboardComponent implements OnInit {
           label: 'Performance Metrics',
           data: [85, 92, 78, 88, 95, 82],
           backgroundColor: [
-            'rgba(138, 43, 226, 0.7)',
-            'rgba(153, 50, 204, 0.7)',
-            'rgba(186, 85, 211, 0.7)',
-            'rgba(218, 112, 214, 0.7)',
-            'rgba(221, 160, 221, 0.7)',
-            'rgba(230, 230, 250, 0.7)'
+            'rgba(52, 152, 219, 0.7)',
+            'rgba(108, 92, 231, 0.7)',
+            'rgba(139, 92, 246, 0.7)',
+            'rgba(168, 85, 247, 0.7)',
+            'rgba(192, 132, 252, 0.7)',
+            'rgba(232, 121, 249, 0.7)'
           ],
           borderColor: [
-            '#8a2be2',
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa'
+            '#3498DB',
+            '#6C5CE7',
+            '#8B5CF6',
+            '#A855F7',
+            '#C084FC',
+            '#E879F9'
           ],
-          borderWidth: 3,
-          hoverBorderWidth: 5
+          borderWidth: 2,
+          hoverBorderWidth: 3
         }
       ]
     };
@@ -343,7 +334,7 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            color: '#ffffff',
+            color: '#2C3E50',
             font: {
               size: 14,
               weight: '600'
@@ -355,10 +346,10 @@ export class DashboardComponent implements OnInit {
           position: 'bottom'
         },
         tooltip: {
-          backgroundColor: 'rgba(30, 30, 63, 0.9)',
-          titleColor: '#ffffff',
-          bodyColor: '#e6e6fa',
-          borderColor: '#8a2be2',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          titleColor: '#2C3E50',
+          bodyColor: '#6C757D',
+          borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
           displayColors: true
@@ -369,7 +360,7 @@ export class DashboardComponent implements OnInit {
           beginAtZero: true,
           max: 100,
           ticks: {
-            color: '#b8b8d4',
+            color: '#6C757D',
             font: {
               size: 12,
               weight: '500'
@@ -377,15 +368,15 @@ export class DashboardComponent implements OnInit {
             stepSize: 20
           },
           grid: {
-            color: 'rgba(184, 184, 212, 0.3)',
-            lineWidth: 2
+            color: 'rgba(108, 117, 125, 0.3)',
+            lineWidth: 1
           },
           angleLines: {
-            color: 'rgba(184, 184, 212, 0.3)',
+            color: 'rgba(108, 117, 125, 0.3)',
             lineWidth: 1
           },
           pointLabels: {
-            color: '#ffffff',
+            color: '#2C3E50',
             font: {
               size: 13,
               weight: '600'
@@ -403,38 +394,30 @@ export class DashboardComponent implements OnInit {
   }
 
   initCharts() {
-    // Fallback dummy data for domain chart
+    // Fallback dummy data for domain chart with light theme colors
     this.domainChartData = {
       labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
       datasets: [
         {
           data: [30, 25, 20, 15, 8, 2],
           backgroundColor: [
-            '#8a2be2',
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa'
+            '#3498DB',
+            '#6C5CE7',
+            '#8B5CF6',
+            '#A855F7',
+            '#C084FC',
+            '#E879F9'
           ],
           borderColor: [
-            '#8a2be2',
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa'
+            '#3498DB',
+            '#6C5CE7',
+            '#8B5CF6',
+            '#A855F7',
+            '#C084FC',
+            '#E879F9'
           ],
-          borderWidth: 3,
-          hoverBorderWidth: 5,
-          hoverBackgroundColor: [
-            '#9932cc',
-            '#ba55d3',
-            '#da70d6',
-            '#dda0dd',
-            '#e6e6fa',
-            '#f0f8ff'
-          ]
+          borderWidth: 2,
+          hoverBorderWidth: 3
         }
       ]
     };
@@ -443,7 +426,7 @@ export class DashboardComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            color: '#ffffff',
+            color: '#2C3E50',
             font: {
               size: 14,
               weight: '600'
@@ -455,10 +438,10 @@ export class DashboardComponent implements OnInit {
           position: 'bottom'
         },
         tooltip: {
-          backgroundColor: 'rgba(30, 30, 63, 0.9)',
-          titleColor: '#ffffff',
-          bodyColor: '#e6e6fa',
-          borderColor: '#8a2be2',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          titleColor: '#2C3E50',
+          bodyColor: '#6C757D',
+          borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
           displayColors: true
@@ -472,7 +455,7 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // Initialize performance chart with dummy data
+    // Initialize performance chart with light theme
     this.initPerformanceChart();
   }
 
@@ -558,11 +541,11 @@ export class DashboardComponent implements OnInit {
 
   getLevelColor(level: string): string {
     switch (level) {
-      case 'Expert': return '#7F00FF';
-      case 'Advanced': return '#C400FF';
-      case 'Intermediate': return '#B03EFF';
-      case 'Beginner': return '#8B5CF6';
-      default: return '#A855F7';
+      case 'Expert': return '#6C5CE7';
+      case 'Advanced': return '#3498DB';
+      case 'Intermediate': return '#8B5CF6';
+      case 'Beginner': return '#A855F7';
+      default: return '#C084FC';
     }
   }
 
