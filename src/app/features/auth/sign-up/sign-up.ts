@@ -145,7 +145,7 @@ export class SignUp {
 
   // Check if field has error and is touched
   hasFieldError(fieldName: string): boolean {
-    return this.touchedFields[fieldName] && !!this.formErrors[fieldName];
+    return !!this.touchedFields[fieldName] && !!this.formErrors[fieldName];
   }
 
   // Get field error message
