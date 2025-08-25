@@ -5,6 +5,10 @@ import { map, switchMap, take } from 'rxjs/operators';
 import { AuthStateService } from '../services/auth-state.service';
 import { AuthService } from '../services/authorization.service';
 
+/**
+ * Route guard ensuring a valid auth token before activating protected routes.
+ * Redirects to sign-in when absent or invalid.
+ */
 @Injectable({
   providedIn: 'root'
 })

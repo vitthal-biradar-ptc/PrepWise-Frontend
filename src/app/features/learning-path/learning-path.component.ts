@@ -1,19 +1,21 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from "../../core/layout/header/header";
+import { HeaderComponent } from '../../core/layout/header/header';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { LearningPathService } from './services/learning-path.service';
 import { finalize } from 'rxjs';
-import { FooterComponent } from "../../core/layout/footer/footer";
+import { FooterComponent } from '../../core/layout/footer/footer';
 
+/** Resource link shown inside a learning period. */
 interface Resource {
   title: string;
   url: string;
   type: 'video' | 'article' | 'course' | 'documentation' | 'tutorial';
 }
 
+/** Discrete task with estimated hours and completion state. */
 interface Task {
   id: string;
   description: string;
@@ -21,6 +23,7 @@ interface Task {
   estimatedHours: number;
 }
 
+/** A time-bounded period grouping related goals, resources and tasks. */
 interface Period {
   period: string;
   goal: string;
@@ -29,25 +32,35 @@ interface Period {
   tasks: Task[];
 }
 
+/** UI model for a learning path assembled from API or static fallback. */
 interface LearningPath {
   duration: 'short-term' | 'medium-term' | 'long-term';
   learningPath: Period[];
 }
 
+/**
+ * Detailed learning path view with progress tracking and generator modal.
+ */
 @Component({
   selector: 'app-learning-path',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, HttpClientModule, FooterComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HeaderComponent,
+    HttpClientModule,
+    FooterComponent,
+  ],
   templateUrl: './learning-path.component.html',
-  styleUrls: ['./learning-path.component.css']
+  styleUrls: ['./learning-path.component.css'],
 })
 export class LearningPathComponent implements OnInit {
   learningPathData: LearningPath | null = null;
   expandedPeriods: Set<number> = new Set();
   overallProgress = 0;
   periodProgress: number[] = [];
-  
-  // Static JSON data for fallback
+
+  // Static JSON data for fallback when API/route params unavailable
   private staticLearningPath: LearningPath = {
     duration: 'medium-term',
     learningPath: [
@@ -58,51 +71,52 @@ export class LearningPathComponent implements OnInit {
           'ES6+ Features and Syntax',
           'Async/Await and Promises',
           'DOM Manipulation',
-          'Event Handling'
+          'Event Handling',
         ],
         resources: [
           {
             title: 'JavaScript ES6+ Complete Course',
             url: 'https://www.udemy.com/course/javascript-es6',
-            type: 'course'
+            type: 'course',
           },
           {
             title: 'MDN JavaScript Guide',
             url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide',
-            type: 'documentation'
+            type: 'documentation',
           },
           {
             title: 'JavaScript Promises Explained',
             url: 'https://www.youtube.com/watch?v=DHvZLI7Db8E',
-            type: 'video'
-          }
+            type: 'video',
+          },
         ],
         tasks: [
           {
             id: 'task-1-1',
-            description: 'Complete ES6 arrow functions and template literals exercises',
+            description:
+              'Complete ES6 arrow functions and template literals exercises',
             completed: false,
-            estimatedHours: 4
+            estimatedHours: 4,
           },
           {
             id: 'task-1-2',
             description: 'Build a simple todo app using vanilla JavaScript',
             completed: false,
-            estimatedHours: 8
+            estimatedHours: 8,
           },
           {
             id: 'task-1-3',
             description: 'Practice async/await with API calls',
             completed: false,
-            estimatedHours: 6
+            estimatedHours: 6,
           },
           {
             id: 'task-1-4',
             description: 'Complete DOM manipulation challenges',
             completed: false,
-            estimatedHours: 5
-          }
-        ]
+            estimatedHours: 5,
+          },
+        ],
       },
       {
         period: 'Week 3-4',
@@ -111,51 +125,51 @@ export class LearningPathComponent implements OnInit {
           'Components and JSX',
           'State and Props Management',
           'Event Handling in React',
-          'React Hooks (useState, useEffect)'
+          'React Hooks (useState, useEffect)',
         ],
         resources: [
           {
             title: 'Official React Tutorial',
             url: 'https://react.dev/learn',
-            type: 'tutorial'
+            type: 'tutorial',
           },
           {
             title: 'React Hooks Complete Guide',
             url: 'https://www.freecodecamp.org/news/react-hooks-complete-guide',
-            type: 'article'
+            type: 'article',
           },
           {
             title: 'React Crash Course 2024',
             url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8',
-            type: 'video'
-          }
+            type: 'video',
+          },
         ],
         tasks: [
           {
             id: 'task-2-1',
             description: 'Create your first React component',
             completed: false,
-            estimatedHours: 3
+            estimatedHours: 3,
           },
           {
             id: 'task-2-2',
             description: 'Build a counter app with useState',
             completed: false,
-            estimatedHours: 4
+            estimatedHours: 4,
           },
           {
             id: 'task-2-3',
             description: 'Implement useEffect for data fetching',
             completed: false,
-            estimatedHours: 6
+            estimatedHours: 6,
           },
           {
             id: 'task-2-4',
             description: 'Create a weather app with API integration',
             completed: false,
-            estimatedHours: 10
-          }
-        ]
+            estimatedHours: 10,
+          },
+        ],
       },
       {
         period: 'Week 5-6',
@@ -164,51 +178,51 @@ export class LearningPathComponent implements OnInit {
           'Component Lifecycle',
           'Context API',
           'Custom Hooks',
-          'Performance Optimization'
+          'Performance Optimization',
         ],
         resources: [
           {
             title: 'Advanced React Patterns',
             url: 'https://kentcdodds.com/blog/advanced-react-patterns',
-            type: 'article'
+            type: 'article',
           },
           {
             title: 'React Context API Deep Dive',
             url: 'https://www.youtube.com/watch?v=35lXWvCuM8o',
-            type: 'video'
+            type: 'video',
           },
           {
             title: 'Custom Hooks Workshop',
             url: 'https://epicreact.dev/custom-hooks',
-            type: 'course'
-          }
+            type: 'course',
+          },
         ],
         tasks: [
           {
             id: 'task-3-1',
             description: 'Implement global state with Context API',
             completed: false,
-            estimatedHours: 6
+            estimatedHours: 6,
           },
           {
             id: 'task-3-2',
             description: 'Create 3 custom hooks for different use cases',
             completed: false,
-            estimatedHours: 8
+            estimatedHours: 8,
           },
           {
             id: 'task-3-3',
             description: 'Optimize app performance with React.memo',
             completed: false,
-            estimatedHours: 4
+            estimatedHours: 4,
           },
           {
             id: 'task-3-4',
             description: 'Build a complete task management app',
             completed: false,
-            estimatedHours: 12
-          }
-        ]
+            estimatedHours: 12,
+          },
+        ],
       },
       {
         period: 'Week 7-8',
@@ -217,53 +231,53 @@ export class LearningPathComponent implements OnInit {
           'REST API Integration',
           'State Management with Redux',
           'Authentication Implementation',
-          'Testing with Jest and React Testing Library'
+          'Testing with Jest and React Testing Library',
         ],
         resources: [
           {
             title: 'Redux Toolkit Official Guide',
             url: 'https://redux-toolkit.js.org/tutorials/overview',
-            type: 'documentation'
+            type: 'documentation',
           },
           {
             title: 'React Testing Library Course',
             url: 'https://testingjavascript.com',
-            type: 'course'
+            type: 'course',
           },
           {
             title: 'JWT Authentication in React',
             url: 'https://www.youtube.com/watch?v=7Q17ubqLfaM',
-            type: 'video'
-          }
+            type: 'video',
+          },
         ],
         tasks: [
           {
             id: 'task-4-1',
             description: 'Set up Redux store and implement basic actions',
             completed: false,
-            estimatedHours: 6
+            estimatedHours: 6,
           },
           {
             id: 'task-4-2',
             description: 'Implement JWT authentication flow',
             completed: false,
-            estimatedHours: 8
+            estimatedHours: 8,
           },
           {
             id: 'task-4-3',
             description: 'Write unit tests for components and hooks',
             completed: false,
-            estimatedHours: 10
+            estimatedHours: 10,
           },
           {
             id: 'task-4-4',
             description: 'Deploy full-stack application',
             completed: false,
-            estimatedHours: 6
-          }
-        ]
-      }
-    ]
+            estimatedHours: 6,
+          },
+        ],
+      },
+    ],
   };
 
   private userId = '';
@@ -296,9 +310,13 @@ export class LearningPathComponent implements OnInit {
 
       this.lpService.getUserLearningPaths(this.userId).subscribe({
         next: (arr) => {
-          const match = Array.isArray(arr) ? arr.find((it: any) => String(it.id) === String(this.pathId)) : null;
+          const match = Array.isArray(arr)
+            ? arr.find((it: any) => String(it.id) === String(this.pathId))
+            : null;
           if (match) {
-            this.learningPathData = this.lpService.mapToUiModel(match) as LearningPath;
+            this.learningPathData = this.lpService.mapToUiModel(
+              match
+            ) as LearningPath;
           } else {
             this.learningPathData = this.staticLearningPath;
           }
@@ -309,12 +327,12 @@ export class LearningPathComponent implements OnInit {
           this.learningPathData = this.staticLearningPath;
           this.loadCompletionState();
           this.calculateProgress();
-        }
+        },
       });
     });
   }
 
-  // Open/close modal
+  // Modal controls
   openGeneratorModal(): void {
     this.generationError = '';
     this.newSkill = '';
@@ -327,7 +345,7 @@ export class LearningPathComponent implements OnInit {
     this.showGeneratorModal = false;
   }
 
-  // Generate new path and display it
+  /** Request new path from API and display it. */
   generateNewPath(): void {
     if (!this.userId) {
       this.generationError = 'Missing userId.';
@@ -337,13 +355,20 @@ export class LearningPathComponent implements OnInit {
     const level = this.newLevel.trim();
     if (!skill || !level) return;
 
-    const userIdValue = /^\d+$/.test(this.userId) ? Number(this.userId) : this.userId;
+    const userIdValue = /^\d+$/.test(this.userId)
+      ? Number(this.userId)
+      : this.userId;
 
     this.generationLoading = true;
     this.generationError = '';
 
-    this.lpService.generateLearningPath({ skill, level, userId: userIdValue })
-      .pipe(finalize(() => { this.generationLoading = false; }))
+    this.lpService
+      .generateLearningPath({ skill, level, userId: userIdValue })
+      .pipe(
+        finalize(() => {
+          this.generationLoading = false;
+        })
+      )
       .subscribe({
         next: (res) => {
           // Map API response to UI model and show it
@@ -355,21 +380,25 @@ export class LearningPathComponent implements OnInit {
           this.newLevel = '';
         },
         error: (err) => {
-          this.generationError = err?.error?.message || err?.message || 'Failed to generate learning path.';
-        }
+          this.generationError =
+            err?.error?.message ||
+            err?.message ||
+            'Failed to generate learning path.';
+        },
       });
   }
 
+  /** Load task completion markers from localStorage. */
   private loadCompletionState(): void {
     if (!this.learningPathData || !isPlatformBrowser(this.platformId)) return;
-    
+
     const savedState = localStorage.getItem('learning-path-progress');
     if (savedState) {
       try {
         const completedTasks: Set<string> = new Set(JSON.parse(savedState));
-        
-        this.learningPathData.learningPath.forEach(period => {
-          period.tasks.forEach(task => {
+
+        this.learningPathData.learningPath.forEach((period) => {
+          period.tasks.forEach((task) => {
             task.completed = completedTasks.has(task.id);
           });
         });
@@ -379,19 +408,23 @@ export class LearningPathComponent implements OnInit {
     }
   }
 
+  /** Persist task completion markers to localStorage. */
   private saveCompletionState(): void {
     if (!this.learningPathData || !isPlatformBrowser(this.platformId)) return;
-    
+
     const completedTasks: string[] = [];
-    this.learningPathData.learningPath.forEach(period => {
-      period.tasks.forEach(task => {
+    this.learningPathData.learningPath.forEach((period) => {
+      period.tasks.forEach((task) => {
         if (task.completed) {
           completedTasks.push(task.id);
         }
       });
     });
-    
-    localStorage.setItem('learning-path-progress', JSON.stringify(completedTasks));
+
+    localStorage.setItem(
+      'learning-path-progress',
+      JSON.stringify(completedTasks)
+    );
   }
 
   togglePeriod(index: number): void {
@@ -408,78 +441,90 @@ export class LearningPathComponent implements OnInit {
 
   toggleTask(periodIndex: number, taskIndex: number): void {
     if (!this.learningPathData) return;
-    
-    const task = this.learningPathData.learningPath[periodIndex].tasks[taskIndex];
+
+    const task =
+      this.learningPathData.learningPath[periodIndex].tasks[taskIndex];
     task.completed = !task.completed;
-    
+
     this.saveCompletionState();
     this.calculateProgress();
   }
 
+  /** Compute period-wise and overall completion percentages. */
   private calculateProgress(): void {
     if (!this.learningPathData) return;
-    
+
     let totalTasks = 0;
     let completedTasks = 0;
-    
-    this.periodProgress = this.learningPathData.learningPath.map(period => {
+
+    this.periodProgress = this.learningPathData.learningPath.map((period) => {
       const periodTotal = period.tasks.length;
-      const periodCompleted = period.tasks.filter(task => task.completed).length;
-      
+      const periodCompleted = period.tasks.filter(
+        (task) => task.completed
+      ).length;
+
       totalTasks += periodTotal;
       completedTasks += periodCompleted;
-      
+
       return periodTotal > 0 ? (periodCompleted / periodTotal) * 100 : 0;
     });
-    
-    this.overallProgress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+    this.overallProgress =
+      totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
   }
 
+  /** Maps resource type to an emoji icon. */
   getResourceIcon(type: string): string {
     const icons: { [key: string]: string } = {
-      'video': '🎥',
-      'article': '📖',
-      'course': '🎓',
-      'documentation': '📚',
-      'tutorial': '💻'
+      video: '🎥',
+      article: '📖',
+      course: '🎓',
+      documentation: '📚',
+      tutorial: '💻',
     };
     return icons[type] || '🔗';
   }
 
   getDurationLabel(): string {
     if (!this.learningPathData) return '';
-    
+
     const labels: { [key: string]: string } = {
       'short-term': 'Short Term (1-4 weeks)',
-      'medium-term': 'Medium Term (1-3 months)', 
-      'long-term': 'Long Term (3+ months)'
+      'medium-term': 'Medium Term (1-3 months)',
+      'long-term': 'Long Term (3+ months)',
     };
     return labels[this.learningPathData.duration] || '';
   }
 
   getTotalEstimatedHours(): number {
     if (!this.learningPathData) return 0;
-    
+
     return this.learningPathData.learningPath.reduce((total, period) => {
-      return total + period.tasks.reduce((periodTotal, task) => {
-        return periodTotal + task.estimatedHours;
-      }, 0);
+      return (
+        total +
+        period.tasks.reduce((periodTotal, task) => {
+          return periodTotal + task.estimatedHours;
+        }, 0)
+      );
     }, 0);
   }
 
   getCompletedHours(): number {
     if (!this.learningPathData) return 0;
-    
+
     return this.learningPathData.learningPath.reduce((total, period) => {
-      return total + period.tasks.reduce((periodTotal, task) => {
-        return periodTotal + (task.completed ? task.estimatedHours : 0);
-      }, 0);
+      return (
+        total +
+        period.tasks.reduce((periodTotal, task) => {
+          return periodTotal + (task.completed ? task.estimatedHours : 0);
+        }, 0)
+      );
     }, 0);
   }
 
   getTotalTasksCount(): number {
     if (!this.learningPathData) return 0;
-    
+
     return this.learningPathData.learningPath.reduce((total, period) => {
       return total + period.tasks.length;
     }, 0);
@@ -487,9 +532,9 @@ export class LearningPathComponent implements OnInit {
 
   getCompletedTasksCount(): number {
     if (!this.learningPathData) return 0;
-    
+
     return this.learningPathData.learningPath.reduce((total, period) => {
-      return total + period.tasks.filter(task => task.completed).length;
+      return total + period.tasks.filter((task) => task.completed).length;
     }, 0);
   }
 }

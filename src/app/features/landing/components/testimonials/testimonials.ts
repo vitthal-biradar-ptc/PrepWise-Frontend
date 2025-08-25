@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+/**
+ * Testimonials section with simple star rating rendering.
+ */
 @Component({
   selector: 'app-testimonials',
   imports: [CommonModule],

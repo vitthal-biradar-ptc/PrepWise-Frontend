@@ -7,14 +7,21 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { AuthService, SignInRequest } from '../../../services/authorization.service';
 
+/** Lightweight dictionary for form field errors. */
 interface FormErrors {
   [key: string]: string;
 }
 
+/** Tracks which form fields have been interacted with. */
 interface TouchedFields {
   [key: string]: boolean;
 }
 
+/**
+ * Sign-in component with client-side validation and rate limiting.
+ *
+ * Uses localStorage to temporarily block excessive failed attempts.
+ */
 @Component({
   selector: 'app-sign-in',
   imports: [FormsModule, RouterModule, HttpClientModule, CommonModule],
@@ -58,7 +65,7 @@ export class SignIn implements OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // Enhanced validation methods
+  // Validation helpers
   validateUsernameOrEmail(input: string): { valid: boolean; message?: string } {
     const trimmedInput = input.trim();
     if (!trimmedInput) {
@@ -104,14 +111,14 @@ export class SignIn implements OnDestroy {
     }
   }
 
-  // Computed property for form validity
+  // Derived form validity
   get isFormValid(): boolean {
     const usernameValid = this.validateUsernameOrEmail(this.usernameOrEmail).valid;
     const passwordValid = this.validatePassword(this.password).valid;
     return usernameValid && passwordValid;
   }
 
-  // Enhanced validation for form submission
+  // Validate entire form on submit
   validateFormForSubmission(): boolean {
     const fields = ['usernameOrEmail', 'password'];
     let isValid = true;
@@ -130,7 +137,7 @@ export class SignIn implements OnDestroy {
     return isValid;
   }
 
-  // Helper methods
+  // UI helper methods
   hasFieldError(fieldName: string): boolean {
     return this.touchedFields[fieldName] && !!this.formErrors[fieldName];
   }
@@ -148,7 +155,7 @@ export class SignIn implements OnDestroy {
     this.showPassword = !this.showPassword;
   }
 
-  // Rate limiting - with browser check
+  // Rate limiting - guarded for SSR
   checkIfBlocked(): void {
     if (!this.isBrowser) return;
 
@@ -204,6 +211,7 @@ export class SignIn implements OnDestroy {
     }
   }
 
+  /** Human-readable remaining block time. */
   getBlockTimeRemaining(): string {
     if (!this.blockUntil) return '';
 

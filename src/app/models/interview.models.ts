@@ -1,3 +1,4 @@
+/** Message exchanged during a mock interview session. */
 export interface ChatMessage {
   id: string;
   type: 'user' | 'model';
@@ -6,6 +7,7 @@ export interface ChatMessage {
   streaming?: boolean;
 }
 
+/** Runtime configuration for interview generation and TTS. */
 export interface InterviewConfig {
   temperature: number;
   topP: number;
@@ -15,12 +17,14 @@ export interface InterviewConfig {
   sampleRate: number;
 }
 
+/** A single interview question. */
 export interface InterviewQuestion {
   id: number;
   text: string;
   category?: string;
 }
 
+/** In-memory representation of an interview in progress. */
 export interface InterviewSession {
   id: string;
   startTime: Date;
@@ -29,6 +33,7 @@ export interface InterviewSession {
   currentQuestionIndex: number;
 }
 
+/** Feedback summary returned after completing an interview. */
 export interface InterviewFeedback {
   strengths: string[];
   improvementAreas: string[];
@@ -36,7 +41,7 @@ export interface InterviewFeedback {
   detailedFeedback?: string;
 }
 
-// Structured feedback format for persistent storage and interoperability
+/** Structured feedback format for persistent storage and interoperability. */
 export interface StructuredInterviewFeedback {
   candidateDetails: {
     name: string;
@@ -56,18 +61,21 @@ export interface StructuredInterviewFeedback {
   finalVerdict: string;
 }
 
+/** Tool call request used by the model for function calling. */
 export interface ToolCallRequest {
   name: string;
   args: any;
   id: string;
 }
 
+/** Tool call response result and potential error information. */
 export interface ToolCallResponse {
   output: any;
   id: string;
   error: string | null;
 }
 
+/** Websocket connection status codes for realtime interviews. */
 export enum ConnectionStatus {
   DISCONNECTED = 0,
   CONNECTING = 1,
@@ -75,6 +83,7 @@ export enum ConnectionStatus {
   ERROR = 3
 }
 
+/** Safety thresholds used by the generative model. */
 export interface SafetySettings {
   harassmentThreshold: string;
   dangerousContentThreshold: string;
@@ -83,16 +92,17 @@ export interface SafetySettings {
   civicIntegrityThreshold: string;
 }
 
-// Define valid difficulty levels
+/** Valid difficulty levels. */
 export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard';
 
-// New interfaces for interview setup and results
+/** Interview setup payload before starting a session. */
 export interface InterviewSetup {
   role: string;
   level: DifficultyLevel | ''; // Allow empty string for form validation
   userId?: string;
 }
 
+/** Final interview result persisted after a session ends. */
 export interface InterviewResult {
   id: string;
   userId: string;
@@ -108,6 +118,7 @@ export interface InterviewResult {
   structuredFeedback?: StructuredInterviewFeedback;
 }
 
+/** Scored result for a single interview question. */
 export interface InterviewQuestionResult {
   question: string;
   userAnswer: string;
@@ -116,6 +127,7 @@ export interface InterviewQuestionResult {
   score?: number;
 }
 
+/** Summary card metadata for displaying past interviews. */
 export interface InterviewCard {
   id: string;
   title: string;

@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, inject, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -7,12 +14,15 @@ import { environment } from '../../../environments/environment';
 import { GoogleGenAI, Type } from '@google/genai';
 import { HeaderComponent } from '../../core/layout/header/header';
 
+/**
+ * Mock interview experience with speech recognition, TTS, and fullscreen.
+ */
 @Component({
   selector: 'app-mock-interview',
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './mock-interview.html',
-  styleUrl: './mock-interview.css'
+  styleUrl: './mock-interview.css',
 })
 export class MockInterview implements OnInit, OnDestroy {
   // UI State
@@ -48,7 +58,9 @@ export class MockInterview implements OnInit, OnDestroy {
 
   // Platform
   private readonly platformId = inject(PLATFORM_ID);
-  private get isBrowser(): boolean { return isPlatformBrowser(this.platformId); }
+  private get isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
 
   // Gemini client (lazy)
   private aiClient: GoogleGenAI | null = null;
@@ -72,14 +84,25 @@ export class MockInterview implements OnInit, OnDestroy {
         this.handleFullscreenChange();
       });
     };
-    
+
     document.addEventListener('fullscreenchange', this.fullscreenChangeHandler);
-    document.addEventListener('webkitfullscreenchange', this.fullscreenChangeHandler);
-    document.addEventListener('mozfullscreenchange', this.fullscreenChangeHandler);
-    document.addEventListener('MSFullscreenChange', this.fullscreenChangeHandler);
+    document.addEventListener(
+      'webkitfullscreenchange',
+      this.fullscreenChangeHandler
+    );
+    document.addEventListener(
+      'mozfullscreenchange',
+      this.fullscreenChangeHandler
+    );
+    document.addEventListener(
+      'MSFullscreenChange',
+      this.fullscreenChangeHandler
+    );
 
     // Setup Speech Recognition
-    const SpeechRecognitionImpl: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognitionImpl: any =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
     if (SpeechRecognitionImpl) {
       this.recognitionSupported = true;
       this.recognition = new SpeechRecognitionImpl();
@@ -88,7 +111,9 @@ export class MockInterview implements OnInit, OnDestroy {
       this.recognition.interimResults = true;
       this.recognition.onerror = (event: any) => {
         this.zone.run(() => {
-          this.recognitionError = `Speech recognition error: ${event?.error ?? 'unknown'}`;
+          this.recognitionError = `Speech recognition error: ${
+            event?.error ?? 'unknown'
+          }`;
           this.isListening = false;
         });
       };
@@ -121,27 +146,42 @@ export class MockInterview implements OnInit, OnDestroy {
       };
     } else {
       this.recognitionSupported = false;
-      this.recognitionError = 'Speech recognition is not supported in this browser.';
+      this.recognitionError =
+        'Speech recognition is not supported in this browser.';
     }
   }
 
   ngOnDestroy(): void {
     // Remove fullscreen listeners
     if (this.fullscreenChangeHandler) {
-      document.removeEventListener('fullscreenchange', this.fullscreenChangeHandler);
-      document.removeEventListener('webkitfullscreenchange', this.fullscreenChangeHandler);
-      document.removeEventListener('mozfullscreenchange', this.fullscreenChangeHandler);
-      document.removeEventListener('MSFullscreenChange', this.fullscreenChangeHandler);
+      document.removeEventListener(
+        'fullscreenchange',
+        this.fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        'webkitfullscreenchange',
+        this.fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        'mozfullscreenchange',
+        this.fullscreenChangeHandler
+      );
+      document.removeEventListener(
+        'MSFullscreenChange',
+        this.fullscreenChangeHandler
+      );
     }
-    
+
     // Exit fullscreen if active
     this.exitFullscreen();
-    
+
     // Stop camera
-    this.cameraStream?.getTracks().forEach(t => t.stop());
+    this.cameraStream?.getTracks().forEach((t) => t.stop());
     this.cameraStream = null;
     // Stop recognition
-    try { this.recognition?.stop?.(); } catch {}
+    try {
+      this.recognition?.stop?.();
+    } catch {}
     // Stop TTS
     if (this.isBrowser && (window as any).speechSynthesis) {
       (window as any).speechSynthesis.cancel();
@@ -151,7 +191,7 @@ export class MockInterview implements OnInit, OnDestroy {
   // Setup View actions
   protected async startInterviewFromSetup(): Promise<void> {
     if (!this.jobRole.trim()) return;
-    
+
     // Enter fullscreen before starting interview
     try {
       await this.enterFullscreen();
@@ -159,7 +199,7 @@ export class MockInterview implements OnInit, OnDestroy {
       console.warn('Could not enter fullscreen:', error);
       // Continue with interview even if fullscreen fails
     }
-    
+
     this.transcript = [];
     this.report = null;
     this.error = null;
@@ -187,13 +227,16 @@ export class MockInterview implements OnInit, OnDestroy {
       this.recognitionError = null;
       this.isListening = true;
     } catch (e) {
-      this.recognitionError = 'Could not start recognition. Please check permissions.';
+      this.recognitionError =
+        'Could not start recognition. Please check permissions.';
       this.isListening = false;
     }
   }
 
   protected stopListening(): void {
-    try { this.recognition?.stop?.(); } catch {}
+    try {
+      this.recognition?.stop?.();
+    } catch {}
     this.isListening = false;
   }
 
@@ -201,14 +244,23 @@ export class MockInterview implements OnInit, OnDestroy {
     this.aiStatus = 'thinking';
     this.scrollOnThinking();
     try {
-      const firstQuestion = await this.withTimeout(this.callStartInterview(this.jobRole, this.experienceLevel), this.requestTimeoutMs, 'startInterview');
-      const firstItem: TranscriptItem = { id: Date.now(), speaker: 'ai', text: firstQuestion };
+      const firstQuestion = await this.withTimeout(
+        this.callStartInterview(this.jobRole, this.experienceLevel),
+        this.requestTimeoutMs,
+        'startInterview'
+      );
+      const firstItem: TranscriptItem = {
+        id: Date.now(),
+        speaker: 'ai',
+        text: firstQuestion,
+      };
       this.transcript = [firstItem];
       this.scrollToBottom();
       this.speak(firstQuestion);
     } catch (err) {
       console.error('[MockInterview] beginInterview failed', err);
-      this.error = "I'm sorry, I'm having trouble starting the interview. Please check your network/API key and try again.";
+      this.error =
+        "I'm sorry, I'm having trouble starting the interview. Please check your network/API key and try again.";
       this.transcript = [{ id: Date.now(), speaker: 'ai', text: this.error }];
       this.scrollToBottom();
       this.aiStatus = 'idle';
@@ -217,7 +269,11 @@ export class MockInterview implements OnInit, OnDestroy {
 
   private handleUserSpeech(userText: string): void {
     if (!userText) return;
-    const userItem: TranscriptItem = { id: Date.now(), speaker: 'user', text: userText };
+    const userItem: TranscriptItem = {
+      id: Date.now(),
+      speaker: 'user',
+      text: userText,
+    };
     // Stop listening while AI processes and speaks to avoid self-capture
     this.stopListening();
     this.aiStatus = 'thinking';
@@ -227,20 +283,42 @@ export class MockInterview implements OnInit, OnDestroy {
     this.getFollowUp([...this.transcript]);
   }
 
-  private async getFollowUp(currentTranscript: TranscriptItem[]): Promise<void> {
+  private async getFollowUp(
+    currentTranscript: TranscriptItem[]
+  ): Promise<void> {
     try {
-      const next = await this.withTimeout(this.callGetNextQuestion(currentTranscript, this.jobRole, this.experienceLevel), this.requestTimeoutMs, 'nextQuestion');
+      const next = await this.withTimeout(
+        this.callGetNextQuestion(
+          currentTranscript,
+          this.jobRole,
+          this.experienceLevel
+        ),
+        this.requestTimeoutMs,
+        'nextQuestion'
+      );
       const newItems: TranscriptItem[] = [];
       if (next.feedback) {
-        newItems.push({ id: Date.now() + 1, speaker: 'feedback', text: next.feedback });
+        newItems.push({
+          id: Date.now() + 1,
+          speaker: 'feedback',
+          text: next.feedback,
+        });
       }
-      newItems.push({ id: Date.now() + 2, speaker: 'ai', text: next.nextQuestion });
+      newItems.push({
+        id: Date.now() + 2,
+        speaker: 'ai',
+        text: next.nextQuestion,
+      });
       this.transcript = [...this.transcript, ...newItems];
       this.scrollToBottom();
       this.speak(next.nextQuestion);
     } catch (err) {
       console.error('[MockInterview] getFollowUp failed', err);
-      const errorItem: TranscriptItem = { id: Date.now() + 3, speaker: 'ai', text: "I'm sorry, I encountered an error. Let's try that again." };
+      const errorItem: TranscriptItem = {
+        id: Date.now() + 3,
+        speaker: 'ai',
+        text: "I'm sorry, I encountered an error. Let's try that again.",
+      };
       this.transcript = [...this.transcript, errorItem];
       this.scrollToBottom();
       this.speak(errorItem.text);
@@ -250,20 +328,32 @@ export class MockInterview implements OnInit, OnDestroy {
   protected endInterview(): void {
     // Exit fullscreen when ending interview
     this.exitFullscreen();
-    
+
     this.currentView = this.AppView.REPORT;
     this.isLoading = true;
     this.error = null;
-    this.withTimeout(this.generatePerformanceReport([...this.transcript]), this.requestTimeoutMs, 'report')
-      .then(rep => { this.report = rep; })
-      .catch(err => { console.error('[MockInterview] generatePerformanceReport failed', err); this.error = 'Sorry, there was an error generating your performance report. Please try again.'; })
-      .finally(() => { this.isLoading = false; });
+    this.withTimeout(
+      this.generatePerformanceReport([...this.transcript]),
+      this.requestTimeoutMs,
+      'report'
+    )
+      .then((rep) => {
+        this.report = rep;
+      })
+      .catch((err) => {
+        console.error('[MockInterview] generatePerformanceReport failed', err);
+        this.error =
+          'Sorry, there was an error generating your performance report. Please try again.';
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 
   protected startAgain(): void {
     // Exit fullscreen when starting again
     this.exitFullscreen();
-    
+
     this.jobRole = '';
     this.experienceLevel = 'Mid-Level';
     this.transcript = [];
@@ -281,7 +371,9 @@ export class MockInterview implements OnInit, OnDestroy {
     return 'text-red-400';
   }
 
-  public trackById(_index: number, item: TranscriptItem): number { return item.id; }
+  public trackById(_index: number, item: TranscriptItem): number {
+    return item.id;
+  }
 
   // Fullscreen warning handlers
   protected continueInterviewInFullscreen(): void {
@@ -303,7 +395,7 @@ export class MockInterview implements OnInit, OnDestroy {
     if (this.isBrowser && (window as any).speechSynthesis) {
       (window as any).speechSynthesis.cancel();
     }
-    
+
     // Reset to setup without generating report
     this.startAgain();
   }
@@ -311,7 +403,7 @@ export class MockInterview implements OnInit, OnDestroy {
   // Fullscreen management
   private async enterFullscreen(): Promise<void> {
     if (!this.isBrowser) return;
-    
+
     const element = document.documentElement;
     try {
       if (element.requestFullscreen) {
@@ -330,7 +422,7 @@ export class MockInterview implements OnInit, OnDestroy {
 
   private exitFullscreen(): void {
     if (!this.isBrowser) return;
-    
+
     try {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -348,7 +440,7 @@ export class MockInterview implements OnInit, OnDestroy {
 
   private isDocumentInFullscreen(): boolean {
     if (!this.isBrowser) return false;
-    
+
     return !!(
       document.fullscreenElement ||
       (document as any).webkitFullscreenElement ||
@@ -360,9 +452,13 @@ export class MockInterview implements OnInit, OnDestroy {
   private handleFullscreenChange(): void {
     const wasFullscreen = this.isFullscreen;
     this.isFullscreen = this.isDocumentInFullscreen();
-    
+
     // If we exited fullscreen during interview, show warning
-    if (wasFullscreen && !this.isFullscreen && this.currentView === this.AppView.INTERVIEW) {
+    if (
+      wasFullscreen &&
+      !this.isFullscreen &&
+      this.currentView === this.AppView.INTERVIEW
+    ) {
       this.showFullscreenExitWarning = true;
     }
   }
@@ -389,12 +485,16 @@ export class MockInterview implements OnInit, OnDestroy {
     if (!this.isBrowser) return;
     try {
       // Request only video to keep the microphone free for SpeechRecognition
-      this.cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      this.cameraStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
       if (this.cameraVideoRef?.nativeElement) {
         this.cameraVideoRef.nativeElement.srcObject = this.cameraStream;
       }
     } catch (err) {
-      this.cameraError = 'Camera access denied. Please enable permissions in your browser.';
+      this.cameraError =
+        'Camera access denied. Please enable permissions in your browser.';
     }
   }
 
@@ -408,13 +508,29 @@ export class MockInterview implements OnInit, OnDestroy {
     const utterance = new SpeechSynthesisUtterance(text);
     // Ensure we don't capture TTS via mic
     this.stopListening();
-    utterance.onstart = () => { this.zone.run(() => { this.aiStatus = 'speaking'; }); };
-    utterance.onend = () => { this.zone.run(() => { this.aiStatus = 'idle'; }); };
-    utterance.onerror = () => { this.zone.run(() => { this.aiStatus = 'idle'; }); };
+    utterance.onstart = () => {
+      this.zone.run(() => {
+        this.aiStatus = 'speaking';
+      });
+    };
+    utterance.onend = () => {
+      this.zone.run(() => {
+        this.aiStatus = 'idle';
+      });
+    };
+    utterance.onerror = () => {
+      this.zone.run(() => {
+        this.aiStatus = 'idle';
+      });
+    };
     // Prefer a non-system voice to improve recognition separation
     try {
-      const voices = (window as any).speechSynthesis.getVoices?.() as SpeechSynthesisVoice[] | undefined;
-      const preferred = voices?.find(v => /en/i.test(v.lang) && !/Microsoft|System/i.test(v.name));
+      const voices = (window as any).speechSynthesis.getVoices?.() as
+        | SpeechSynthesisVoice[]
+        | undefined;
+      const preferred = voices?.find(
+        (v) => /en/i.test(v.lang) && !/Microsoft|System/i.test(v.name)
+      );
       if (preferred) utterance.voice = preferred;
     } catch {}
     (window as any).speechSynthesis.cancel();
@@ -432,10 +548,17 @@ export class MockInterview implements OnInit, OnDestroy {
     return this.aiClient;
   }
 
-  private async withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+  private async withTimeout<T>(
+    promise: Promise<T>,
+    timeoutMs: number,
+    label: string
+  ): Promise<T> {
     let timeoutHandle: any;
     const timeoutPromise = new Promise<never>((_, reject) => {
-      timeoutHandle = setTimeout(() => reject(new Error(`${label} timed out after ${timeoutMs}ms`)), timeoutMs);
+      timeoutHandle = setTimeout(
+        () => reject(new Error(`${label} timed out after ${timeoutMs}ms`)),
+        timeoutMs
+      );
     });
     try {
       const result = await Promise.race([promise, timeoutPromise]);
@@ -447,19 +570,29 @@ export class MockInterview implements OnInit, OnDestroy {
 
   private formatTranscript(items: TranscriptItem[]): string {
     return items
-      .filter(i => i.speaker !== 'feedback')
-      .map(i => `${i.speaker.toUpperCase()}: ${i.text}`)
+      .filter((i) => i.speaker !== 'feedback')
+      .map((i) => `${i.speaker.toUpperCase()}: ${i.text}`)
       .join('\n');
   }
 
-  private async callStartInterview(jobRole: string, experienceLevel: string): Promise<string> {
+  private async callStartInterview(
+    jobRole: string,
+    experienceLevel: string
+  ): Promise<string> {
     const prompt = `You are Alex, an expert AI interviewer hiring for a ${jobRole} position requiring a ${experienceLevel} level of experience. Start the mock interview with a VERY BRIEF introduction (1-2 lines maximum) and immediately ask the first, most relevant technical or behavioral question. Keep your entire response under 3 sentences total. Your response must be only the brief introduction and question, without any other text.`;
     const ai = this.getClient();
-    const response: any = await ai.models.generateContent({ model: this.modelName, contents: prompt });
+    const response: any = await ai.models.generateContent({
+      model: this.modelName,
+      contents: prompt,
+    });
     return this.extractText(response);
   }
 
-  private async callGetNextQuestion(transcript: TranscriptItem[], jobRole: string, experienceLevel: string): Promise<NextStep> {
+  private async callGetNextQuestion(
+    transcript: TranscriptItem[],
+    jobRole: string,
+    experienceLevel: string
+  ): Promise<NextStep> {
     const formatted = this.formatTranscript(transcript);
     const prompt = `You are an expert interviewer for a ${jobRole} position at a ${experienceLevel} level. Here is the interview transcript so far:\n\n${formatted}\n\nBased on the candidate's last answer, provide two things in JSON format: 
   1.  "feedback": A concise, constructive critique of their most recent answer. This feedback should be brief and direct.
@@ -472,14 +605,17 @@ export class MockInterview implements OnInit, OnDestroy {
         feedback: { type: Type.STRING },
         nextQuestion: { type: Type.STRING },
       },
-      required: ['feedback', 'nextQuestion']
+      required: ['feedback', 'nextQuestion'],
     } as const;
 
     const ai = this.getClient();
     const response: any = await ai.models.generateContent({
       model: this.modelName,
       contents: prompt,
-      config: { responseMimeType: 'application/json', responseSchema: schema as any }
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: schema as any,
+      },
     });
     const jsonText = this.extractText(response);
     try {
@@ -489,7 +625,9 @@ export class MockInterview implements OnInit, OnDestroy {
     }
   }
 
-  private async generatePerformanceReport(transcript: TranscriptItem[]): Promise<PerformanceReport> {
+  private async generatePerformanceReport(
+    transcript: TranscriptItem[]
+  ): Promise<PerformanceReport> {
     const formatted = this.formatTranscript(transcript);
     const prompt = `You are an expert career coach providing feedback for a mock interview. The candidate was interviewing for a ${this.jobRole} position at a ${this.experienceLevel} level. 
     
@@ -518,18 +656,26 @@ export class MockInterview implements OnInit, OnDestroy {
               feedback: { type: Type.STRING },
               score: { type: Type.NUMBER },
             },
-            required: ['question', 'userAnswer', 'feedback', 'score']
-          }
-        }
+            required: ['question', 'userAnswer', 'feedback', 'score'],
+          },
+        },
       },
-      required: ['overallSummary', 'strengths', 'areasForImprovement', 'questionByQuestionAnalysis']
+      required: [
+        'overallSummary',
+        'strengths',
+        'areasForImprovement',
+        'questionByQuestionAnalysis',
+      ],
     } as const;
 
     const ai = this.getClient();
     const response: any = await ai.models.generateContent({
       model: this.modelName,
       contents: prompt,
-      config: { responseMimeType: 'application/json', responseSchema: reportSchema as any }
+      config: {
+        responseMimeType: 'application/json',
+        responseSchema: reportSchema as any,
+      },
     });
     const jsonText = this.extractText(response);
     try {
@@ -550,7 +696,10 @@ export class MockInterview implements OnInit, OnDestroy {
       if (typeof t === 'string') return t.trim();
       const cand = (resp as any).candidates?.[0]?.content?.parts;
       if (Array.isArray(cand)) {
-        return cand.map((p: any) => p?.text ?? '').join('').trim();
+        return cand
+          .map((p: any) => p?.text ?? '')
+          .join('')
+          .trim();
       }
       return '';
     } catch {

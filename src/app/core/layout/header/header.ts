@@ -6,12 +6,22 @@ import { AuthStateService } from '../../../services/auth-state.service';
 import { Subscription } from 'rxjs';
 import { UserProfileService } from '../../../services/user-profile.service';
 
+/**
+ * Navigation item for header links.
+ */
 interface NavItem {
   title: string;
   href: string;
   icon: string;
 }
 
+/**
+ * App header with navigation, auth state display, and profile controls.
+ *
+ * - Reacts to scroll to adjust visual style
+ * - Shows different actions based on authentication state
+ * - Manages mobile menu and profile dropdown interactions
+ */
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
@@ -44,15 +54,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Start with loading state
     this.isAuthLoading = true;
-    
-    // Subscribe to auth state changes first
+
     this.authSubscription = this.authStateService.isAuthenticated$.subscribe(
       isAuth => {
         this.isAuthenticated = isAuth;
         this.isAuthLoading = false;
-        // Close dropdowns when auth state changes
+        // Ensure menus reflect auth status changes
         if (!isAuth) {
           this.profileDropdownOpen = false;
           this.userId = null;
@@ -66,10 +74,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
 
-    // Initialize auth state - this will trigger the subscription above
+    // Seed initial auth state; triggers subscription above
     this.isAuthenticated = this.authStateService.isAuthenticated();
-    
-    // Set loading to false after a brief delay to ensure proper state initialization
+
     setTimeout(() => {
       this.isAuthLoading = false;
     }, 100);
@@ -91,7 +98,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    // Close dropdown when clicking outside
     if (this.profileDropdownOpen) {
       const target = event.target as HTMLElement;
       const profileButton = target.closest('.profile-button');
@@ -105,7 +111,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
-    // Close profile dropdown when opening mobile menu
     if (this.mobileMenuOpen) {
       this.profileDropdownOpen = false;
     }
@@ -117,7 +122,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleProfileDropdown(): void {
     this.profileDropdownOpen = !this.profileDropdownOpen;
-    // Close mobile menu when opening profile dropdown
     if (this.profileDropdownOpen) {
       this.mobileMenuOpen = false;
     }
@@ -129,7 +133,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   navigateToSection(href: string): void {
     this.closeMobileMenu();
-    // Smooth scroll to section
+    // Smooth scroll to anchor targets on the page
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -163,16 +167,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     event.preventDefault();
     
     if (item.href.startsWith('/')) {
-      // Internal route - use Angular router
+      // Use Angular router for internal routes
       this.router.navigate([item.href]);
       this.closeMobileMenu();
     } else {
-      // Internal hash link - use existing scroll behavior
+      // In-page hash link
       this.navigateToSection(item.href);
     }
   }
 
-  // Return cached value only; no async work here
+  /** Returns cached user id if available (synchronous). */
   getUserId(): string | null {
     return this.userId;
   }

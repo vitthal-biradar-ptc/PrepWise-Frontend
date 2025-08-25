@@ -7,6 +7,9 @@ import { AuthService } from './authorization.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
+/**
+ * Calls backend APIs to analyze resume files or raw text.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +22,7 @@ export class ResumeAnalyzerService {
     private router: Router
   ) {}
 
+  /** Build Authorization headers from stored token. */
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({
@@ -47,7 +51,7 @@ export class ResumeAnalyzerService {
     );
   }
 
-  // Unified method for backwards compatibility and easier usage
+  /** Unified method for convenience: accepts either a file or plain text. */
   analyzeResume(data: { file?: File; text?: string }): Observable<ResumeAnalysisResponse> {
     if (data.file) {
       return this.analyzeResumeFile(data.file);

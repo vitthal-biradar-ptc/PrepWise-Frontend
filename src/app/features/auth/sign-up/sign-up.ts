@@ -4,6 +4,9 @@ import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService, SignUpRequest } from '../../../services/authorization.service';
 
+/**
+ * Sign-up component with client-side validation and helpful error mapping.
+ */
 @Component({
   selector: 'app-sign-up',
   imports: [FormsModule, RouterModule, HttpClientModule],
@@ -171,7 +174,7 @@ export class SignUp {
 
     this.isLoading = true;
 
-    // Prepare GitHub and LinkedIn URLs if usernames are provided
+    // Build GitHub/LinkedIn URLs from provided usernames
     let githubUrl = null;
     if (this.githubUsername && this.githubUsername.trim()) {
       githubUrl = `https://github.com/${this.githubUsername.trim()}`;
@@ -226,7 +229,7 @@ export class SignUp {
       if (error.error?.message) {
         errorMessage = error.error.message;
       } else if (error.error?.errors) {
-        // Handle validation errors from backend
+        // Map backend validation errors to local form state
         const backendErrors = error.error.errors;
         if (backendErrors.email) {
           this.formErrors['email'] = backendErrors.email[0];

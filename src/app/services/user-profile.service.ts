@@ -6,6 +6,10 @@ import { UserProfile } from '../features/dashboard/user-profile.interface';
 import { AuthService } from './authorization.service';
 import { environment } from '../../environments/environment';
 
+/**
+ * Retrieves and caches the authenticated user's profile and id.
+ * Uses in-memory caching and shares in-flight requests to avoid duplicates.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -58,7 +62,7 @@ export class UserProfileService {
       );
   }
 
-  // Fetch once per app load; reuse in-flight request and cache result in memory
+  /** Fetch once per app load; reuse in-flight request and cache the result. */
   getUserProfileCached(): Observable<UserProfile> {
     if (this.cachedProfile) {
       return of(this.cachedProfile);
@@ -73,7 +77,7 @@ export class UserProfileService {
       }),
       shareReplay(1),
       finalize(() => {
-        // Allow future refresh after completion (success or error)
+        // Allow refresh after completion (success or error)
         this.profileReq$ = undefined;
       })
     );
@@ -96,6 +100,7 @@ export class UserProfileService {
     this.profileReq$ = undefined;
   }
 
+  /** Normalize HTTP errors into user-friendly messages. */
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';
     
@@ -107,8 +112,6 @@ export class UserProfileService {
       switch (error.status) {
         case 401:
           errorMessage = 'Authentication failed. Please login again.';
-          // Optionally redirect to login page
-          // this.router.navigate(['/login']);
           break;
         case 403:
           errorMessage = 'Access denied. You do not have permission.';

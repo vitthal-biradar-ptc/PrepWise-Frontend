@@ -16,6 +16,9 @@ import { UserProfile, BackendSkill, BackendCertification, BackendAchievement, Up
 import { Router } from '@angular/router';
 import { HeaderComponent } from "../../core/layout/header/header";
 
+/**
+ * UI model for a skill shown on the dashboard.
+ */
 interface Skill {
   id: number;
   name: string;
@@ -23,6 +26,9 @@ interface Skill {
   category: string;
 }
 
+/**
+ * UI model for a certification entry.
+ */
 interface Certification {
   id: number;
   name: string;
@@ -31,6 +37,9 @@ interface Certification {
   description: string;
 }
 
+/**
+ * UI model for an achievement entry.
+ */
 interface Achievement {
   id: number;
   title: string;
@@ -38,6 +47,9 @@ interface Achievement {
   date: string;
 }
 
+/**
+ * Personalized dashboard displaying profile, charts, and editable lists.
+ */
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -61,7 +73,7 @@ interface Achievement {
   styleUrls: ['./dashboard.css']
 })
 export class DashboardComponent implements OnInit {
-  // Profile data - will be populated from backend
+  // Profile data (populated from backend)
   profile = {
     name: '',
     email: '',
@@ -79,7 +91,7 @@ export class DashboardComponent implements OnInit {
   atsChartData: any;
   atsChartOptions: any;
 
-  // Data arrays - will be populated from backend
+  // Data arrays (populated from backend)
   skills: Skill[] = [];
   certifications: Certification[] = [];
   achievements: Achievement[] = [];
@@ -95,13 +107,13 @@ export class DashboardComponent implements OnInit {
   showAddCertificationDialog = false;
   showAddAchievementDialog = false;
 
-  // Add property to store resume analysis result
+  // Resume analysis result (optional)
   resumeAnalysisResult: any = null;
   showAnalysisNotification: boolean = false;
 
   error: string = '';
 
-  // Add property to track if data has been modified
+  // Tracks if profile-related data changed locally
   private isDataModified = false;
 
   constructor(
@@ -113,7 +125,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     // Initialize charts first
     this.initPerformanceChart();
-    this.initCharts(); // Initialize with fallback data
+    this.initCharts();
 
     // Check for resume analysis result
     this.checkForResumeAnalysisResult();
@@ -122,6 +134,7 @@ export class DashboardComponent implements OnInit {
     this.loadUserProfile();
   }
 
+  /** Display a brief notification if resume analysis was just completed. */
   checkForResumeAnalysisResult() {
     try {
       console.log('Resume analysis complete');
@@ -132,6 +145,7 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  /** Fetch and populate user profile and related lists. */
   loadUserProfile() {
     this.userProfileService.getUserProfile().subscribe({
       next: (data: UserProfile) => {
@@ -149,6 +163,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /** Map backend profile to UI model. */
   private populateProfileData(data: UserProfile) {
     this.profile = {
       name: data.name || 'User',
@@ -162,6 +177,7 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  /** Convert backend skills to UI skills. */
   private populateSkillsData(backendSkills: BackendSkill[]) {
     if (!Array.isArray(backendSkills)) {
       this.skills = [];
@@ -176,6 +192,7 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
+  /** Convert backend certifications to UI certifications. */
   private populateCertificationsData(backendCerts: BackendCertification[]) {
     if (!Array.isArray(backendCerts)) {
       this.certifications = [];
@@ -191,6 +208,7 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
+  /** Convert backend achievements to UI achievements. */
   private populateAchievementsData(backendAchievements: BackendAchievement[]) {
     if (!Array.isArray(backendAchievements)) {
       this.achievements = [];
@@ -205,6 +223,7 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
+  /** Normalize backend proficiency to a fixed set of UI levels. */
   private mapProficiencyToLevel(proficiency: string): 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert' {
     switch (proficiency.toLowerCase()) {
       case 'expert': return 'Expert';
@@ -215,6 +234,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /** Heuristic to group skills into categories for display. */
   private inferSkillCategory(skillName: string): string {
     const skill = skillName.toLowerCase();
     if (skill.includes('react') || skill.includes('angular') || skill.includes('vue') || skill.includes('html') || skill.includes('css')) {
@@ -234,6 +254,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  /** Build the domain distribution chart config, with fallback when data missing. */
   initDomainChart(domainData: any) {
     if (!domainData || !domainData.labels || !domainData.datasets) {
       this.initCharts();
@@ -301,6 +322,7 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  /** Initialize the polar area chart with default performance metrics. */
   initPerformanceChart() {
     this.atsChartData = {
       labels: ['Resume Score', 'Skills Match', 'Experience Level', 'Education', 'Certifications', 'Projects'],
@@ -393,8 +415,8 @@ export class DashboardComponent implements OnInit {
     };
   }
 
+  /** Initialize charts with sensible defaults. */
   initCharts() {
-    // Fallback dummy data for domain chart with light theme colors
     this.domainChartData = {
       labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
       datasets: [
@@ -455,7 +477,6 @@ export class DashboardComponent implements OnInit {
       }
     };
 
-    // Initialize performance chart with light theme
     this.initPerformanceChart();
   }
 
@@ -549,7 +570,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  // Add method to safely format dates
+  // Format dates for display; returns empty string when invalid
   formatDate(date: string): string {
     if (!date || date === 'Unknown' || date === '') {
       return '';
@@ -574,6 +595,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/parse-resume'], { state: { firstTime: false } });
   }
 
+  /** Persist changes to the backend if data has been modified. */
   updateUserProfile() {
     if (!this.isDataModified) return;
 
@@ -591,11 +613,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Add new method to refresh profile data from backend
+  /** Refresh profile data from the backend after an update. */
   private refreshProfileData() {
     this.userProfileService.getUserProfile().subscribe({
       next: (data: UserProfile) => {
-        // Update all sections with fresh backend data
         this.populateProfileData(data);
         this.populateSkillsData(data.skills || []);
         this.populateCertificationsData(data.certifications || []);
@@ -610,8 +631,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  /** Convert UI state into the backend update payload shape. */
   private formatProfileForUpdate(): UpdateProfilePayload {
-    // Convert frontend format to backend format
     const backendSkills: BackendSkill[] = this.skills.map(skill => ({
       id: skill.id,
       name: skill.name,

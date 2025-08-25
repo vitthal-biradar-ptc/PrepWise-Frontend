@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
+/** Backend resource model. */
 export interface ApiResource {
   id: number;
   title: string;
@@ -10,6 +11,7 @@ export interface ApiResource {
   type: 'video' | 'article' | 'course' | 'documentation' | 'tutorial' | string;
 }
 
+/** Backend task model. */
 export interface ApiTask {
   id: number;
   taskId?: string;
@@ -18,6 +20,7 @@ export interface ApiTask {
   estimatedHours: number;
 }
 
+/** Backend period model. */
 export interface ApiPeriod {
   id: number;
   period: string;
@@ -27,6 +30,7 @@ export interface ApiPeriod {
   tasks: ApiTask[];
 }
 
+/** Backend learning path model. */
 export interface ApiLearningPath {
   id: number | string;
   skill?: string;
@@ -37,39 +41,50 @@ export interface ApiLearningPath {
   learningPeriods?: ApiPeriod[];
 }
 
+/**
+ * Service for fetching, generating and mapping learning paths.
+ */
 @Injectable({ providedIn: 'root' })
 export class LearningPathService {
   private readonly API_BASE = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
+  /** Fetch all learning paths belonging to a user. */
   getUserLearningPaths(userId: string): Observable<ApiLearningPath[]> {
     return this.http
       .get<ApiLearningPath[] | { items: ApiLearningPath[] }>(
         `${this.API_BASE}/api/learning-path/user/${encodeURIComponent(userId)}`
       )
       .pipe(
-        map((res: any) => (Array.isArray(res) ? res : (res?.items ?? [])) as ApiLearningPath[])
+        map(
+          (res: any) =>
+            (Array.isArray(res) ? res : res?.items ?? []) as ApiLearningPath[]
+        )
       );
   }
 
+  /** Convert raw API items into card list items. */
   toCardItems(items: ApiLearningPath[]) {
     return items.map((it) => {
       const created = it.createdAt ? new Date(it.createdAt) : null;
-      const title = `${it.skill ?? 'Learning Path'}${it.level ? ` (${it.level})` : ''}`;
+      const title = `${it.skill ?? 'Learning Path'}${
+        it.level ? ` (${it.level})` : ''
+      }`;
       const descParts = [
         it.level ? `Level: ${it.level}` : '',
         it.duration ? `Duration: ${it.duration}` : '',
-        created ? `Created: ${created.toLocaleDateString()}` : ''
+        created ? `Created: ${created.toLocaleDateString()}` : '',
       ].filter(Boolean);
       return {
         ...it,
         title,
-        description: descParts.join(' • ')
+        description: descParts.join(' • '),
       };
     });
   }
 
+  /** Map backend representation to the UI learning path shape. */
   mapToUiModel(api: ApiLearningPath) {
     const parseFocusAreas = (input: any): string[] => {
       if (Array.isArray(input)) return input;
@@ -80,13 +95,16 @@ export class LearningPathService {
         } catch {
           // ignore
         }
-        return input.split(',').map((s) => s.trim()).filter(Boolean);
+        return input
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
       }
       return [];
     };
 
     return {
-      duration: (api.duration || 'medium-term'),
+      duration: api.duration || 'medium-term',
       learningPath: (api.learningPeriods || []).map((p) => ({
         period: p.period,
         goal: p.goal,
@@ -94,28 +112,41 @@ export class LearningPathService {
         resources: (p.resources || []).map((r) => ({
           title: r.title,
           url: r.url,
-          type: r.type
+          type: r.type,
         })),
         tasks: (p.tasks || []).map((t) => ({
           id: t.taskId || String(t.id ?? ''),
           description: t.description,
           completed: !!t.completed,
-          estimatedHours: Number.isFinite(t.estimatedHours) ? t.estimatedHours : 0
-        }))
-      }))
+          estimatedHours: Number.isFinite(t.estimatedHours)
+            ? t.estimatedHours
+            : 0,
+        })),
+      })),
     };
   }
 
-  generateLearningPath(payload: { skill: string; level: string; userId: number | string }): Observable<ApiLearningPath> {
+  /** Generate a new learning path for a user and skill/level. */
+  generateLearningPath(payload: {
+    skill: string;
+    level: string;
+    userId: number | string;
+  }): Observable<ApiLearningPath> {
     return this.http.post<ApiLearningPath>(
       `${this.API_BASE}/api/learning-path/generate`,
       payload
     );
   }
 
-  deleteLearningPath(userId: string | number, pathId: string | number): Observable<void> {
+  /** Delete a learning path by user and path id. */
+  deleteLearningPath(
+    userId: string | number,
+    pathId: string | number
+  ): Observable<void> {
     return this.http.delete<void>(
-      `${this.API_BASE}/api/learning-path/delete/${encodeURIComponent(String(userId))}/${encodeURIComponent(String(pathId))}`
+      `${this.API_BASE}/api/learning-path/delete/${encodeURIComponent(
+        String(userId)
+      )}/${encodeURIComponent(String(pathId))}`
     );
   }
 }
