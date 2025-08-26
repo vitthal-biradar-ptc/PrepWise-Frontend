@@ -23,7 +23,7 @@ export class ResumeParseService {
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     return new HttpHeaders({
-      'Authorization': token || ''
+      'Authorization': token || 'Bearer <token>'
     });
   }
 
@@ -32,7 +32,8 @@ export class ResumeParseService {
     formData.append('file', file);
     
     return this.http.post<ParsedResumeResponse>(`${this.baseUrl}/api/parse-resume`, formData, {
-      headers: this.getAuthHeaders()
+      headers: this.getAuthHeaders(),
+      
     });
   }
 }

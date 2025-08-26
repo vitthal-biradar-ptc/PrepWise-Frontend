@@ -149,7 +149,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   navigateToDashboard(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/dashboard/', this.userId]);
     this.closeProfileDropdown();
   }
 

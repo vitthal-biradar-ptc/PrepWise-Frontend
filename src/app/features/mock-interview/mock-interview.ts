@@ -13,6 +13,11 @@ import { NgZone } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { GoogleGenAI, Type } from '@google/genai';
 import { HeaderComponent } from '../../core/layout/header/header';
+import {
+  InterviewService,
+  SaveInterviewRequest,
+} from './services/interview.service';
+import { UserProfileService } from '../../services/user-profile.service';
 
 /**
  * Mock interview experience with speech recognition, TTS, and fullscreen.
@@ -56,6 +61,10 @@ export class MockInterview implements OnInit, OnDestroy {
   public error: string | null = null;
   public report: PerformanceReport | null = null;
 
+  // Interview timing
+  public interviewStartTime: Date | null = null;
+  public interviewEndTime: Date | null = null;
+
   // Platform
   private readonly platformId = inject(PLATFORM_ID);
   private get isBrowser(): boolean {
@@ -72,6 +81,10 @@ export class MockInterview implements OnInit, OnDestroy {
   public isFullscreen = false;
   public showFullscreenExitWarning = false;
   private fullscreenChangeHandler?: () => void;
+
+  // Services
+  private readonly interviewService = inject(InterviewService);
+  private readonly userProfileService = inject(UserProfileService);
 
   ngOnInit(): void {
     if (!this.isBrowser) {
@@ -191,6 +204,9 @@ export class MockInterview implements OnInit, OnDestroy {
   // Setup View actions
   protected async startInterviewFromSetup(): Promise<void> {
     if (!this.jobRole.trim()) return;
+
+    // Record interview start time
+    this.interviewStartTime = new Date();
 
     // Enter fullscreen before starting interview
     try {
@@ -326,6 +342,9 @@ export class MockInterview implements OnInit, OnDestroy {
   }
 
   protected endInterview(): void {
+    // Record interview end time
+    this.interviewEndTime = new Date();
+
     // Exit fullscreen when ending interview
     this.exitFullscreen();
 
@@ -339,6 +358,8 @@ export class MockInterview implements OnInit, OnDestroy {
     )
       .then((rep) => {
         this.report = rep;
+        // Save interview data after generating report
+        this.saveInterviewData(rep);
       })
       .catch((err) => {
         console.error('[MockInterview] generatePerformanceReport failed', err);
@@ -350,7 +371,99 @@ export class MockInterview implements OnInit, OnDestroy {
       });
   }
 
+  private async saveInterviewData(report: PerformanceReport): Promise<void> {
+    if (!this.interviewStartTime || !this.interviewEndTime) {
+      console.warn('Interview start/end time not recorded');
+      return;
+    }
+
+    try {
+      // Get user ID from profile service
+      const userId = await this.userProfileService.getUserIdCached().toPromise();
+
+      if (!userId) {
+        throw new Error('User ID not found');
+      }
+      // Calculate duration in minutes
+      const durationMs =
+        this.interviewEndTime.getTime() - this.interviewStartTime.getTime();
+      const durationMinutes = Math.round(durationMs / 60000);
+
+      // Calculate overall score (average of question scores)
+      const overallScore =
+        report.questionByQuestionAnalysis.length > 0
+          ? report.questionByQuestionAnalysis.reduce(
+              (sum, q) => sum + q.score,
+              0
+            ) / report.questionByQuestionAnalysis.length
+          : 7;
+
+      // Generate recommendations based on areas for improvement
+      const recommendations =
+        report.areasForImprovement.length > 0
+          ? `Focus on: ${report.areasForImprovement.join(
+              ', '
+            )}. Consider practicing with mock interviews and reviewing fundamental concepts in these areas.`
+          : 'Great job! Continue practicing to maintain your performance level.';
+
+      const saveRequest: SaveInterviewRequest = {
+        userId: userId,
+        role: this.jobRole,
+        level: this.experienceLevel,
+        startTime: this.interviewStartTime.toISOString().split('.')[0],
+        endTime: this.interviewEndTime.toISOString().split('.')[0],
+        duration: durationMinutes,
+        transcript: this.transcript.map((item, index) => ({
+          speaker: this.mapSpeakerName(item.speaker),
+          text: item.text,
+          timestamp: new Date(
+            this.interviewStartTime!.getTime() + index * 30000
+          )
+            .toISOString()
+            .split('.')[0], // Approximate timestamps
+        })),
+        feedback: {
+          overallSummary: report.overallSummary,
+          strengths: report.strengths,
+          weaknesses: report.areasForImprovement,
+          recommendations: recommendations,
+        },
+        overallScore: Math.round(overallScore),
+      };
+
+      const response = await this.interviewService
+        .saveInterview(saveRequest)
+        .toPromise();
+
+      if (response?.success) {
+        console.log('Interview saved successfully:', response.interviewId);
+      } else {
+        console.warn('Failed to save interview:', response?.message);
+      }
+    } catch (error) {
+      console.error('Error saving interview data:', error);
+      // Don't show error to user as the interview is already complete
+    }
+  }
+
+  private mapSpeakerName(speaker: 'user' | 'ai' | 'feedback'): string {
+    switch (speaker) {
+      case 'ai':
+        return 'Interviewer';
+      case 'user':
+        return 'Candidate';
+      case 'feedback':
+        return 'Interviewer'; // Feedback is treated as interviewer comment
+      default:
+        return 'Interviewer';
+    }
+  }
+
   protected startAgain(): void {
+    // Reset interview timing
+    this.interviewStartTime = null;
+    this.interviewEndTime = null;
+
     // Exit fullscreen when starting again
     this.exitFullscreen();
 

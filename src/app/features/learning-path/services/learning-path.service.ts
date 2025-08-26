@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../services/authorization.service';
 
 /** Backend resource model. */
 export interface ApiResource {
@@ -48,13 +49,23 @@ export interface ApiLearningPath {
 export class LearningPathService {
   private readonly API_BASE = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private authService: AuthService
+  ) {}
 
   /** Fetch all learning paths belonging to a user. */
   getUserLearningPaths(userId: string): Observable<ApiLearningPath[]> {
     return this.http
       .get<ApiLearningPath[] | { items: ApiLearningPath[] }>(
-        `${this.API_BASE}/api/learning-path/user/${encodeURIComponent(userId)}`
+        `${this.API_BASE}/api/learning-path/user/${encodeURIComponent(userId)}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${this.authService.getToken()}`,
+          },
+        }
       )
       .pipe(
         map(
@@ -134,7 +145,13 @@ export class LearningPathService {
   }): Observable<ApiLearningPath> {
     return this.http.post<ApiLearningPath>(
       `${this.API_BASE}/api/learning-path/generate`,
-      payload
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${this.authService.getToken()}`,
+        },
+      }
     );
   }
 
