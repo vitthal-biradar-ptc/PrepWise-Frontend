@@ -362,10 +362,13 @@ export class MockInterview implements OnInit, OnDestroy {
         this.report = rep;
         // Save interview data after generating report
         return this.saveInterviewData(rep);
-      }).then((report: InterviewReport | undefined) => {
+      })
+      .then((report: InterviewReport | undefined) => {
         // navigate to report view
         if (report) {
-          this.router.navigate([ `/interview-reports/user/${report.userId}/report/${report.id}`]);
+          this.router.navigate([
+            `/interview-reports/user/${report.userId}/report/${report.id}`,
+          ]);
         }
       })
       .catch((err) => {
@@ -378,7 +381,9 @@ export class MockInterview implements OnInit, OnDestroy {
       });
   }
 
-  private async saveInterviewData(report: PerformanceReport): Promise<InterviewReport | undefined> {
+  private async saveInterviewData(
+    report: PerformanceReport
+  ): Promise<InterviewReport | undefined> {
     if (!this.interviewStartTime || !this.interviewEndTime) {
       console.warn('Interview start/end time not recorded');
       return Promise.resolve(undefined);

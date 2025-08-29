@@ -42,9 +42,11 @@ export interface BackendAchievement {
 /** Minimal chart dataset structure for the domain pie chart. */
 export interface DomainData {
   labels: string[];
-  datasets: [{
-    data: number[];
-  }];
+  datasets: [
+    {
+      data: number[];
+    }
+  ];
 }
 
 /** Complete update payload shape expected by the backend. */

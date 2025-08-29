@@ -207,7 +207,12 @@
           <!-- Removed Delete text button -->
           <a
             class="open-link"
-            [routerLink]="['/learning-paths/user', userId, 'learning-path', getId(lp)]"
+            [routerLink]="[
+              '/learning-paths/user',
+              userId,
+              'learning-path',
+              getId(lp)
+            ]"
             (click)="$event.preventDefault(); openPath(lp)"
             >Open ↗</a
           >

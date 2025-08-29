@@ -10,7 +10,7 @@ import { AuthService } from '../../../../services/authorization.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './works.html',
-  styleUrls: ['./works.css']
+  styleUrls: ['./works.css'],
 })
 export class WorksComponent implements OnInit {
   isAuthenticated = false;
@@ -19,7 +19,7 @@ export class WorksComponent implements OnInit {
 
   ngOnInit() {
     this.authService.isAuthenticated$.subscribe(
-      isAuth => this.isAuthenticated = isAuth
+      (isAuth) => (this.isAuthenticated = isAuth)
     );
   }
 }

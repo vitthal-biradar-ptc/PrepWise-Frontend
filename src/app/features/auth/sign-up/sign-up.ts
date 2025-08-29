@@ -2,7 +2,10 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService, SignUpRequest } from '../../../services/authorization.service';
+import {
+  AuthService,
+  SignUpRequest,
+} from '../../../services/authorization.service';
 
 /**
  * Sign-up component with client-side validation and helpful error mapping.
@@ -11,7 +14,7 @@ import { AuthService, SignUpRequest } from '../../../services/authorization.serv
   selector: 'app-sign-up',
   imports: [FormsModule, RouterModule, HttpClientModule],
   templateUrl: './sign-up.html',
-  styleUrl: './sign-up.css'
+  styleUrl: './sign-up.css',
 })
 export class SignUp {
   email: string = '';
@@ -26,10 +29,10 @@ export class SignUp {
   termsAccepted: boolean = false;
   error: string = '';
   isLoading: boolean = false;
-  
+
   // Form validation states
-  formErrors: {[key: string]: string} = {};
-  touchedFields: {[key: string]: boolean} = {};
+  formErrors: { [key: string]: string } = {};
+  touchedFields: { [key: string]: boolean } = {};
   showError: boolean = false;
 
   private authService = inject(AuthService);
@@ -84,7 +87,8 @@ export class SignUp {
         if (!this.username.trim()) {
           this.formErrors[fieldName] = 'Username is required';
         } else if (!this.validateUsername(this.username)) {
-          this.formErrors[fieldName] = 'Username must be 3-20 characters and contain only letters, numbers, and underscores';
+          this.formErrors[fieldName] =
+            'Username must be 3-20 characters and contain only letters, numbers, and underscores';
         }
         break;
       case 'email':
@@ -103,7 +107,8 @@ export class SignUp {
         if (!this.password) {
           this.formErrors[fieldName] = 'Password is required';
         } else if (!this.validatePassword(this.password)) {
-          this.formErrors[fieldName] = 'Password must be at least 8 characters long';
+          this.formErrors[fieldName] =
+            'Password must be at least 8 characters long';
         }
         break;
       case 'confirmPassword':
@@ -123,11 +128,19 @@ export class SignUp {
 
   // Validate entire form
   validateForm(): boolean {
-    const fields = ['name', 'username', 'email', 'location', 'password', 'confirmPassword', 'portfolioUrl'];
+    const fields = [
+      'name',
+      'username',
+      'email',
+      'location',
+      'password',
+      'confirmPassword',
+      'portfolioUrl',
+    ];
     let isValid = true;
 
     // Mark all fields as touched
-    fields.forEach(field => {
+    fields.forEach((field) => {
       this.touchedFields[field] = true;
       this.validateField(field);
     });
@@ -139,7 +152,8 @@ export class SignUp {
 
     // Check terms acceptance
     if (!this.termsAccepted) {
-      this.formErrors['terms'] = 'Please accept the Terms of Service and Privacy Policy';
+      this.formErrors['terms'] =
+        'Please accept the Terms of Service and Privacy Policy';
       isValid = false;
     }
 
@@ -165,7 +179,7 @@ export class SignUp {
   handleSubmit(event: Event): void {
     event.preventDefault();
     this.hideError();
-    
+
     if (!this.validateForm()) {
       this.error = 'Please fix the errors below and try again';
       this.showError = true;
@@ -193,35 +207,35 @@ export class SignUp {
       location: this.location.trim(),
       githubUrl,
       linkedinUrl,
-      portfolioLink: this.portfolioUrl.trim() || null
+      portfolioLink: this.portfolioUrl.trim() || null,
     };
-
 
     this.authService.signUp(userData).subscribe({
       next: (response) => {
-        
         this.authService.setToken(response.token, response.tokenType);
-        
+
         this.authService.validateToken().subscribe(() => {
           this.isLoading = false;
           this.resetForm();
           setTimeout(() => {
-            this.router.navigate(['/parse-resume'], { state: { firstTime: true } });
+            this.router.navigate(['/parse-resume'], {
+              state: { firstTime: true },
+            });
           }, 1500);
         });
       },
       error: (error) => {
         console.error('Sign up error:', error);
         this.isLoading = false;
-        
+
         this.handleSignUpError(error);
-      }
+      },
     });
   }
 
   private handleSignUpError(error: any): void {
     let errorMessage = 'An error occurred during account creation';
-    
+
     if (error.status === 400) {
       if (error.error?.message) {
         errorMessage = error.error.message;
@@ -257,11 +271,12 @@ export class SignUp {
     } else if (error.status === 429) {
       errorMessage = 'Too many attempts. Please try again later.';
     } else if (error.status === 0) {
-      errorMessage = 'Unable to connect to server. Please check your internet connection.';
+      errorMessage =
+        'Unable to connect to server. Please check your internet connection.';
     } else if (error.status >= 500) {
       errorMessage = 'Server error. Please try again later.';
     }
-    
+
     this.error = errorMessage;
     this.showError = true;
     console.error('Auth error:', errorMessage);

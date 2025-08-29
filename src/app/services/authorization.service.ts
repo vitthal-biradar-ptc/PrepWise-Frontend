@@ -37,7 +37,7 @@ export interface ValidationResponse {
  * Bridges persistent token storage with reactive auth state.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly API_BASE_URL = environment.apiUrl;
@@ -56,18 +56,24 @@ export class AuthService {
 
   /** Create a new account and return auth credentials. */
   signUp(userData: SignUpRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/api/auth/sign-up`, userData);
+    return this.http.post<AuthResponse>(
+      `${this.API_BASE_URL}/api/auth/sign-up`,
+      userData
+    );
   }
 
   /** Sign in and return auth credentials. */
   signIn(credentials: SignInRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_BASE_URL}/api/auth/sign-in`, credentials);
+    return this.http.post<AuthResponse>(
+      `${this.API_BASE_URL}/api/auth/sign-in`,
+      credentials
+    );
   }
 
   /** Persist token in a secure cookie with a 7-day expiration. */
   setToken(token: string, tokenType: string): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    
+
     const fullToken = `${tokenType} ${token}`;
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 7);
@@ -77,11 +83,11 @@ export class AuthService {
   /** Read the auth token from cookie storage. */
   getToken(): string | null {
     if (!isPlatformBrowser(this.platformId)) return null;
-    
+
     const name = 'auth_token=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieArray = decodedCookie.split(';');
-    
+
     for (let cookie of cookieArray) {
       let c = cookie.trim();
       if (c.indexOf(name) === 0) {
@@ -94,8 +100,9 @@ export class AuthService {
   /** Remove the persisted auth token. */
   removeToken(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    
-    document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    document.cookie =
+      'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
 
   /** Validate token with the server and update reactive auth state. */
@@ -111,22 +118,24 @@ export class AuthService {
       return of(false);
     }
 
-    return this.http.get<ValidationResponse>(`${this.API_BASE_URL}/api/auth/validate`, {
-      headers: { 'Authorization': token }
-    }).pipe(
-      map(response => response.valid),
-      tap(isValid => {
-        this.authStateService.setAuthenticationState(isValid);
-        if (!isValid) {
-          this.removeToken();
-        }
-      }),
-      catchError(() => {
-        this.authStateService.setAuthenticationState(false);
-        this.removeToken();
-        return of(false);
+    return this.http
+      .get<ValidationResponse>(`${this.API_BASE_URL}/api/auth/validate`, {
+        headers: { Authorization: token },
       })
-    );
+      .pipe(
+        map((response) => response.valid),
+        tap((isValid) => {
+          this.authStateService.setAuthenticationState(isValid);
+          if (!isValid) {
+            this.removeToken();
+          }
+        }),
+        catchError(() => {
+          this.authStateService.setAuthenticationState(false);
+          this.removeToken();
+          return of(false);
+        })
+      );
   }
 
   /** Initialize auth state from persisted token and validate if present. */
@@ -135,10 +144,10 @@ export class AuthService {
       this.authStateService.setAuthenticationState(false);
       return;
     }
-    
+
     const hasToken = this.getToken() !== null;
     this.authStateService.setAuthenticationState(hasToken);
-    
+
     if (hasToken) {
       this.validateToken().subscribe();
     }
@@ -160,5 +169,4 @@ export class AuthService {
     this.removeToken();
     this.authStateService.setAuthenticationState(false);
   }
-
 }

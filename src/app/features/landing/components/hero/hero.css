@@ -1,4 +1,3 @@
-
 .hover-card:hover .hover-effect {
   opacity: 0.9;
 }
@@ -36,9 +35,15 @@
   width: 90%;
 }
 
-.hover-effect, .hover-effect-2, .hover-card-inner, .hover-element, 
-.hover-element-2, .hover-element-3, .hover-element-4, 
-.hover-element-5, .hover-glow {
+.hover-effect,
+.hover-effect-2,
+.hover-card-inner,
+.hover-element,
+.hover-element-2,
+.hover-element-3,
+.hover-element-4,
+.hover-element-5,
+.hover-glow {
   transition: all 0.3s ease;
 }
 

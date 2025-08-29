@@ -1,11 +1,20 @@
-import { Component, inject, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { AuthService, SignInRequest } from '../../../services/authorization.service';
+import {
+  AuthService,
+  SignInRequest,
+} from '../../../services/authorization.service';
 
 /** Lightweight dictionary for form field errors. */
 interface FormErrors {
@@ -27,7 +36,7 @@ interface TouchedFields {
   imports: [FormsModule, RouterModule, HttpClientModule, CommonModule],
   providers: [MessageService],
   templateUrl: './sign-in.html',
-  styleUrl: './sign-in.css'
+  styleUrl: './sign-in.css',
 })
 export class SignIn implements OnDestroy {
   // Form data
@@ -62,7 +71,7 @@ export class SignIn implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   // Validation helpers
@@ -72,7 +81,10 @@ export class SignIn implements OnDestroy {
       return { valid: false, message: 'Username or email is required' };
     }
     if (trimmedInput.length < 3) {
-      return { valid: false, message: 'Username or email must be at least 3 characters' };
+      return {
+        valid: false,
+        message: 'Username or email must be at least 3 characters',
+      };
     }
     return { valid: true };
   }
@@ -113,7 +125,9 @@ export class SignIn implements OnDestroy {
 
   // Derived form validity
   get isFormValid(): boolean {
-    const usernameValid = this.validateUsernameOrEmail(this.usernameOrEmail).valid;
+    const usernameValid = this.validateUsernameOrEmail(
+      this.usernameOrEmail
+    ).valid;
     const passwordValid = this.validatePassword(this.password).valid;
     return usernameValid && passwordValid;
   }
@@ -127,13 +141,13 @@ export class SignIn implements OnDestroy {
     this.formErrors = {};
 
     // Mark all fields as touched and validate
-    fields.forEach(field => {
+    fields.forEach((field) => {
       this.touchedFields[field] = true;
       this.validateField(field);
     });
 
     // Check if any errors exist for the current fields
-    if (fields.some(field => !!this.formErrors[field])) {
+    if (fields.some((field) => !!this.formErrors[field])) {
       isValid = false;
     }
 
@@ -189,10 +203,13 @@ export class SignIn implements OnDestroy {
 
       if (this.isBrowser) {
         try {
-          localStorage.setItem('signInBlock', JSON.stringify({
-            until: this.blockUntil.toISOString(),
-            attempts: this.attemptCount
-          }));
+          localStorage.setItem(
+            'signInBlock',
+            JSON.stringify({
+              until: this.blockUntil.toISOString(),
+              attempts: this.attemptCount,
+            })
+          );
         } catch (error) {
           console.warn('Error setting localStorage:', error);
         }
@@ -255,12 +272,11 @@ export class SignIn implements OnDestroy {
     try {
       const credentials: SignInRequest = {
         usernameOrEmail: this.usernameOrEmail.trim(),
-        password: this.password
+        password: this.password,
       };
 
       const subscription = this.authService.signIn(credentials).subscribe({
         next: (response) => {
-
           // Clear any blocking on successful login
           this.clearBlock();
 
@@ -279,7 +295,7 @@ export class SignIn implements OnDestroy {
               this.isLoading = false;
               this.generalError = 'Authentication error';
               this.showError = true;
-            }
+            },
           });
 
           this.subscriptions.push(tokenValidation);
@@ -287,13 +303,16 @@ export class SignIn implements OnDestroy {
         error: (error) => {
           console.error('Sign in error:', error);
           this.handleSignInError(error);
-        }
+        },
       });
 
       this.subscriptions.push(subscription);
     } catch (error) {
       console.error('Unexpected error:', error);
-      this.handleSignInError({ status: 0, error: { message: 'Unexpected error occurred' } });
+      this.handleSignInError({
+        status: 0,
+        error: { message: 'Unexpected error occurred' },
+      });
     }
   }
 
@@ -320,7 +339,8 @@ export class SignIn implements OnDestroy {
       errorMessage = 'Too many attempts. Please try again later.';
       this.addFailedAttempt();
     } else if (error.status === 0) {
-      errorMessage = 'Unable to connect to server. Please check your internet connection.';
+      errorMessage =
+        'Unable to connect to server. Please check your internet connection.';
     } else if (error.status >= 500) {
       errorMessage = 'Server error. Please try again later.';
     }

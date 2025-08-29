@@ -52,7 +52,7 @@
   .text-3xl {
     font-size: 2rem;
   }
-  
+
   .text-5xl {
     font-size: 2.5rem;
   }
@@ -75,10 +75,10 @@ h3 span.bg-clip-text {
 }
 
 .group:hover h3 span.bg-clip-text {
-  background-image: linear-gradient(to right, #8A24FF, #D02FFF);
+  background-image: linear-gradient(to right, #8a24ff, #d02fff);
 }
 
 /* Text highlight effect on hover */
 .group:hover h3 span.text-white {
-  color: #F5F5DC;
+  color: #f5f5dc;
 }

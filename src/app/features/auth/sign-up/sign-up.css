@@ -1,6 +1,6 @@
 /* Auth Section Styles */
 .auth-section {
-  background: #0D0D0D;
+  background: #0d0d0d;
   min-height: 100vh;
   position: relative;
 }
@@ -23,11 +23,15 @@
 }
 
 .card-border-glow::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -1px;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(127, 0, 255, 0.4), rgba(196, 0, 255, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(127, 0, 255, 0.4),
+    rgba(196, 0, 255, 0.4)
+  );
   border-radius: 12px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: exclude;
@@ -53,7 +57,7 @@
 .gradient-button {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg, #7F00FF 0%, #C400FF 100%);
+  background: linear-gradient(90deg, #7f00ff 0%, #c400ff 100%);
   transition: all 0.3s ease;
 }
 
@@ -91,19 +95,23 @@
 
 /* Hover Effects */
 .auth-card:hover .card-border-glow::before {
-  background: linear-gradient(135deg, rgba(127, 0, 255, 0.6), rgba(196, 0, 255, 0.6));
+  background: linear-gradient(
+    135deg,
+    rgba(127, 0, 255, 0.6),
+    rgba(196, 0, 255, 0.6)
+  );
 }
 
 /* Form Field Focus Effects */
 input:focus + label,
 input:not(:placeholder-shown) + label {
-  color: #B03EFF;
+  color: #b03eff;
 }
 
 /* Checkbox Styles */
 input[type="checkbox"] {
   appearance: none;
-  background-color: #1A1A1A;
+  background-color: #1a1a1a;
   border: 1px solid rgba(176, 62, 255, 0.3);
   border-radius: 4px;
   width: 16px;
@@ -114,12 +122,12 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #B03EFF;
-  border-color: #B03EFF;
+  background-color: #b03eff;
+  border-color: #b03eff;
 }
 
 input[type="checkbox"]:checked::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 50%;
@@ -165,7 +173,7 @@ a:hover {
   .auth-card {
     margin: 1rem;
   }
-  
+
   .auth-title {
     font-size: 2rem;
   }
@@ -177,7 +185,8 @@ a:hover {
 }
 
 @keyframes loading-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -203,12 +212,14 @@ a:hover {
 /* Text Selection */
 ::selection {
   background-color: rgba(176, 62, 255, 0.3);
-  color: #F1F1F1;
+  color: #f1f1f1;
 }
 
 /* Smooth Transitions */
 * {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -243,8 +254,8 @@ a:hover {
 
 /* Input Fields with Prefix */
 .flex span.inline-flex {
-  background-color: #1A1A1A;
-  color: #A7A7A7;
+  background-color: #1a1a1a;
+  color: #a7a7a7;
   border: 1px solid rgba(176, 62, 255, 0.3);
   border-right: none;
   border-top-left-radius: 8px;

@@ -1,9 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ResumeAnalyzerService } from './resume-analyzer.service';
-import { AuthService } from './authorization.service';
-import { ResumeAnalysisResponse, ResumeAnalysisRequest } from '../models/resume-analysis.model';
+import { AuthService } from '../../../services/authorization.service';
+import {
+  ResumeAnalysisResponse,
+  ResumeAnalysisRequest,
+} from '../../../models/resume-analysis.model';
 
 describe('ResumeAnalyzerService', () => {
   let service: ResumeAnalyzerService;
@@ -16,8 +22,8 @@ describe('ResumeAnalyzerService', () => {
     suggestions: [
       'Add more technical skills to your resume',
       'Include quantifiable achievements',
-      'Improve the summary section'
-    ]
+      'Improve the summary section',
+    ],
   };
 
   beforeEach(() => {
@@ -27,8 +33,8 @@ describe('ResumeAnalyzerService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         ResumeAnalyzerService,
-        { provide: AuthService, useValue: authSpy }
-      ]
+        { provide: AuthService, useValue: authSpy },
+      ],
     });
 
     service = TestBed.inject(ResumeAnalyzerService);
@@ -49,18 +55,22 @@ describe('ResumeAnalyzerService', () => {
 
   describe('analyzeResumeFile', () => {
     it('should send PDF file to backend and return analysis response', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
-      service.analyzeResumeFile(mockFile).subscribe(response => {
+      service.analyzeResumeFile(mockFile).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-resume`);
       expect(req.request.method).toBe('POST');
-      expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer test-token'
+      );
       expect(req.request.body instanceof FormData).toBeTruthy();
-      
+
       const formData = req.request.body as FormData;
       expect(formData.get('file')).toBe(mockFile);
 
@@ -68,10 +78,12 @@ describe('ResumeAnalyzerService', () => {
     });
 
     it('should handle authentication token missing', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue(null);
 
-      service.analyzeResumeFile(mockFile).subscribe(response => {
+      service.analyzeResumeFile(mockFile).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
@@ -81,18 +93,23 @@ describe('ResumeAnalyzerService', () => {
     });
 
     it('should handle HTTP error', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
       service.analyzeResumeFile(mockFile).subscribe({
         next: () => fail('should have failed'),
         error: (error: any) => {
           expect(error.status).toBe(500);
-        }
+        },
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-resume`);
-      req.flush('Server Error', { status: 500, statusText: 'Internal Server Error' });
+      req.flush('Server Error', {
+        status: 500,
+        statusText: 'Internal Server Error',
+      });
     });
   });
 
@@ -102,13 +119,15 @@ describe('ResumeAnalyzerService', () => {
       const expectedRequest: ResumeAnalysisRequest = { prompt: testText };
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
-      service.analyzeResumeText(testText).subscribe(response => {
+      service.analyzeResumeText(testText).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-text`);
       expect(req.request.method).toBe('POST');
-      expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
+      expect(req.request.headers.get('Authorization')).toBe(
+        'Bearer test-token'
+      );
       expect(req.request.body).toEqual(expectedRequest);
 
       req.flush(mockResponse);
@@ -118,7 +137,7 @@ describe('ResumeAnalyzerService', () => {
       const testText = '';
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
-      service.analyzeResumeText(testText).subscribe(response => {
+      service.analyzeResumeText(testText).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
@@ -130,7 +149,9 @@ describe('ResumeAnalyzerService', () => {
 
   describe('analyzeResume', () => {
     it('should call analyzeResumeFile when file is provided', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       spyOn(service, 'analyzeResumeFile').and.returnValue(of(mockResponse));
 
       const result = service.analyzeResume({ file: mockFile });
@@ -150,11 +171,15 @@ describe('ResumeAnalyzerService', () => {
     });
 
     it('should throw error when neither file nor text is provided', () => {
-      expect(() => service.analyzeResume({})).toThrowError('Either file or text must be provided for analysis');
+      expect(() => service.analyzeResume({})).toThrowError(
+        'Either file or text must be provided for analysis'
+      );
     });
 
     it('should prioritize file over text when both are provided', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       const testText = 'Software Engineer...';
       spyOn(service, 'analyzeResumeFile').and.returnValue(of(mockResponse));
       spyOn(service, 'analyzeResumeText');
@@ -168,10 +193,12 @@ describe('ResumeAnalyzerService', () => {
 
   describe('analyzeResumeAndRedirect', () => {
     it('should call different endpoint for redirect functionality', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
-      service.analyzeResumeAndRedirect(mockFile).subscribe(response => {
+      service.analyzeResumeAndRedirect(mockFile).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
@@ -186,7 +213,7 @@ describe('ResumeAnalyzerService', () => {
       const testText = 'Software Engineer...';
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
-      service.analyzeTextAndRedirect(testText).subscribe(response => {
+      service.analyzeTextAndRedirect(testText).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
@@ -198,14 +225,16 @@ describe('ResumeAnalyzerService', () => {
 
   describe('Error Handling', () => {
     it('should handle network errors', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue('Bearer test-token');
 
       service.analyzeResumeFile(mockFile).subscribe({
         next: () => fail('should have failed'),
         error: (error: any) => {
           expect(error).toBeTruthy();
-        }
+        },
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-resume`);
@@ -213,14 +242,16 @@ describe('ResumeAnalyzerService', () => {
     });
 
     it('should handle 401 unauthorized error', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       authServiceSpy.getToken.and.returnValue('invalid-token');
 
       service.analyzeResumeFile(mockFile).subscribe({
         next: () => fail('should have failed'),
         error: (error: any) => {
           expect(error.status).toBe(401);
-        }
+        },
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-resume`);
@@ -235,7 +266,7 @@ describe('ResumeAnalyzerService', () => {
         next: () => fail('should have failed'),
         error: (error: any) => {
           expect(error.status).toBe(400);
-        }
+        },
       });
 
       const req = httpMock.expectOne(`${mockApiUrl}/api/analyze-text`);

@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef, NgZone, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ResumeParseService } from '../../services/resume-parse.service';
+import { ResumeParseService } from './services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
 import { HeaderComponent } from '../../core/layout/header/header';
 import { FooterComponent } from '../../core/layout/footer/footer';
@@ -84,7 +84,6 @@ export class ParseResume {
 
     this.resumeParseService.parseResume(this.selectedFile).subscribe({
       next: (result: ParsedResumeResponse) => {
-
         this.isLoading = false;
         this.cdr.markForCheck();
 

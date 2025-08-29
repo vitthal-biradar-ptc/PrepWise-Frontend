@@ -4,11 +4,11 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .text-3xl {
     font-size: 2rem;
   }
-  
+
   .text-5xl {
     font-size: 2.5rem;
   }
@@ -20,18 +20,22 @@
 }
 
 .group:hover h3 {
-  color: #F5F5DC;
+  color: #f5f5dc;
 }
 
 /* Background pattern animation */
 .bg-gradient-to-b:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(176, 62, 255, 0.1), transparent 50%);
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(176, 62, 255, 0.1),
+    transparent 50%
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -56,13 +60,18 @@ h2 span.text-transparent {
 }
 
 h2 span.text-transparent::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -3px;
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, rgba(127, 0, 255, 0.2), rgba(196, 0, 255, 0.8) 50%, rgba(127, 0, 255, 0.2));
+  background: linear-gradient(
+    90deg,
+    rgba(127, 0, 255, 0.2),
+    rgba(196, 0, 255, 0.8) 50%,
+    rgba(127, 0, 255, 0.2)
+  );
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.5s ease;

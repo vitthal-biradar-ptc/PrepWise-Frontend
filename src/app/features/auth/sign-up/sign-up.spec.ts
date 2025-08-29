@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -6,7 +11,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 
 import { SignUp } from './sign-up';
-import { AuthService, SignUpRequest } from '../../../services/authorization.service';
+import {
+  AuthService,
+  SignUpRequest,
+} from '../../../services/authorization.service';
 
 describe('SignUp', () => {
   let component: SignUp;
@@ -15,14 +23,23 @@ describe('SignUp', () => {
   let router: Router;
 
   beforeEach(async () => {
-    mockAuthService = jasmine.createSpyObj('AuthService', ['signUp', 'setToken', 'validateToken']);
+    mockAuthService = jasmine.createSpyObj('AuthService', [
+      'signUp',
+      'setToken',
+      'validateToken',
+    ]);
 
     await TestBed.configureTestingModule({
-      imports: [SignUp, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      imports: [
+        SignUp,
+        FormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([]),
+      ],
       providers: [
         { provide: AuthService, useValue: mockAuthService },
-        provideRouter([])
-      ]
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignUp);
@@ -91,7 +108,9 @@ describe('SignUp', () => {
     it('should set errors for invalid fields and clear for valid', () => {
       component.username = 'a';
       component.validateField('username');
-      expect(component.formErrors['username']).toContain('Username must be 3-20 characters');
+      expect(component.formErrors['username']).toContain(
+        'Username must be 3-20 characters'
+      );
 
       component.username = 'valid_user';
       component.validateField('username');
@@ -102,13 +121,17 @@ describe('SignUp', () => {
       component.password = 'password123';
       component.confirmPassword = 'password124';
       component.validateField('confirmPassword');
-      expect(component.formErrors['confirmPassword']).toBe('Passwords do not match');
+      expect(component.formErrors['confirmPassword']).toBe(
+        'Passwords do not match'
+      );
     });
 
     it('should validate portfolioUrl', () => {
       component.portfolioUrl = 'invalid';
       component.validateField('portfolioUrl');
-      expect(component.formErrors['portfolioUrl']).toBe('Please enter a valid URL');
+      expect(component.formErrors['portfolioUrl']).toBe(
+        'Please enter a valid URL'
+      );
     });
 
     it('should report hasFieldError only when touched and has error', () => {
@@ -125,7 +148,9 @@ describe('SignUp', () => {
       const isValid = component.validateForm();
       expect(isValid).toBeFalse();
       expect(Object.keys(component.formErrors).length).toBeGreaterThan(0);
-      expect(component.formErrors['terms']).toBe('Please accept the Terms of Service and Privacy Policy');
+      expect(component.formErrors['terms']).toBe(
+        'Please accept the Terms of Service and Privacy Policy'
+      );
     });
 
     it('should validate form when all rules satisfied', () => {
@@ -193,10 +218,12 @@ describe('SignUp', () => {
         location: 'City',
         githubUrl: 'https://github.com/octocat',
         linkedinUrl: 'https://www.linkedin.com/in/john-doe',
-        portfolioLink: null
+        portfolioLink: null,
       };
 
-      mockAuthService.signUp.and.returnValue(of({ token: 'token', tokenType: 'Bearer' } as any));
+      mockAuthService.signUp.and.returnValue(
+        of({ token: 'token', tokenType: 'Bearer' } as any)
+      );
       mockAuthService.validateToken.and.returnValue(of(true));
 
       component.handleSubmit(mockEvent);
@@ -207,7 +234,9 @@ describe('SignUp', () => {
       expect(mockAuthService.setToken).toHaveBeenCalledWith('token', 'Bearer');
 
       tick(1500);
-      expect(router.navigate).toHaveBeenCalledWith(['/parse-resume'], { state: { firstTime: true } });
+      expect(router.navigate).toHaveBeenCalledWith(['/parse-resume'], {
+        state: { firstTime: true },
+      });
       expect(component.isLoading).toBeFalse();
       expect(component.showError).toBeFalse();
     }));
@@ -216,19 +245,25 @@ describe('SignUp', () => {
       component.githubUsername = '';
       component.linkedinUsername = '';
 
-      mockAuthService.signUp.and.returnValue(of({ token: 'token', tokenType: 'Bearer' } as any));
+      mockAuthService.signUp.and.returnValue(
+        of({ token: 'token', tokenType: 'Bearer' } as any)
+      );
       mockAuthService.validateToken.and.returnValue(of(true));
 
       component.handleSubmit(mockEvent);
       tick();
 
-      const [arg] = mockAuthService.signUp.calls.mostRecent().args as [SignUpRequest];
+      const [arg] = mockAuthService.signUp.calls.mostRecent().args as [
+        SignUpRequest
+      ];
       expect(arg.githubUrl).toBeNull();
       expect(arg.linkedinUrl).toBeNull();
     }));
 
     it('should handle 400 with message', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 400, error: { message: 'Bad data' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 400, error: { message: 'Bad data' } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
@@ -240,7 +275,9 @@ describe('SignUp', () => {
 
     it('should handle 400 with errors map and set field errors', fakeAsync(() => {
       const backendErrors = { email: ['Invalid email'], username: ['Taken'] };
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 400, error: { errors: backendErrors } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 400, error: { errors: backendErrors } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
@@ -253,54 +290,82 @@ describe('SignUp', () => {
     }));
 
     it('should handle 409 email exists', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 409, error: { message: 'email already exists' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({
+          status: 409,
+          error: { message: 'email already exists' },
+        }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
 
-      expect(component.formErrors['email']).toBe('This email is already registered');
+      expect(component.formErrors['email']).toBe(
+        'This email is already registered'
+      );
       expect(component.error).toBe('Email already exists');
     }));
 
     it('should handle 409 username exists', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 409, error: { message: 'username already exists' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({
+          status: 409,
+          error: { message: 'username already exists' },
+        }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
 
-      expect(component.formErrors['username']).toBe('This username is already taken');
+      expect(component.formErrors['username']).toBe(
+        'This username is already taken'
+      );
       expect(component.error).toBe('Username already exists');
     }));
 
     it('should handle 422 validation error', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 422, error: { message: 'Invalid' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 422, error: { message: 'Invalid' } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
 
-      expect(component.error).toBe('Invalid data provided. Please check your information.');
+      expect(component.error).toBe(
+        'Invalid data provided. Please check your information.'
+      );
     }));
 
     it('should handle 429 rate limiting', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 429, error: { message: 'Too many' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 429, error: { message: 'Too many' } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
 
-      expect(component.error).toBe('Too many attempts. Please try again later.');
+      expect(component.error).toBe(
+        'Too many attempts. Please try again later.'
+      );
     }));
 
     it('should handle network error (0)', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 0, error: { message: 'Network' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 0, error: { message: 'Network' } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
 
-      expect(component.error).toBe('Unable to connect to server. Please check your internet connection.');
+      expect(component.error).toBe(
+        'Unable to connect to server. Please check your internet connection.'
+      );
     }));
 
     it('should handle server error (500+)', fakeAsync(() => {
-      mockAuthService.signUp.and.returnValue(throwError(() => ({ status: 500, error: { message: 'Server' } })));
+      mockAuthService.signUp.and.returnValue(
+        throwError(() => ({ status: 500, error: { message: 'Server' } }))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
@@ -309,5 +374,3 @@ describe('SignUp', () => {
     }));
   });
 });
-
-

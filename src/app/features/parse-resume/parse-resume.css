@@ -3,7 +3,7 @@
 }
 
 .file-drop-zone.drag-active {
-  border-color: #B03EFF;
+  border-color: #b03eff;
   background: rgba(176, 62, 255, 0.1);
   transform: scale(1.01);
   box-shadow: 0 0 15px rgba(176, 62, 255, 0.3);

@@ -203,7 +203,12 @@ export class LearningPathsComponent implements OnInit {
   openPath(lp: LearningPathItem) {
     const id = getId(lp);
     if (!id || !this.userId) return;
-    this.router.navigate(['/learning-paths/user', this.userId, 'learning-path', id]);
+    this.router.navigate([
+      '/learning-paths/user',
+      this.userId,
+      'learning-path',
+      id,
+    ]);
   }
 
   trackById = (_: number, lp: LearningPathItem) => getId(lp);

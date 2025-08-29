@@ -1,18 +1,24 @@
-import { Component, ChangeDetectorRef, NgZone, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  NgZone,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
+import { ResumeAnalyzerService } from './services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
 import { Router } from '@angular/router';
-import { HeaderComponent } from "../../core/layout/header/header";
-import { FooterComponent } from "../../core/layout/footer/footer";
+import { HeaderComponent } from '../../core/layout/header/header';
+import { FooterComponent } from '../../core/layout/footer/footer';
 
 @Component({
   selector: 'app-resume-analyzer',
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
   templateUrl: './resume-analyzer.html',
-  styleUrls: ['./resume-analyzer.css']
+  styleUrls: ['./resume-analyzer.css'],
 })
 export class ResumeAnalyzer implements OnInit {
   selectedFile: File | null = null;
@@ -70,7 +76,7 @@ export class ResumeAnalyzer implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.isDragging = false;
-    
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       const file = files[0];
@@ -97,7 +103,7 @@ export class ResumeAnalyzer implements OnInit {
     });
 
     // Use the correct service methods based on input type
-    const analysisObservable = this.selectedFile 
+    const analysisObservable = this.selectedFile
       ? this.resumeAnalyzerService.analyzeResumeFile(this.selectedFile)
       : this.resumeAnalyzerService.analyzeResumeText(this.resumeText);
 
@@ -114,11 +120,13 @@ export class ResumeAnalyzer implements OnInit {
         this.ngZone.run(() => {
           this.isLoading = false;
           this.stopTimer();
-          const errorMessage = error.error?.message || 'Failed to analyze resume. Please try again.';
+          const errorMessage =
+            error.error?.message ||
+            'Failed to analyze resume. Please try again.';
           this.error = errorMessage;
           this.cdr.detectChanges();
         });
-      }
+      },
     });
   }
 

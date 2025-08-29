@@ -181,8 +181,7 @@
             >
               GitHub
             </a>
-            }
-            @if (!isProfileEditing && profile.linkedinUrl) {
+            } @if (!isProfileEditing && profile.linkedinUrl) {
             <a
               [href]="profile.linkedinUrl"
               target="_blank"
@@ -190,8 +189,7 @@
             >
               LinkedIn
             </a>
-            }
-            @if (!isProfileEditing && profile.portfolioUrl) {
+            } @if (!isProfileEditing && profile.portfolioUrl) {
             <a
               [href]="profile.portfolioUrl"
               target="_blank"
@@ -200,12 +198,14 @@
               Portfolio
             </a>
             }
-          
+
             <!-- Edit mode -->
             @if (isProfileEditing) {
             <div class="social-links-edit grid grid-cols-1 gap-4">
               <div class="social-input-group">
-                <label class="block text-[#2C3E50] font-medium mb-2">GitHub URL:</label>
+                <label class="block text-[#2C3E50] font-medium mb-2"
+                  >GitHub URL:</label
+                >
                 <input
                   pInputText
                   [(ngModel)]="profile.githubUrl"
@@ -214,7 +214,9 @@
                 />
               </div>
               <div class="social-input-group">
-                <label class="block text-[#2C3E50] font-medium mb-2">LinkedIn URL:</label>
+                <label class="block text-[#2C3E50] font-medium mb-2"
+                  >LinkedIn URL:</label
+                >
                 <input
                   pInputText
                   [(ngModel)]="profile.linkedinUrl"
@@ -223,7 +225,9 @@
                 />
               </div>
               <div class="social-input-group">
-                <label class="block text-[#2C3E50] font-medium mb-2">Portfolio URL:</label>
+                <label class="block text-[#2C3E50] font-medium mb-2"
+                  >Portfolio URL:</label
+                >
                 <input
                   pInputText
                   [(ngModel)]="profile.portfolioUrl"
@@ -234,7 +238,6 @@
             </div>
             }
           </div>
-          
         </div>
       </div>
     </div>

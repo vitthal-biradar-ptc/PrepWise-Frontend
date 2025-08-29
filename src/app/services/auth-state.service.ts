@@ -5,11 +5,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
  * Central reactive store for authentication state.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthStateService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  public readonly isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
+  public readonly isAuthenticated$: Observable<boolean> =
+    this.isAuthenticatedSubject.asObservable();
 
   constructor() {}
 

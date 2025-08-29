@@ -7,8 +7,6 @@ import { Component } from '@angular/core';
   selector: 'app-features',
   imports: [],
   templateUrl: './features.html',
-  styleUrl: './features.css'
+  styleUrl: './features.css',
 })
-export class FeaturesComponent {
-
-}
+export class FeaturesComponent {}

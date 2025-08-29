@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { of, throwError, Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -7,14 +12,14 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ResumeAnalyzer } from './resume-analyzer';
-import { ResumeAnalyzerService } from '../../services/resume-analyzer.service';
+import { ResumeAnalyzerService } from './services/resume-analyzer.service';
 import { ResumeAnalysisResponse } from '../../models/resume-analysis.model';
 
 // Mock Header Component
 @Component({
   selector: 'app-header',
   template: '<div>Mock Header</div>',
-  standalone: true
+  standalone: true,
 })
 class MockHeaderComponent {}
 
@@ -22,7 +27,7 @@ class MockHeaderComponent {}
 @Component({
   selector: 'app-footer',
   template: '<div>Mock Footer</div>',
-  standalone: true
+  standalone: true,
 })
 class MockFooterComponent {}
 
@@ -36,34 +41,34 @@ describe('ResumeAnalyzer', () => {
     suggestions: [
       'Add more technical skills to your resume',
       'Include quantifiable achievements in your experience section',
-      'Improve the summary section with keywords'
-    ]
+      'Improve the summary section with keywords',
+    ],
   };
 
   beforeEach(async () => {
     const resumeServiceSpy = jasmine.createSpyObj('ResumeAnalyzerService', [
       'analyzeResumeFile',
       'analyzeResumeText',
-      'analyzeResume'
+      'analyzeResume',
     ]);
 
     await TestBed.configureTestingModule({
       declarations: [],
-      imports: [
-        CommonModule,
-        FormsModule,
-        RouterTestingModule,
-        ResumeAnalyzer
-      ],
+      imports: [CommonModule, FormsModule, RouterTestingModule, ResumeAnalyzer],
       providers: [
-        { provide: ResumeAnalyzerService, useValue: resumeServiceSpy }
+        { provide: ResumeAnalyzerService, useValue: resumeServiceSpy },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     })
-    .overrideComponent(ResumeAnalyzer, {
-      set: {
-        imports: [CommonModule, FormsModule, MockHeaderComponent, MockFooterComponent],
-        template: `
+      .overrideComponent(ResumeAnalyzer, {
+        set: {
+          imports: [
+            CommonModule,
+            FormsModule,
+            MockHeaderComponent,
+            MockFooterComponent,
+          ],
+          template: `
           <div class="test-container">
             <app-header></app-header>
             <div class="content">
@@ -173,14 +178,16 @@ describe('ResumeAnalyzer', () => {
             </div>
             <app-footer></app-footer>
           </div>
-        `
-      }
-    })
-    .compileComponents();
+        `,
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ResumeAnalyzer);
     component = fixture.componentInstance;
-    resumeAnalyzerServiceSpy = TestBed.inject(ResumeAnalyzerService) as jasmine.SpyObj<ResumeAnalyzerService>;
+    resumeAnalyzerServiceSpy = TestBed.inject(
+      ResumeAnalyzerService
+    ) as jasmine.SpyObj<ResumeAnalyzerService>;
 
     fixture.detectChanges();
   });
@@ -209,11 +216,13 @@ describe('ResumeAnalyzer', () => {
 
   describe('File Selection', () => {
     it('should select valid PDF file', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       const mockEvent = {
         target: {
-          files: [mockFile]
-        }
+          files: [mockFile],
+        },
       };
 
       component.onFileSelected(mockEvent);
@@ -223,11 +232,13 @@ describe('ResumeAnalyzer', () => {
     });
 
     it('should reject non-PDF files', () => {
-      const mockFile = new File(['test content'], 'test-resume.doc', { type: 'application/msword' });
+      const mockFile = new File(['test content'], 'test-resume.doc', {
+        type: 'application/msword',
+      });
       const mockEvent = {
         target: {
-          files: [mockFile]
-        }
+          files: [mockFile],
+        },
       };
 
       component.onFileSelected(mockEvent);
@@ -239,8 +250,8 @@ describe('ResumeAnalyzer', () => {
     it('should handle no file selected', () => {
       const mockEvent = {
         target: {
-          files: []
-        }
+          files: [],
+        },
       };
 
       component.onFileSelected(mockEvent);
@@ -276,12 +287,14 @@ describe('ResumeAnalyzer', () => {
     });
 
     it('should handle valid file drop', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       const mockDropEvent = new DragEvent('drop');
       Object.defineProperty(mockDropEvent, 'dataTransfer', {
         value: {
-          files: [mockFile]
-        }
+          files: [mockFile],
+        },
       });
       spyOn(mockDropEvent, 'preventDefault');
       spyOn(mockDropEvent, 'stopPropagation');
@@ -296,12 +309,14 @@ describe('ResumeAnalyzer', () => {
     });
 
     it('should reject invalid file drop', () => {
-      const mockFile = new File(['test content'], 'test-resume.doc', { type: 'application/msword' });
+      const mockFile = new File(['test content'], 'test-resume.doc', {
+        type: 'application/msword',
+      });
       const mockDropEvent = new DragEvent('drop');
       Object.defineProperty(mockDropEvent, 'dataTransfer', {
         value: {
-          files: [mockFile]
-        }
+          files: [mockFile],
+        },
       });
       spyOn(mockDropEvent, 'preventDefault');
       spyOn(mockDropEvent, 'stopPropagation');
@@ -315,12 +330,16 @@ describe('ResumeAnalyzer', () => {
 
   describe('Resume Analysis', () => {
     it('should analyze resume with file', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(of(mockAnalysisResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        of(mockAnalysisResponse)
+      );
 
       component.analyzeResume();
-      
+
       // Force change detection to ensure state updates are applied
       fixture.detectChanges();
       tick();
@@ -329,16 +348,20 @@ describe('ResumeAnalyzer', () => {
       expect(component.isLoading).toBeFalse();
       expect(component.analysisResult).toEqual(mockAnalysisResponse);
       expect(component.error).toBe('');
-      expect(resumeAnalyzerServiceSpy.analyzeResumeFile).toHaveBeenCalledWith(mockFile);
+      expect(resumeAnalyzerServiceSpy.analyzeResumeFile).toHaveBeenCalledWith(
+        mockFile
+      );
     }));
 
     it('should analyze resume with text', fakeAsync(() => {
       const testText = 'Software Engineer with 5 years experience...';
       component.resumeText = testText;
-      resumeAnalyzerServiceSpy.analyzeResumeText.and.returnValue(of(mockAnalysisResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeText.and.returnValue(
+        of(mockAnalysisResponse)
+      );
 
       component.analyzeResume();
-      
+
       // Force change detection to ensure state updates are applied
       fixture.detectChanges();
       tick();
@@ -347,7 +370,9 @@ describe('ResumeAnalyzer', () => {
       expect(component.isLoading).toBeFalse();
       expect(component.analysisResult).toEqual(mockAnalysisResponse);
       expect(component.error).toBe('');
-      expect(resumeAnalyzerServiceSpy.analyzeResumeText).toHaveBeenCalledWith(testText);
+      expect(resumeAnalyzerServiceSpy.analyzeResumeText).toHaveBeenCalledWith(
+        testText
+      );
     }));
 
     it('should show error when no file or text provided', () => {
@@ -356,18 +381,24 @@ describe('ResumeAnalyzer', () => {
 
       component.analyzeResume();
 
-      expect(component.error).toBe('Please upload a file or paste resume text.');
+      expect(component.error).toBe(
+        'Please upload a file or paste resume text.'
+      );
       expect(component.isLoading).toBeFalse();
     });
 
     it('should handle analysis error', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
       const errorResponse = { error: { message: 'Analysis failed' } };
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(throwError(() => errorResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        throwError(() => errorResponse)
+      );
 
       component.analyzeResume();
-      
+
       // Force change detection and tick for async operations
       fixture.detectChanges();
       tick();
@@ -378,41 +409,53 @@ describe('ResumeAnalyzer', () => {
     }));
 
     it('should handle analysis error without specific message', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(throwError(() => new Error('Network error')));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        throwError(() => new Error('Network error'))
+      );
 
       component.analyzeResume();
-      
+
       // Force change detection and tick for async operations
       fixture.detectChanges();
       tick();
 
       expect(component.isLoading).toBeFalse();
-      expect(component.error).toBe('Failed to analyze resume. Please try again.');
+      expect(component.error).toBe(
+        'Failed to analyze resume. Please try again.'
+      );
     }));
 
     it('should set loading state during analysis', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
-      
+
       // Use a delayed observable that we can control with proper typing
       let resolveObservable: (value: ResumeAnalysisResponse) => void;
-      const delayedObservable = new Observable<ResumeAnalysisResponse>((subscriber) => {
-        resolveObservable = (value: ResumeAnalysisResponse) => {
-          subscriber.next(value);
-          subscriber.complete();
-        };
-      });
-      
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(delayedObservable);
+      const delayedObservable = new Observable<ResumeAnalysisResponse>(
+        (subscriber) => {
+          resolveObservable = (value: ResumeAnalysisResponse) => {
+            subscriber.next(value);
+            subscriber.complete();
+          };
+        }
+      );
+
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        delayedObservable
+      );
 
       // Start the analysis
       component.analyzeResume();
-      
+
       // Force immediate change detection
       fixture.detectChanges();
-      
+
       // Check that loading state is set
       expect(component.isLoading).toBeTrue();
       expect(component.error).toBe('');
@@ -447,7 +490,9 @@ describe('ResumeAnalyzer', () => {
 
   describe('Clear All Functionality', () => {
     it('should clear all data', () => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
       component.resumeText = 'Test text';
       component.analysisResult = mockAnalysisResponse;
@@ -491,9 +536,13 @@ describe('ResumeAnalyzer', () => {
 
   describe('Integration Tests', () => {
     it('should handle complete file analysis workflow', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       const mockEvent = { target: { files: [mockFile] } };
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(of(mockAnalysisResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        of(mockAnalysisResponse)
+      );
 
       // Select file
       component.onFileSelected(mockEvent);
@@ -501,7 +550,7 @@ describe('ResumeAnalyzer', () => {
 
       // Analyze
       component.analyzeResume();
-      
+
       // Force change detection and complete async operations
       fixture.detectChanges();
       tick();
@@ -513,7 +562,9 @@ describe('ResumeAnalyzer', () => {
 
     it('should handle complete text analysis workflow', fakeAsync(() => {
       const testText = 'Software Engineer with experience...';
-      resumeAnalyzerServiceSpy.analyzeResumeText.and.returnValue(of(mockAnalysisResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeText.and.returnValue(
+        of(mockAnalysisResponse)
+      );
 
       // Switch to text tab
       component.switchTab('text');
@@ -524,7 +575,7 @@ describe('ResumeAnalyzer', () => {
 
       // Analyze
       component.analyzeResume();
-      
+
       // Force change detection and complete async operations
       fixture.detectChanges();
       tick();
@@ -535,18 +586,24 @@ describe('ResumeAnalyzer', () => {
     }));
 
     it('should handle error and recovery workflow', fakeAsync(() => {
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
 
       // First analysis fails
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(throwError(() => new Error('Network error')));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        throwError(() => new Error('Network error'))
+      );
       component.analyzeResume();
-      
+
       // Force change detection and complete async operations
       fixture.detectChanges();
       tick();
 
-      expect(component.error).toBe('Failed to analyze resume. Please try again.');
+      expect(component.error).toBe(
+        'Failed to analyze resume. Please try again.'
+      );
       expect(component.isLoading).toBeFalse();
 
       // Clear and try again
@@ -555,9 +612,11 @@ describe('ResumeAnalyzer', () => {
 
       // Second analysis succeeds
       component.selectedFile = mockFile;
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(of(mockAnalysisResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        of(mockAnalysisResponse)
+      );
       component.analyzeResume();
-      
+
       // Force change detection and complete async operations
       fixture.detectChanges();
       tick();
@@ -573,17 +632,23 @@ describe('ResumeAnalyzer', () => {
       component.resumeText = '   \n\t   ';
       component.analyzeResume();
 
-      expect(component.error).toBe('Please upload a file or paste resume text.');
+      expect(component.error).toBe(
+        'Please upload a file or paste resume text.'
+      );
     });
 
     it('should handle empty analysis response', fakeAsync(() => {
       const emptyResponse: ResumeAnalysisResponse = {
         domain: '',
-        suggestions: []
+        suggestions: [],
       };
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(of(emptyResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        of(emptyResponse)
+      );
 
       component.analyzeResume();
       tick();
@@ -595,11 +660,15 @@ describe('ResumeAnalyzer', () => {
     it('should handle analysis response with only domain', fakeAsync(() => {
       const partialResponse: ResumeAnalysisResponse = {
         domain: 'Software Engineering',
-        suggestions: []
+        suggestions: [],
       };
-      const mockFile = new File(['test content'], 'test-resume.pdf', { type: 'application/pdf' });
+      const mockFile = new File(['test content'], 'test-resume.pdf', {
+        type: 'application/pdf',
+      });
       component.selectedFile = mockFile;
-      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(of(partialResponse));
+      resumeAnalyzerServiceSpy.analyzeResumeFile.and.returnValue(
+        of(partialResponse)
+      );
 
       component.analyzeResume();
       tick();

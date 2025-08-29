@@ -1,6 +1,10 @@
 .learning-path-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-bg-50) 0%, var(--color-bg-100) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-50) 0%,
+    var(--color-bg-100) 100%
+  );
   color: var(--color-text);
 }
 
@@ -45,7 +49,11 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -59,7 +67,7 @@
 }
 
 .duration-badge {
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
@@ -122,26 +130,39 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   border-radius: 0.5rem;
   transition: width 0.6s ease;
   position: relative;
 }
 
 .progress-fill::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(var(--rgb-bg), 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--rgb-bg), 0.2),
+    transparent
+  );
   animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .progress-stats {
@@ -187,7 +208,7 @@
   overflow: hidden;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .period-card:hover {
@@ -257,7 +278,11 @@
 
 .mini-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -271,7 +296,7 @@
 
 .expand-icon {
   transition: transform 0.3s ease;
-  color: #3498DB;
+  color: #3498db;
 }
 
 .expand-icon.rotated {
@@ -336,7 +361,7 @@
 }
 
 .focus-area-item::before {
-  content: '•';
+  content: "•";
   color: var(--color-primary);
   font-weight: bold;
   margin-right: 0.5rem;
@@ -454,12 +479,12 @@
 }
 
 .task-checkbox:checked + .checkbox-custom {
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
-  border-color: #3498DB;
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
+  border-color: #3498db;
 }
 
 .task-checkbox:checked + .checkbox-custom::after {
-  content: '✓';
+  content: "✓";
   color: white;
   font-size: 12px;
   font-weight: bold;
@@ -472,14 +497,14 @@
 
 .task-description {
   margin: 0 0 0.5rem 0;
-  color: #2C3E50;
+  color: #2c3e50;
   line-height: 1.5;
   transition: all 0.3s ease;
 }
 
 .task-description.completed {
   text-decoration: line-through;
-  color: #6C757D;
+  color: #6c757d;
 }
 
 .task-meta {
@@ -493,7 +518,7 @@
   align-items: center;
   gap: 0.25rem;
   font-size: 0.875rem;
-  color: #6C757D;
+  color: #6c757d;
 }
 
 /* Empty State */
@@ -516,17 +541,17 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #2C3E50;
+  color: #2c3e50;
 }
 
 .empty-state-description {
-  color: #6C757D;
+  color: #6c757d;
   margin-bottom: 2rem;
   line-height: 1.6;
 }
 
 .cta-button {
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
   color: white;
   border: none;
   padding: 0.75rem 2rem;
@@ -554,12 +579,12 @@
 }
 
 .cta-button.generate-btn::before {
-  content: '✨';
+  content: "✨";
   font-size: 1rem;
 }
 
 .cta-button.generate-btn::after {
-  content: '↗';
+  content: "↗";
   opacity: 0;
   transform: translateX(-4px);
   transition: all 0.2s ease;
@@ -578,8 +603,7 @@
 
 .cta-button.generate-btn:focus-visible {
   outline: none;
-  box-shadow:
-    0 12px 36px rgba(52, 152, 219, 0.45),
+  box-shadow: 0 12px 36px rgba(52, 152, 219, 0.45),
     0 0 0 3px rgba(52, 152, 219, 0.35);
 }
 
@@ -595,7 +619,7 @@
 
 .modal {
   width: min(560px, 92vw);
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
@@ -640,10 +664,10 @@
 
 .modal-form input,
 .modal-form select {
-  background: #F8F9FA;
+  background: #f8f9fa;
   border: 1px solid rgba(52, 152, 219, 0.3);
   border-radius: 0.5rem;
-  color: #2C3E50;
+  color: #2c3e50;
   padding: 0.55rem 0.75rem;
   outline: none;
 }

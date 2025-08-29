@@ -1,12 +1,22 @@
 /* Custom animations */
 @keyframes progressLoad {
-  0%, 100% { width: 0%; }
-  50% { width: 100%; }
+  0%,
+  100% {
+    width: 0%;
+  }
+  50% {
+    width: 100%;
+  }
 }
 
 @keyframes gradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Custom gradient animation */
@@ -26,18 +36,18 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #3498DB, #6C5CE7);
+  background: linear-gradient(to bottom, #3498db, #6c5ce7);
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, #2980B9, #5A4FCF);
+  background: linear-gradient(to bottom, #2980b9, #5a4fcf);
 }
 
 /* Firefox scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #3498DB rgba(222, 226, 230, 0.3);
+  scrollbar-color: #3498db rgba(222, 226, 230, 0.3);
 }
 
 /* Progress animation */
@@ -53,7 +63,7 @@
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .analyzer-header {
@@ -62,13 +72,13 @@
 }
 
 .analyzer-header h1 {
-  color: #F1F1F1;
+  color: #f1f1f1;
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   margin-bottom: 10px;
 }
 
 .analyzer-header p {
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-size: clamp(0.9rem, 2vw, 1.1rem);
 }
 
@@ -82,7 +92,7 @@
 /* Upload Section */
 .upload-section {
   position: relative;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 12px;
   padding: 25px;
   border: 1px solid rgba(176, 62, 255, 0.2);
@@ -93,7 +103,7 @@
   margin-bottom: 20px;
   border-radius: 8px;
   overflow: hidden;
-  background: #0A0A0A;
+  background: #0a0a0a;
   padding: 4px;
 }
 
@@ -101,7 +111,7 @@
   flex: 1;
   padding: 12px 20px;
   background: transparent;
-  color: #A7A7A7;
+  color: #a7a7a7;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -115,12 +125,12 @@
 
 .tab-btn:hover {
   background: rgba(176, 62, 255, 0.1);
-  color: #F1F1F1;
+  color: #f1f1f1;
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #7F00FF, #C400FF);
-  color: #F1F1F1;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  color: #f1f1f1;
   box-shadow: 0 4px 20px rgba(176, 62, 255, 0.3);
 }
 
@@ -130,7 +140,11 @@
   padding: clamp(15px, 3vw, 40px) clamp(10px, 2vw, 20px);
   text-align: center;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, rgba(176, 62, 255, 0.05), rgba(127, 0, 255, 0.03));
+  background: linear-gradient(
+    135deg,
+    rgba(176, 62, 255, 0.05),
+    rgba(127, 0, 255, 0.03)
+  );
   min-height: min(450px, 60vh);
   display: flex;
   align-items: center;
@@ -139,18 +153,30 @@
 
 .file-drop-zone:hover {
   border-color: rgba(176, 62, 255, 0.6);
-  background: linear-gradient(135deg, rgba(176, 62, 255, 0.08), rgba(127, 0, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(176, 62, 255, 0.08),
+    rgba(127, 0, 255, 0.05)
+  );
 }
 
 .file-drop-zone.has-file {
-  border-color: #22C55E;
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.05));
+  border-color: #22c55e;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.08),
+    rgba(34, 197, 94, 0.05)
+  );
 }
 
 /* Enhanced File Drop Zone */
 .file-drop-zone.drag-active {
-  border-color: #B03EFF !important;
-  background: linear-gradient(135deg, rgba(176, 62, 255, 0.15), rgba(127, 0, 255, 0.1)) !important;
+  border-color: #b03eff !important;
+  background: linear-gradient(
+    135deg,
+    rgba(176, 62, 255, 0.15),
+    rgba(127, 0, 255, 0.1)
+  ) !important;
   box-shadow: 0 0 20px rgba(176, 62, 255, 0.3);
 }
 
@@ -163,23 +189,23 @@
 .upload-icon {
   font-size: 3rem;
   margin-bottom: 15px;
-  color: #B03EFF;
+  color: #b03eff;
 }
 
 .drop-text {
   font-size: clamp(0.9rem, 3vw, 1.1rem);
-  color: #F1F1F1;
+  color: #f1f1f1;
   margin-bottom: 10px;
 }
 
 .or-text {
-  color: #A7A7A7;
+  color: #a7a7a7;
   margin: 15px 0;
 }
 
 .file-input-label {
-  background: linear-gradient(135deg, #7F00FF, #C400FF);
-  color: #F1F1F1;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  color: #f1f1f1;
   padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
   border-radius: 8px;
   cursor: pointer;
@@ -198,7 +224,7 @@
 }
 
 .file-info {
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-size: 0.9rem;
   margin-top: 10px;
 }
@@ -215,7 +241,7 @@
 .file-icon {
   font-size: 2rem;
   margin-right: 15px;
-  color: #B03EFF;
+  color: #b03eff;
 }
 
 .file-details {
@@ -225,11 +251,11 @@
 .file-name {
   font-weight: 500;
   margin-bottom: 5px;
-  color: #F1F1F1;
+  color: #f1f1f1;
 }
 
 .file-size {
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-size: 0.9rem;
 }
 
@@ -268,17 +294,17 @@
   resize: none;
   min-height: 400px;
   background: rgba(10, 10, 10, 0.5);
-  color: #F1F1F1;
+  color: #f1f1f1;
   flex: 1;
   transition: all 0.3s ease;
 }
 
 .resume-text-input::placeholder {
-  color: #A7A7A7;
+  color: #a7a7a7;
 }
 
 .resume-text-input:focus {
-  border-color: #B03EFF;
+  border-color: #b03eff;
   box-shadow: 0 0 0 2px rgba(176, 62, 255, 0.3);
   outline: none;
 }
@@ -300,8 +326,8 @@
 
 .analyze-btn {
   flex: 1;
-  background: linear-gradient(135deg, #7F00FF, #C400FF);
-  color: #F1F1F1;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  color: #f1f1f1;
   border: none;
   padding: 15px 25px;
   border-radius: 8px;
@@ -328,7 +354,7 @@
 
 .clear-btn {
   background: rgba(26, 26, 26, 0.8);
-  color: #F1F1F1;
+  color: #f1f1f1;
   border: 1px solid rgba(176, 62, 255, 0.3);
   padding: 15px 25px;
   border-radius: 8px;
@@ -344,7 +370,7 @@
 /* Results Section */
 .results-section {
   position: relative;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 12px;
   padding: 25px;
   border: 1px solid rgba(176, 62, 255, 0.2);
@@ -352,46 +378,46 @@
 
 .no-results {
   text-align: center;
-  color: #A7A7A7;
+  color: #a7a7a7;
   padding: 80px 20px;
 }
 
 .no-results-icon {
   font-size: 4rem;
   margin-bottom: 20px;
-  color: #B03EFF;
+  color: #b03eff;
 }
 
 .no-results h3 {
   margin-bottom: 15px;
-  color: #F1F1F1;
+  color: #f1f1f1;
 }
 
 .loading-state {
   text-align: center;
   padding: 80px 20px;
-  color: #F1F1F1;
+  color: #f1f1f1;
 }
 
 .loading-icon {
   font-size: 4rem;
   margin-bottom: 20px;
-  color: #B03EFF;
+  color: #b03eff;
 }
 
 .loading-state h3 {
-  color: #F1F1F1;
+  color: #f1f1f1;
   margin-bottom: 15px;
   font-size: 1.5rem;
 }
 
 .loading-state p {
-  color: #A7A7A7;
+  color: #a7a7a7;
   font-size: 1rem;
 }
 
 .loading-timer {
-  color: #B03EFF;
+  color: #b03eff;
   font-weight: bold;
   margin-top: 10px;
 }
@@ -410,13 +436,13 @@
 }
 
 .results-header h2 {
-  color: #F1F1F1;
+  color: #f1f1f1;
   margin: 0;
 }
 
 .domain-badge {
-  background: linear-gradient(135deg, #7F00FF, #C400FF);
-  color: #F1F1F1;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  color: #f1f1f1;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -424,7 +450,7 @@
 }
 
 .suggestions-container h3 {
-  color: #F1F1F1;
+  color: #f1f1f1;
   margin-bottom: 20px;
   font-size: 1.3rem;
 }
@@ -450,8 +476,8 @@
 }
 
 .suggestion-number {
-  background: linear-gradient(135deg, #7F00FF, #C400FF);
-  color: #F1F1F1;
+  background: linear-gradient(135deg, #7f00ff, #c400ff);
+  color: #f1f1f1;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -464,7 +490,7 @@
 }
 
 .suggestion-text {
-  color: #F1F1F1;
+  color: #f1f1f1;
   line-height: 1.6;
 }
 
@@ -495,7 +521,7 @@
   .resume-analyzer-container {
     max-width: 1600px;
   }
-  
+
   .analyzer-content {
     gap: 40px;
   }
@@ -514,7 +540,7 @@
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  
+
   .upload-section,
   .results-section {
     height: auto !important;
@@ -527,42 +553,42 @@
   .resume-analyzer-section {
     padding-top: 9rem !important;
   }
-  
+
   .analyzer-header {
     margin-bottom: 20px;
     margin-top: 1rem;
   }
-  
+
   .action-buttons {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .results-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
-  
+
   .tab-btn {
     padding: 10px 15px;
     font-size: 0.9rem;
     height: 44px; /* Adjusted for mobile */
   }
-  
+
   .upload-section,
   .results-section {
     padding: 20px;
   }
-  
+
   .file-drop-zone {
     min-height: 350px;
   }
-  
+
   .resume-text-input {
     min-height: 350px !important;
   }
-  
+
   .suggestion-item {
     padding: 12px;
   }
@@ -573,105 +599,105 @@
   .resume-analyzer-section {
     padding-top: 10rem !important;
   }
-  
+
   .analyzer-header h1 {
     margin-bottom: 10px;
   }
-  
+
   .upload-section,
   .results-section {
     padding: 15px;
   }
-  
+
   .file-drop-zone {
     min-height: 280px;
     padding: 15px 10px;
   }
-  
+
   .upload-icon {
     font-size: 2.5rem;
     margin-bottom: 10px;
   }
-  
+
   .drop-text {
     font-size: 0.9rem;
     margin-bottom: 5px;
   }
-  
+
   .or-text {
     margin: 10px 0;
   }
-  
+
   .file-input-label {
     padding: 8px 16px;
     font-size: 0.9rem;
     height: 44px; /* Adjusted for small phones */
   }
-  
+
   .file-info {
     font-size: 0.8rem;
   }
-  
+
   .selected-file {
     padding: 10px;
   }
-  
+
   .file-icon {
     font-size: 1.5rem;
     margin-right: 10px;
   }
-  
+
   .file-name {
     font-size: 0.9rem;
   }
-  
+
   .file-size {
     font-size: 0.8rem;
   }
-  
+
   .remove-file-btn {
     width: 25px;
     height: 25px;
     font-size: 0.9rem;
   }
-  
+
   .resume-text-input {
     min-height: 250px !important;
     padding: 10px;
   }
-  
+
   .analyze-btn,
   .clear-btn {
     padding: 12px 20px;
     font-size: 1rem;
     height: 48px; /* Adjusted for small phones */
   }
-  
+
   .results-header h2 {
     font-size: 1.3rem;
   }
-  
+
   .domain-badge {
     font-size: 0.8rem;
     padding: 5px 10px;
   }
-  
+
   .suggestions-container h3 {
     font-size: 1.1rem;
     margin-bottom: 15px;
   }
-  
+
   .suggestion-item {
     padding: 10px;
   }
-  
+
   .suggestion-number {
     width: 24px;
     height: 24px;
     font-size: 0.7rem;
     margin-right: 10px;
   }
-  
+
   .suggestion-text {
     font-size: 0.9rem;
   }
@@ -682,13 +708,13 @@
   .resume-analyzer-section {
     padding-top: 10rem !important;
   }
-  
+
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;
     min-height: 550px;
   }
-  
+
   .file-drop-zone,
   .resume-text-input {
     min-height: 300px !important;
@@ -700,35 +726,35 @@
   .resume-analyzer-section {
     padding-top: 6rem !important;
   }
-  
+
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;
     min-height: 450px;
   }
-  
+
   .analyzer-header {
     margin-bottom: 15px;
   }
-  
+
   .analyzer-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .analyzer-header p {
     font-size: 0.8rem;
   }
-  
+
   .file-drop-zone,
   .resume-text-input {
     min-height: 200px !important;
   }
-  
+
   .loading-state,
   .no-results {
     padding: 30px 20px;
   }
-  
+
   .loading-icon,
   .no-results-icon {
     font-size: 2.5rem;
@@ -741,103 +767,103 @@
   .resume-analyzer-section {
     padding-top: 10rem !important; /* Even more padding on very small screens */
   }
-  
+
   .analyzer-header h1 {
     margin-bottom: 10px;
   }
-  
+
   .upload-section,
   .results-section {
     padding: 15px;
   }
-  
+
   .file-drop-zone {
     min-height: 280px;
     padding: 15px 10px;
   }
-  
+
   .upload-icon {
     font-size: 2.5rem;
     margin-bottom: 10px;
   }
-  
+
   .drop-text {
     font-size: 0.9rem;
     margin-bottom: 5px;
   }
-  
+
   .or-text {
     margin: 10px 0;
   }
-  
+
   .file-input-label {
     padding: 8px 16px;
     font-size: 0.9rem;
   }
-  
+
   .file-info {
     font-size: 0.8rem;
   }
-  
+
   .selected-file {
     padding: 10px;
   }
-  
+
   .file-icon {
     font-size: 1.5rem;
     margin-right: 10px;
   }
-  
+
   .file-name {
     font-size: 0.9rem;
   }
-  
+
   .file-size {
     font-size: 0.8rem;
   }
-  
+
   .remove-file-btn {
     width: 25px;
     height: 25px;
     font-size: 0.9rem;
   }
-  
+
   .resume-text-input {
     min-height: 250px !important;
     padding: 10px;
   }
-  
+
   .analyze-btn,
   .clear-btn {
     padding: 12px 20px;
     font-size: 1rem;
   }
-  
+
   .results-header h2 {
     font-size: 1.3rem;
   }
-  
+
   .domain-badge {
     font-size: 0.8rem;
     padding: 5px 10px;
   }
-  
+
   .suggestions-container h3 {
     font-size: 1.1rem;
     margin-bottom: 15px;
   }
-  
+
   .suggestion-item {
     padding: 10px;
   }
-  
+
   .suggestion-number {
     width: 24px;
     height: 24px;
     font-size: 0.7rem;
     margin-right: 10px;
   }
-  
+
   .suggestion-text {
     font-size: 0.9rem;
   }
@@ -848,13 +874,13 @@
   .resume-analyzer-section {
     padding-top: 10rem !important;
   }
-  
+
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;
     min-height: 550px;
   }
-  
+
   .file-drop-zone,
   .resume-text-input {
     min-height: 300px !important;
@@ -866,35 +892,35 @@
   .resume-analyzer-section {
     padding-top: 6rem !important;
   }
-  
+
   .upload-section .relative,
   .results-section .relative {
     height: auto !important;
     min-height: 450px;
   }
-  
+
   .analyzer-header {
     margin-bottom: 15px;
   }
-  
+
   .analyzer-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .analyzer-header p {
     font-size: 0.8rem;
   }
-  
+
   .file-drop-zone,
   .resume-text-input {
     min-height: 200px !important;
   }
-  
+
   .loading-state,
   .no-results {
     padding: 30px 20px;
   }
-  
+
   .loading-icon,
   .no-results-icon {
     font-size: 2.5rem;

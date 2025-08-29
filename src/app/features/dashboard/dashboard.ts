@@ -12,9 +12,15 @@ import { BadgeModule } from 'primeng/badge';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
 import { UserProfileService } from '../../services/user-profile.service';
-import { UserProfile, BackendSkill, BackendCertification, BackendAchievement, UpdateProfilePayload } from './user-profile.interface';
+import {
+  UserProfile,
+  BackendSkill,
+  BackendCertification,
+  BackendAchievement,
+  UpdateProfilePayload,
+} from './user-profile.interface';
 import { Router } from '@angular/router';
-import { HeaderComponent } from "../../core/layout/header/header";
+import { HeaderComponent } from '../../core/layout/header/header';
 
 /**
  * UI model for a skill shown on the dashboard.
@@ -66,11 +72,11 @@ interface Achievement {
     BadgeModule,
     TextareaModule,
     DialogModule,
-    HeaderComponent
-],
+    HeaderComponent,
+  ],
   providers: [UserProfileService],
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  styleUrls: ['./dashboard.css'],
 })
 export class DashboardComponent implements OnInit {
   // Profile data (populated from backend)
@@ -82,7 +88,7 @@ export class DashboardComponent implements OnInit {
     githubUrl: '',
     linkedinUrl: '',
     portfolioUrl: '',
-    photo: ''
+    photo: '',
   };
 
   // Chart data
@@ -119,7 +125,7 @@ export class DashboardComponent implements OnInit {
     private userProfileService: UserProfileService,
     private cdr: ChangeDetectorRef,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     // Initialize charts first
@@ -129,7 +135,6 @@ export class DashboardComponent implements OnInit {
   }
 
   /** Display a brief notification if resume analysis was just completed. */
- 
 
   /** Fetch and populate user profile and related lists. */
   loadUserProfile() {
@@ -145,7 +150,7 @@ export class DashboardComponent implements OnInit {
       error: (error) => {
         console.error('Failed to load profile data:', error);
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
@@ -159,7 +164,7 @@ export class DashboardComponent implements OnInit {
       githubUrl: data.githubUrl || '',
       linkedinUrl: data.linkedinUrl || '',
       portfolioUrl: data.portfolioLink || '',
-      photo: data.profilePhoto || 'https://via.placeholder.com/150'
+      photo: data.profilePhoto || 'https://via.placeholder.com/150',
     };
   }
 
@@ -170,11 +175,11 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.skills = backendSkills.map(skill => ({
+    this.skills = backendSkills.map((skill) => ({
       id: skill.id,
       name: skill.name,
       level: this.mapProficiencyToLevel(skill.proficiency),
-      category: this.inferSkillCategory(skill.name)
+      category: this.inferSkillCategory(skill.name),
     }));
   }
 
@@ -185,12 +190,12 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.certifications = backendCerts.map(cert => ({
+    this.certifications = backendCerts.map((cert) => ({
       id: cert.id,
       name: cert.name,
       issuer: cert.issuer || 'Unknown',
       date: cert.date || new Date().toISOString().split('T')[0],
-      description: cert.description || ''
+      description: cert.description || '',
     }));
   }
 
@@ -201,39 +206,75 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.achievements = backendAchievements.map(achievement => ({
+    this.achievements = backendAchievements.map((achievement) => ({
       id: achievement.id,
       title: achievement.name,
       description: achievement.description,
-      date: achievement.date || new Date().toISOString().split('T')[0]
+      date: achievement.date || new Date().toISOString().split('T')[0],
     }));
   }
 
   /** Normalize backend proficiency to a fixed set of UI levels. */
-  private mapProficiencyToLevel(proficiency: string): 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert' {
+  private mapProficiencyToLevel(
+    proficiency: string
+  ): 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert' {
     switch (proficiency.toLowerCase()) {
-      case 'expert': return 'Expert';
-      case 'advanced': return 'Advanced';
-      case 'intermediate': return 'Intermediate';
-      case 'beginner': return 'Beginner';
-      default: return 'Intermediate';
+      case 'expert':
+        return 'Expert';
+      case 'advanced':
+        return 'Advanced';
+      case 'intermediate':
+        return 'Intermediate';
+      case 'beginner':
+        return 'Beginner';
+      default:
+        return 'Intermediate';
     }
   }
 
   /** Heuristic to group skills into categories for display. */
   private inferSkillCategory(skillName: string): string {
     const skill = skillName.toLowerCase();
-    if (skill.includes('react') || skill.includes('angular') || skill.includes('vue') || skill.includes('html') || skill.includes('css')) {
+    if (
+      skill.includes('react') ||
+      skill.includes('angular') ||
+      skill.includes('vue') ||
+      skill.includes('html') ||
+      skill.includes('css')
+    ) {
       return 'Frontend';
-    } else if (skill.includes('node') || skill.includes('express') || skill.includes('spring') || skill.includes('django')) {
+    } else if (
+      skill.includes('node') ||
+      skill.includes('express') ||
+      skill.includes('spring') ||
+      skill.includes('django')
+    ) {
       return 'Backend';
-    } else if (skill.includes('aws') || skill.includes('azure') || skill.includes('docker') || skill.includes('kubernetes')) {
+    } else if (
+      skill.includes('aws') ||
+      skill.includes('azure') ||
+      skill.includes('docker') ||
+      skill.includes('kubernetes')
+    ) {
       return 'Cloud';
-    } else if (skill.includes('python') || skill.includes('java') || skill.includes('javascript') || skill.includes('typescript')) {
+    } else if (
+      skill.includes('python') ||
+      skill.includes('java') ||
+      skill.includes('javascript') ||
+      skill.includes('typescript')
+    ) {
       return 'Programming';
-    } else if (skill.includes('mongodb') || skill.includes('mysql') || skill.includes('postgres')) {
+    } else if (
+      skill.includes('mongodb') ||
+      skill.includes('mysql') ||
+      skill.includes('postgres')
+    ) {
       return 'Database';
-    } else if (skill.includes('machine') || skill.includes('ai') || skill.includes('ml')) {
+    } else if (
+      skill.includes('machine') ||
+      skill.includes('ai') ||
+      skill.includes('ml')
+    ) {
       return 'AI/ML';
     } else {
       return 'Other';
@@ -258,7 +299,7 @@ export class DashboardComponent implements OnInit {
             '#8B5CF6',
             '#A855F7',
             '#C084FC',
-            '#E879F9'
+            '#E879F9',
           ],
           borderColor: [
             '#3498DB',
@@ -266,12 +307,12 @@ export class DashboardComponent implements OnInit {
             '#8B5CF6',
             '#A855F7',
             '#C084FC',
-            '#E879F9'
+            '#E879F9',
           ],
           borderWidth: 2,
-          hoverBorderWidth: 3
-        }
-      ]
+          hoverBorderWidth: 3,
+        },
+      ],
     };
 
     this.domainChartOptions = {
@@ -281,13 +322,13 @@ export class DashboardComponent implements OnInit {
             color: '#2C3E50',
             font: {
               size: 14,
-              weight: '600'
+              weight: '600',
             },
             padding: 20,
             usePointStyle: true,
-            pointStyle: 'circle'
+            pointStyle: 'circle',
           },
-          position: 'bottom'
+          position: 'bottom',
         },
         tooltip: {
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -296,22 +337,29 @@ export class DashboardComponent implements OnInit {
           borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
-          displayColors: true
-        }
+          displayColors: true,
+        },
       },
       responsive: true,
       maintainAspectRatio: false,
       animation: {
         animateScale: true,
-        animateRotate: true
-      }
+        animateRotate: true,
+      },
     };
   }
 
   /** Initialize the polar area chart with default performance metrics. */
   initPerformanceChart() {
     this.atsChartData = {
-      labels: ['Resume Score', 'Skills Match', 'Experience Level', 'Education', 'Certifications', 'Projects'],
+      labels: [
+        'Resume Score',
+        'Skills Match',
+        'Experience Level',
+        'Education',
+        'Certifications',
+        'Projects',
+      ],
       datasets: [
         {
           label: 'Performance Metrics',
@@ -322,7 +370,7 @@ export class DashboardComponent implements OnInit {
             'rgba(139, 92, 246, 0.7)',
             'rgba(168, 85, 247, 0.7)',
             'rgba(192, 132, 252, 0.7)',
-            'rgba(232, 121, 249, 0.7)'
+            'rgba(232, 121, 249, 0.7)',
           ],
           borderColor: [
             '#3498DB',
@@ -330,12 +378,12 @@ export class DashboardComponent implements OnInit {
             '#8B5CF6',
             '#A855F7',
             '#C084FC',
-            '#E879F9'
+            '#E879F9',
           ],
           borderWidth: 2,
-          hoverBorderWidth: 3
-        }
-      ]
+          hoverBorderWidth: 3,
+        },
+      ],
     };
 
     this.atsChartOptions = {
@@ -345,13 +393,13 @@ export class DashboardComponent implements OnInit {
             color: '#2C3E50',
             font: {
               size: 14,
-              weight: '600'
+              weight: '600',
             },
             padding: 20,
             usePointStyle: true,
-            pointStyle: 'circle'
+            pointStyle: 'circle',
           },
-          position: 'bottom'
+          position: 'bottom',
         },
         tooltip: {
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -360,8 +408,8 @@ export class DashboardComponent implements OnInit {
           borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
-          displayColors: true
-        }
+          displayColors: true,
+        },
       },
       scales: {
         r: {
@@ -371,40 +419,47 @@ export class DashboardComponent implements OnInit {
             color: '#6C757D',
             font: {
               size: 12,
-              weight: '500'
+              weight: '500',
             },
-            stepSize: 20
+            stepSize: 20,
           },
           grid: {
             color: 'rgba(108, 117, 125, 0.3)',
-            lineWidth: 1
+            lineWidth: 1,
           },
           angleLines: {
             color: 'rgba(108, 117, 125, 0.3)',
-            lineWidth: 1
+            lineWidth: 1,
           },
           pointLabels: {
             color: '#2C3E50',
             font: {
               size: 13,
-              weight: '600'
-            }
-          }
-        }
+              weight: '600',
+            },
+          },
+        },
       },
       responsive: true,
       maintainAspectRatio: false,
       animation: {
         animateScale: true,
-        animateRotate: true
-      }
+        animateRotate: true,
+      },
     };
   }
 
   /** Initialize charts with sensible defaults. */
   initCharts() {
     this.domainChartData = {
-      labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
+      labels: [
+        'Frontend Development',
+        'Backend Development',
+        'DevOps & Cloud',
+        'Data Science',
+        'Mobile Development',
+        'AI/ML',
+      ],
       datasets: [
         {
           data: [30, 25, 20, 15, 8, 2],
@@ -414,7 +469,7 @@ export class DashboardComponent implements OnInit {
             '#8B5CF6',
             '#A855F7',
             '#C084FC',
-            '#E879F9'
+            '#E879F9',
           ],
           borderColor: [
             '#3498DB',
@@ -422,12 +477,12 @@ export class DashboardComponent implements OnInit {
             '#8B5CF6',
             '#A855F7',
             '#C084FC',
-            '#E879F9'
+            '#E879F9',
           ],
           borderWidth: 2,
-          hoverBorderWidth: 3
-        }
-      ]
+          hoverBorderWidth: 3,
+        },
+      ],
     };
 
     this.domainChartOptions = {
@@ -437,13 +492,13 @@ export class DashboardComponent implements OnInit {
             color: '#2C3E50',
             font: {
               size: 14,
-              weight: '600'
+              weight: '600',
             },
             padding: 20,
             usePointStyle: true,
-            pointStyle: 'circle'
+            pointStyle: 'circle',
           },
-          position: 'bottom'
+          position: 'bottom',
         },
         tooltip: {
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -452,15 +507,15 @@ export class DashboardComponent implements OnInit {
           borderColor: '#3498DB',
           borderWidth: 2,
           cornerRadius: 10,
-          displayColors: true
-        }
+          displayColors: true,
+        },
       },
       responsive: true,
       maintainAspectRatio: false,
       animation: {
         animateScale: true,
-        animateRotate: true
-      }
+        animateRotate: true,
+      },
     };
 
     this.initPerformanceChart();
@@ -501,7 +556,7 @@ export class DashboardComponent implements OnInit {
         id: Date.now(),
         name: this.newSkill.name!,
         level: this.newSkill.level!,
-        category: this.newSkill.category!
+        category: this.newSkill.category!,
       };
       this.skills.push(skill);
       this.newSkill = {};
@@ -518,8 +573,9 @@ export class DashboardComponent implements OnInit {
         id: Date.now(),
         name: this.newCertification.name!,
         issuer: this.newCertification.issuer!,
-        date: this.newCertification.date || new Date().toISOString().split('T')[0],
-        description: this.newCertification.description || ''
+        date:
+          this.newCertification.date || new Date().toISOString().split('T')[0],
+        description: this.newCertification.description || '',
       };
       this.certifications.push(cert);
       this.newCertification = {};
@@ -536,7 +592,8 @@ export class DashboardComponent implements OnInit {
         id: Date.now(),
         title: this.newAchievement.title!,
         description: this.newAchievement.description!,
-        date: this.newAchievement.date || new Date().toISOString().split('T')[0]
+        date:
+          this.newAchievement.date || new Date().toISOString().split('T')[0],
       };
       this.achievements.push(achievement);
       this.newAchievement = {};
@@ -548,11 +605,16 @@ export class DashboardComponent implements OnInit {
 
   getLevelColor(level: string): string {
     switch (level) {
-      case 'Expert': return '#6C5CE7';
-      case 'Advanced': return '#3498DB';
-      case 'Intermediate': return '#8B5CF6';
-      case 'Beginner': return '#A855F7';
-      default: return '#C084FC';
+      case 'Expert':
+        return '#6C5CE7';
+      case 'Advanced':
+        return '#3498DB';
+      case 'Intermediate':
+        return '#8B5CF6';
+      case 'Beginner':
+        return '#A855F7';
+      default:
+        return '#C084FC';
     }
   }
 
@@ -561,7 +623,7 @@ export class DashboardComponent implements OnInit {
     if (!date || date === 'Unknown' || date === '') {
       return '';
     }
-    
+
     try {
       const parsedDate = new Date(date);
       if (isNaN(parsedDate.getTime())) {
@@ -570,7 +632,7 @@ export class DashboardComponent implements OnInit {
       return parsedDate.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
       });
     } catch (error) {
       return '';
@@ -586,7 +648,7 @@ export class DashboardComponent implements OnInit {
     if (!this.isDataModified) return;
 
     const updatePayload: UpdateProfilePayload = this.formatProfileForUpdate();
-    
+
     this.userProfileService.updateUserProfile(updatePayload).subscribe({
       next: (response: UserProfile) => {
         this.isDataModified = false;
@@ -594,7 +656,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Failed to update profile:', error);
-      }
+      },
     });
   }
 
@@ -607,37 +669,40 @@ export class DashboardComponent implements OnInit {
         this.populateCertificationsData(data.certifications || []);
         this.populateAchievementsData(data.achievements || []);
         this.initDomainChart(data.domainData);
-        
+
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Profile refresh error:', error);
-      }
+      },
     });
   }
 
   /** Convert UI state into the backend update payload shape. */
   private formatProfileForUpdate(): UpdateProfilePayload {
-    const backendSkills: BackendSkill[] = this.skills.map(skill => ({
+    const backendSkills: BackendSkill[] = this.skills.map((skill) => ({
       id: skill.id,
       name: skill.name,
-      proficiency: skill.level
+      proficiency: skill.level,
     }));
 
-    const backendCertifications: BackendCertification[] = this.certifications.map(cert => ({
-      id: cert.id,
-      name: cert.name,
-      issuer: cert.issuer,
-      date: cert.date,
-      description: cert.description
-    }));
+    const backendCertifications: BackendCertification[] =
+      this.certifications.map((cert) => ({
+        id: cert.id,
+        name: cert.name,
+        issuer: cert.issuer,
+        date: cert.date,
+        description: cert.description,
+      }));
 
-    const backendAchievements: BackendAchievement[] = this.achievements.map(achievement => ({
-      id: achievement.id,
-      name: achievement.title,
-      description: achievement.description,
-      date: achievement.date
-    }));
+    const backendAchievements: BackendAchievement[] = this.achievements.map(
+      (achievement) => ({
+        id: achievement.id,
+        name: achievement.title,
+        description: achievement.description,
+        date: achievement.date,
+      })
+    );
 
     return {
       name: this.profile.name,
@@ -651,13 +716,22 @@ export class DashboardComponent implements OnInit {
       skills: backendSkills,
       certifications: backendCertifications,
       achievements: backendAchievements,
-      domainData: this.domainChartData ? {
-        labels: this.domainChartData.labels,
-        datasets: this.domainChartData.datasets
-      } : {
-        labels: ['Frontend Development', 'Backend Development', 'DevOps & Cloud', 'Data Science', 'Mobile Development', 'AI/ML'],
-        datasets: [{ data: [30, 25, 20, 15, 8, 2] }]
-      }
+      domainData: this.domainChartData
+        ? {
+            labels: this.domainChartData.labels,
+            datasets: this.domainChartData.datasets,
+          }
+        : {
+            labels: [
+              'Frontend Development',
+              'Backend Development',
+              'DevOps & Cloud',
+              'Data Science',
+              'Mobile Development',
+              'AI/ML',
+            ],
+            datasets: [{ data: [30, 25, 20, 15, 8, 2] }],
+          },
     };
   }
 }

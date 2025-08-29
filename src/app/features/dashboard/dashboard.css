@@ -113,7 +113,8 @@
 
 .edit-input:focus {
   border-color: var(--color-primary) !important;
-  box-shadow: 0 0 0 3px rgba(var(--rgb-primary), 0.2), 0 4px 12px rgba(var(--rgb-primary), 0.15) !important;
+  box-shadow: 0 0 0 3px rgba(var(--rgb-primary), 0.2),
+    0 4px 12px rgba(var(--rgb-primary), 0.15) !important;
   background: rgba(var(--rgb-bg), 1) !important;
   transform: translateY(-1px) !important;
 }
@@ -125,7 +126,7 @@
 }
 
 .edit-input::placeholder {
-  color: #9CA3AF !important;
+  color: #9ca3af !important;
   font-style: italic !important;
 }
 
@@ -133,15 +134,24 @@
 .profile-name-input {
   font-size: 2rem !important;
   font-weight: 700 !important;
-  background: linear-gradient(135deg, rgba(var(--rgb-bg), 0.95) 0%, rgba(248, 249, 250, 0.9) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--rgb-bg), 0.95) 0%,
+    rgba(248, 249, 250, 0.9) 100%
+  ) !important;
   border: 3px solid rgba(var(--rgb-primary), 0.3) !important;
   box-shadow: 0 4px 16px rgba(var(--rgb-primary), 0.15) !important;
 }
 
 .profile-name-input:focus {
   border-color: var(--color-primary) !important;
-  box-shadow: 0 0 0 4px rgba(var(--rgb-primary), 0.25), 0 6px 20px rgba(var(--rgb-primary), 0.2) !important;
-  background: linear-gradient(135deg, rgba(var(--rgb-bg), 1) 0%, rgba(248, 249, 250, 0.95) 100%) !important;
+  box-shadow: 0 0 0 4px rgba(var(--rgb-primary), 0.25),
+    0 6px 20px rgba(var(--rgb-primary), 0.2) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(var(--rgb-bg), 1) 0%,
+    rgba(248, 249, 250, 0.95) 100%
+  ) !important;
 }
 
 /* Skills grid */
@@ -250,13 +260,21 @@
 
 /* Enhanced dialog content styling */
 :host ::ng-deep .enhanced-dialog .p-dialog {
-  background: linear-gradient(135deg, rgba(var(--rgb-bg), 0.98) 0%, rgba(248, 249, 250, 0.95) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--rgb-bg), 0.98) 0%,
+    rgba(248, 249, 250, 0.95) 100%
+  );
   border: 2px solid rgba(var(--rgb-primary), 0.2);
   box-shadow: 0 25px 50px rgba(var(--rgb-primary), 0.15);
 }
 
 :host ::ng-deep .enhanced-dialog .p-dialog-header {
-  background: linear-gradient(135deg, rgba(var(--rgb-primary), 0.05) 0%, rgba(var(--rgb-secondary), 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--rgb-primary), 0.05) 0%,
+    rgba(var(--rgb-secondary), 0.05) 100%
+  );
   border-bottom: 2px solid rgba(var(--rgb-primary), 0.2);
   font-size: 1.25rem;
 }
@@ -297,7 +315,7 @@
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: #9CA3AF;
+  color: #9ca3af;
   font-style: italic;
 }
 
@@ -343,38 +361,38 @@
   .dashboard-container {
     padding-top: 5rem;
   }
-  
+
   .profile-header {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1.5rem;
   }
-  
+
   .profile-photo-section {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
-  
+
   .profile-actions {
     align-items: center;
     width: 100%;
   }
-  
+
   .profile-buttons {
     max-width: 100%;
     width: 100%;
   }
-  
+
   .social-links {
     justify-content: center;
   }
-  
+
   .charts-section {
     grid-template-columns: 1fr;
   }
-  
+
   .certifications-section {
     grid-template-columns: 1fr;
   }
@@ -384,7 +402,7 @@
   .dashboard-container {
     padding-top: 4.5rem;
   }
-  
+
   .skills-grid {
     grid-template-columns: 1fr;
   }

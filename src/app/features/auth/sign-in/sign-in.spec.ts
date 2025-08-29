@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router, provideRouter } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -6,7 +11,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { PLATFORM_ID } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { SignIn } from './sign-in';
-import { AuthService, SignInRequest } from '../../../services/authorization.service';
+import {
+  AuthService,
+  SignInRequest,
+} from '../../../services/authorization.service';
 
 describe('SignIn', () => {
   let component: SignIn;
@@ -22,33 +30,48 @@ describe('SignIn', () => {
     // Create mock localStorage
     let store: { [key: string]: string } = {};
     const mockLocalStorage = {
-      getItem: jasmine.createSpy('getItem').and.callFake((key: string) => store[key] || null),
-      setItem: jasmine.createSpy('setItem').and.callFake((key: string, value: string) => {
-        store[key] = value;
-      }),
-      removeItem: jasmine.createSpy('removeItem').and.callFake((key: string) => {
-        delete store[key];
-      }),
+      getItem: jasmine
+        .createSpy('getItem')
+        .and.callFake((key: string) => store[key] || null),
+      setItem: jasmine
+        .createSpy('setItem')
+        .and.callFake((key: string, value: string) => {
+          store[key] = value;
+        }),
+      removeItem: jasmine
+        .createSpy('removeItem')
+        .and.callFake((key: string) => {
+          delete store[key];
+        }),
       clear: jasmine.createSpy('clear').and.callFake(() => {
         store = {};
-      })
+      }),
     };
 
     // Replace window.localStorage
     Object.defineProperty(window, 'localStorage', {
       value: mockLocalStorage,
-      writable: true
+      writable: true,
     });
 
     // Create service spies
-    mockAuthService = jasmine.createSpyObj('AuthService', ['signIn', 'setToken', 'validateToken']);
+    mockAuthService = jasmine.createSpyObj('AuthService', [
+      'signIn',
+      'setToken',
+      'validateToken',
+    ]);
     await TestBed.configureTestingModule({
-      imports: [SignIn, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+      imports: [
+        SignIn,
+        FormsModule,
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([]),
+      ],
       providers: [
         { provide: AuthService, useValue: mockAuthService },
         { provide: PLATFORM_ID, useValue: 'browser' },
-        provideRouter([])
-      ]
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignIn);
@@ -62,7 +85,7 @@ describe('SignIn', () => {
     // Restore original localStorage
     Object.defineProperty(window, 'localStorage', {
       value: originalLocalStorage,
-      writable: true
+      writable: true,
     });
   });
 
@@ -85,11 +108,13 @@ describe('SignIn', () => {
     it('should check for existing blocks on initialization', () => {
       const blockData = {
         until: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
-        attempts: 3
+        attempts: 3,
       };
 
       // Set up localStorage mock to return block data
-      (localStorage.getItem as jasmine.Spy).and.returnValue(JSON.stringify(blockData));
+      (localStorage.getItem as jasmine.Spy).and.returnValue(
+        JSON.stringify(blockData)
+      );
 
       // Create new component to trigger constructor
       const newFixture = TestBed.createComponent(SignIn);
@@ -111,7 +136,9 @@ describe('SignIn', () => {
       it('should return invalid for input less than 3 characters', () => {
         const result = component.validateUsernameOrEmail('ab');
         expect(result.valid).toBe(false);
-        expect(result.message).toBe('Username or email must be at least 3 characters');
+        expect(result.message).toBe(
+          'Username or email must be at least 3 characters'
+        );
       });
 
       it('should return valid for input with 3 or more characters', () => {
@@ -146,7 +173,9 @@ describe('SignIn', () => {
         component.markFieldAsTouched('usernameOrEmail');
 
         expect(component.touchedFields['usernameOrEmail']).toBe(true);
-        expect(component.formErrors['usernameOrEmail']).toBe('Username or email must be at least 3 characters');
+        expect(component.formErrors['usernameOrEmail']).toBe(
+          'Username or email must be at least 3 characters'
+        );
       });
 
       it('should clear errors for valid fields', () => {
@@ -208,7 +237,10 @@ describe('SignIn', () => {
       expect(component.attemptCount).toBe(5);
       expect(component.isBlocked).toBe(true);
       expect(component.blockUntil).toBeInstanceOf(Date);
-      expect(localStorage.setItem).toHaveBeenCalledWith('signInBlock', jasmine.any(String));
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'signInBlock',
+        jasmine.any(String)
+      );
     });
 
     it('should clear block and reset attempts', () => {
@@ -278,7 +310,9 @@ describe('SignIn', () => {
     });
 
     it('should prevent default form submission', fakeAsync(() => {
-      mockAuthService.signIn.and.returnValue(of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' }));
+      mockAuthService.signIn.and.returnValue(
+        of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' })
+      );
       mockAuthService.validateToken.and.returnValue(of(true));
 
       component.handleSubmit(mockEvent);
@@ -307,12 +341,16 @@ describe('SignIn', () => {
       tick();
 
       expect(component.showError).toBe(true);
-      expect(component.generalError).toBe('Please fix the errors below and try again');
+      expect(component.generalError).toBe(
+        'Please fix the errors below and try again'
+      );
       expect(mockAuthService.signIn).not.toHaveBeenCalled();
     }));
 
     it('should submit valid form and handle success', fakeAsync(() => {
-      mockAuthService.signIn.and.returnValue(of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' }));
+      mockAuthService.signIn.and.returnValue(
+        of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' })
+      );
       mockAuthService.validateToken.and.returnValue(of(true));
 
       component.handleSubmit(mockEvent);
@@ -320,9 +358,12 @@ describe('SignIn', () => {
 
       expect(mockAuthService.signIn).toHaveBeenCalledWith({
         usernameOrEmail: 'testuser',
-        password: 'testpassword'
+        password: 'testpassword',
       });
-      expect(mockAuthService.setToken).toHaveBeenCalledWith('test-token', 'Bearer');
+      expect(mockAuthService.setToken).toHaveBeenCalledWith(
+        'test-token',
+        'Bearer'
+      );
 
       tick(1500);
       expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
@@ -363,7 +404,9 @@ describe('SignIn', () => {
 
       expect(component.isLoading).toBe(false);
       expect(component.showError).toBe(true);
-      expect(component.generalError).toBe('Server error. Please try again later.');
+      expect(component.generalError).toBe(
+        'Server error. Please try again later.'
+      );
     }));
 
     it('should handle network error (0)', fakeAsync(() => {
@@ -375,7 +418,9 @@ describe('SignIn', () => {
 
       expect(component.isLoading).toBe(false);
       expect(component.showError).toBe(true);
-      expect(component.generalError).toBe('Unable to connect to server. Please check your internet connection.');
+      expect(component.generalError).toBe(
+        'Unable to connect to server. Please check your internet connection.'
+      );
     }));
 
     it('should handle rate limiting error (429)', fakeAsync(() => {
@@ -387,13 +432,19 @@ describe('SignIn', () => {
 
       expect(component.isLoading).toBe(false);
       expect(component.showError).toBe(true);
-      expect(component.generalError).toBe('Too many attempts. Please try again later.');
+      expect(component.generalError).toBe(
+        'Too many attempts. Please try again later.'
+      );
       expect(component.attemptCount).toBe(1);
     }));
 
     it('should handle token validation error', fakeAsync(() => {
-      mockAuthService.signIn.and.returnValue(of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' }));
-      mockAuthService.validateToken.and.returnValue(throwError(() => new Error('Validation failed')));
+      mockAuthService.signIn.and.returnValue(
+        of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' })
+      );
+      mockAuthService.validateToken.and.returnValue(
+        throwError(() => new Error('Validation failed'))
+      );
 
       component.handleSubmit(mockEvent);
       tick();
@@ -409,7 +460,9 @@ describe('SignIn', () => {
       component.touchedFields = { test: true };
       component.showPassword = true;
 
-      mockAuthService.signIn.and.returnValue(of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' }));
+      mockAuthService.signIn.and.returnValue(
+        of({ token: 'test-token', tokenType: 'Bearer', expiresIn: '3600' })
+      );
       mockAuthService.validateToken.and.returnValue(of(true));
 
       component.handleSubmit(mockEvent);
@@ -430,8 +483,12 @@ describe('SignIn', () => {
 
   describe('Component Cleanup', () => {
     it('should unsubscribe from all subscriptions on destroy', () => {
-      const mockSubscription1 = jasmine.createSpyObj('Subscription', ['unsubscribe']);
-      const mockSubscription2 = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+      const mockSubscription1 = jasmine.createSpyObj('Subscription', [
+        'unsubscribe',
+      ]);
+      const mockSubscription2 = jasmine.createSpyObj('Subscription', [
+        'unsubscribe',
+      ]);
       component['subscriptions'] = [mockSubscription1, mockSubscription2];
 
       component.ngOnDestroy();
@@ -445,11 +502,16 @@ describe('SignIn', () => {
     it('should not access localStorage on server platform', async () => {
       TestBed.resetTestingModule();
       await TestBed.configureTestingModule({
-        imports: [SignIn, FormsModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
+        imports: [
+          SignIn,
+          FormsModule,
+          HttpClientTestingModule,
+          RouterTestingModule.withRoutes([]),
+        ],
         providers: [
           { provide: AuthService, useValue: mockAuthService },
-          { provide: PLATFORM_ID, useValue: 'server' }
-        ]
+          { provide: PLATFORM_ID, useValue: 'server' },
+        ],
       }).compileComponents();
 
       const serverFixture = TestBed.createComponent(SignIn);
@@ -465,12 +527,17 @@ describe('SignIn', () => {
 
   describe('Edge Cases', () => {
     it('should handle localStorage errors gracefully', () => {
-      (localStorage.getItem as jasmine.Spy).and.throwError(new Error('Storage error'));
+      (localStorage.getItem as jasmine.Spy).and.throwError(
+        new Error('Storage error')
+      );
       spyOn(console, 'warn');
 
       component.checkIfBlocked();
 
-      expect(console.warn).toHaveBeenCalledWith('Error accessing localStorage:', jasmine.any(Error));
+      expect(console.warn).toHaveBeenCalledWith(
+        'Error accessing localStorage:',
+        jasmine.any(Error)
+      );
     });
 
     it('should handle malformed localStorage data', () => {
@@ -479,7 +546,10 @@ describe('SignIn', () => {
 
       component.checkIfBlocked();
 
-      expect(console.warn).toHaveBeenCalledWith('Error accessing localStorage:', jasmine.any(SyntaxError));
+      expect(console.warn).toHaveBeenCalledWith(
+        'Error accessing localStorage:',
+        jasmine.any(SyntaxError)
+      );
     });
   });
 });

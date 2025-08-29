@@ -1,7 +1,7 @@
 .learning-paths-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
-  color: #2C3E50;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #2c3e50;
 }
 
 .main-content {
@@ -24,7 +24,7 @@
 }
 
 .breadcrumb-item.current {
-  color: #3498DB;
+  color: #3498db;
   font-weight: 600;
 }
 
@@ -36,14 +36,14 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0.25rem 0 0.5rem;
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .subtitle {
-  color: #6C757D;
+  color: #6c757d;
   margin: 0;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .card {
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
@@ -79,7 +79,7 @@
   transition: all 0.2s ease;
   outline: none;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover,
@@ -91,7 +91,7 @@
 
 .card-title {
   font-weight: 700;
-  color: #2C3E50;
+  color: #2c3e50;
   margin-bottom: 0.5rem;
 }
 
@@ -103,7 +103,7 @@
 }
 
 .card-desc.muted {
-  color: #6C757D;
+  color: #6c757d;
 }
 
 .card-footer {
@@ -123,7 +123,7 @@
   place-items: center;
   border: 1px solid rgba(231, 76, 60, 0.4);
   background: rgba(231, 76, 60, 0.1);
-  color: #E74C3C;
+  color: #e74c3c;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -152,7 +152,7 @@
 
 .modal {
   width: min(560px, 92vw);
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(52, 152, 219, 0.2);
   border-radius: 0.75rem;
   padding: 1rem;
@@ -197,10 +197,10 @@
 
 .modal-form input,
 .modal-form select {
-  background: #F8F9FA;
+  background: #f8f9fa;
   border: 1px solid rgba(52, 152, 219, 0.3);
   border-radius: 0.5rem;
-  color: #2C3E50;
+  color: #2c3e50;
   padding: 0.55rem 0.75rem;
   outline: none;
 }
@@ -222,8 +222,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.25rem;
-  background: linear-gradient(135deg, #3498DB, #6C5CE7);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
+  color: #ffffff;
   border: 1px solid rgba(52, 152, 219, 0.2);
   position: relative;
   cursor: pointer;
@@ -232,12 +232,12 @@
 }
 
 .cta-button.generate-btn::before {
-  content: '✨';
+  content: "✨";
   font-size: 1rem;
 }
 
 .cta-button.generate-btn::after {
-  content: '↗';
+  content: "↗";
   opacity: 0;
   transform: translateX(-4px);
   transition: all 0.2s ease;

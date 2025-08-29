@@ -1,7 +1,18 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
-import { catchError, retry, map, tap, shareReplay, finalize } from 'rxjs/operators';
+import {
+  catchError,
+  retry,
+  map,
+  tap,
+  shareReplay,
+  finalize,
+} from 'rxjs/operators';
 import { UserProfile } from '../features/dashboard/user-profile.interface';
 import { AuthService } from './authorization.service';
 import { environment } from '../../environments/environment';
@@ -11,7 +22,7 @@ import { environment } from '../../environments/environment';
  * Uses in-memory caching and shares in-flight requests to avoid duplicates.
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserProfileService {
   private apiUrl = environment.apiUrl;
@@ -28,38 +39,38 @@ export class UserProfileService {
 
   getUserProfile(): Observable<UserProfile> {
     const token = this.authService.getToken();
-    
+
     if (!token) {
       return throwError(() => new Error('Authentication token not found'));
     }
 
     const headers = new HttpHeaders({
-      'Authorization': token,
-      'Content-Type': 'application/json'
+      Authorization: token,
+      'Content-Type': 'application/json',
     });
-    
-    return this.http.get<UserProfile>(`${this.apiUrl}/api/get-user`, { headers })
-      .pipe(
-        catchError(this.handleError.bind(this))
-      );
+
+    return this.http
+      .get<UserProfile>(`${this.apiUrl}/api/get-user`, { headers })
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   updateUserProfile(profileData: any): Observable<UserProfile> {
     const token = this.authService.getToken();
-    
+
     if (!token) {
       return throwError(() => new Error('Authentication token not found'));
     }
 
     const headers = new HttpHeaders({
-      'Authorization': token,
-      'Content-Type': 'application/json'
+      Authorization: token,
+      'Content-Type': 'application/json',
     });
-    
-    return this.http.put<UserProfile>(`${this.apiUrl}/api/update-profile`, profileData, { headers })
-      .pipe(
-        catchError(this.handleError.bind(this))
-      );
+
+    return this.http
+      .put<UserProfile>(`${this.apiUrl}/api/update-profile`, profileData, {
+        headers,
+      })
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   /** Fetch once per app load; reuse in-flight request and cache the result. */
@@ -71,7 +82,7 @@ export class UserProfileService {
       return this.profileReq$;
     }
     this.profileReq$ = this.getUserProfile().pipe(
-      tap(profile => {
+      tap((profile) => {
         this.cachedProfile = profile;
         this.cachedUserId = profile?.user_id ?? null;
       }),
@@ -89,8 +100,8 @@ export class UserProfileService {
       return of(this.cachedUserId);
     }
     return this.getUserProfileCached().pipe(
-      map(p => p?.user_id ?? null),
-      tap(id => (this.cachedUserId = id))
+      map((p) => p?.user_id ?? null),
+      tap((id) => (this.cachedUserId = id))
     );
   }
 
@@ -103,7 +114,7 @@ export class UserProfileService {
   /** Normalize HTTP errors into user-friendly messages. */
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `Client Error: ${error.error.message}`;
@@ -126,7 +137,7 @@ export class UserProfileService {
           errorMessage = `Server Error: ${error.status} - ${error.message}`;
       }
     }
-    
+
     console.error('UserProfileService Error:', errorMessage, error);
     return throwError(() => new Error(errorMessage));
   }
