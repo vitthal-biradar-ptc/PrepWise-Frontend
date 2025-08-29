@@ -366,7 +366,7 @@ describe('SignIn', () => {
       );
 
       tick(1500);
-      expect(router.navigate).toHaveBeenCalledWith(['/dashboard']);
+      expect(router.navigate).toHaveBeenCalledWith(['/dashboard/user']);
     }));
 
     it('should handle sign in error (401)', fakeAsync(() => {

@@ -287,7 +287,7 @@ export class SignIn implements OnDestroy {
               this.isLoading = false;
               this.resetForm();
               setTimeout(() => {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/dashboard/user']);
               }, 1500);
             },
             error: (error) => {

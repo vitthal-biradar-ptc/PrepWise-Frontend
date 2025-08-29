@@ -26,7 +26,7 @@ export const routes: Routes = [
       import('./features/auth/sign-in/sign-in').then((m) => m.SignIn),
   },
   {
-    path: 'dashboard/:user_id',
+    path: 'dashboard/user/:user_id',
     loadComponent: () =>
       import('./features/dashboard/dashboard').then(
         (m) => m.DashboardComponent

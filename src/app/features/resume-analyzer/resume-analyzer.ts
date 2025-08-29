@@ -1,10 +1,4 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  NgZone,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResumeAnalyzerService } from './services/resume-analyzer.service';
@@ -32,19 +26,14 @@ export class ResumeAnalyzer implements OnInit {
   // Add this property to track drag state
   isDragging = false;
 
-  private ngZone = inject(NgZone);
-  private cdr = inject(ChangeDetectorRef);
-
   constructor(
     private resumeAnalyzerService: ResumeAnalyzerService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    // Ensure proper initialization with zone
-    this.ngZone.run(() => {
-      // Component initialized - ready for use
-    });
+    // Simple initialization - no zone needed
   }
 
   onFileSelected(event: any): void {
@@ -95,12 +84,10 @@ export class ResumeAnalyzer implements OnInit {
       return;
     }
 
-    this.ngZone.run(() => {
-      this.isLoading = true;
-      this.error = '';
-      this.analysisResult = null;
-      this.startTimer();
-    });
+    this.isLoading = true;
+    this.error = '';
+    this.analysisResult = null;
+    this.startTimer();
 
     // Use the correct service methods based on input type
     const analysisObservable = this.selectedFile
@@ -109,23 +96,18 @@ export class ResumeAnalyzer implements OnInit {
 
     analysisObservable.subscribe({
       next: (result: ResumeAnalysisResponse) => {
-        this.ngZone.run(() => {
-          this.isLoading = false;
-          this.analysisResult = result;
-          this.stopTimer();
-          this.cdr.detectChanges();
-        });
+        this.isLoading = false;
+        this.analysisResult = result;
+        this.stopTimer();
+        this.cdr.detectChanges();
       },
       error: (error: any) => {
-        this.ngZone.run(() => {
-          this.isLoading = false;
-          this.stopTimer();
-          const errorMessage =
-            error.error?.message ||
-            'Failed to analyze resume. Please try again.';
-          this.error = errorMessage;
-          this.cdr.detectChanges();
-        });
+        this.isLoading = false;
+        this.stopTimer();
+        const errorMessage =
+          error.error?.message || 'Failed to analyze resume. Please try again.';
+        this.error = errorMessage;
+        this.cdr.detectChanges();
       },
     });
   }

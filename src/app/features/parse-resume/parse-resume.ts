@@ -1,9 +1,10 @@
-import { Component, ChangeDetectorRef, NgZone, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ResumeParseService } from './services/resume-parse.service';
 import { ParsedResumeResponse } from '../../models/parsed-resume.model';
+import { UserProfileService } from '../../services/user-profile.service';
 import { HeaderComponent } from '../../core/layout/header/header';
 import { FooterComponent } from '../../core/layout/footer/footer';
 
@@ -18,17 +19,36 @@ export class ParseResume {
   isLoading: boolean = false;
   error: string = '';
   isDragging = false;
-  isFirstTime = true; // Check if this is first time setup
-
-  private cdr = inject(ChangeDetectorRef);
+  isFirstTime = true;
+  private userId: string | null = null;
 
   constructor(
     private resumeParseService: ResumeParseService,
+    private userProfileService: UserProfileService,
     private router: Router
   ) {
     // Check if user came from signup (first time) or dashboard
     const navigation = this.router.getCurrentNavigation();
     this.isFirstTime = navigation?.extras?.state?.['firstTime'] !== false;
+
+    // Get user ID on component initialization
+    this.initializeUserId();
+  }
+
+  private async initializeUserId(): Promise<void> {
+    try {
+      const result = await this.userProfileService.getUserIdCached().toPromise();
+      this.userId = result ?? null;
+      if (!this.userId) {
+        console.error('User ID not found');
+        this.error =
+          'Unable to get user information. Please try logging in again.';
+      }
+    } catch (error) {
+      console.error('Error getting user ID:', error);
+      this.error =
+        'Unable to get user information. Please try logging in again.';
+    }
   }
 
   onFileSelected(event: any): void {
@@ -79,20 +99,25 @@ export class ParseResume {
       return;
     }
 
+    if (!this.userId) {
+      this.error =
+        'Unable to get user information. Please try refreshing the page.';
+      return;
+    }
+
     this.isLoading = true;
     this.error = '';
 
     this.resumeParseService.parseResume(this.selectedFile).subscribe({
       next: (result: ParsedResumeResponse) => {
         this.isLoading = false;
-        this.cdr.markForCheck();
 
         // Store result in session storage for dashboard notification
         sessionStorage.setItem('resumeAnalysisResult', JSON.stringify(result));
 
-        // Redirect to dashboard after a short delay
+        // Navigate to user-specific dashboard after a short delay
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate([`/dashboard/user/${this.userId}`]);
         }, 1500);
       },
       error: (error) => {
@@ -102,18 +127,26 @@ export class ParseResume {
           error.error?.message || 'An error occurred while parsing the resume.';
         this.error = errorMessage;
         this.isLoading = false;
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
       },
     });
   }
 
   proceedToDashboard(): void {
-    this.router.navigate(['/dashboard']);
+    if (this.userId) {
+      this.router.navigate([`/dashboard/user/${this.userId}`]);
+    } else {
+      // Fallback to general dashboard if user ID is not available
+      this.router.navigate(['/']);
+    }
   }
 
   skipForNow(): void {
-    this.router.navigate(['/dashboard']);
+    if (this.userId) {
+      this.router.navigate([`/dashboard/user/${this.userId}`]);
+    } else {
+      // Fallback to general dashboard if user ID is not available
+      this.router.navigate(['/']);
+    }
   }
 
   clearAll(): void {

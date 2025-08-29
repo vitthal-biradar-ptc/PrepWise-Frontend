@@ -344,7 +344,6 @@ describe('ResumeAnalyzer', () => {
       fixture.detectChanges();
       tick();
 
-      // After ngZone.run and observable completion
       expect(component.isLoading).toBeFalse();
       expect(component.analysisResult).toEqual(mockAnalysisResponse);
       expect(component.error).toBe('');
@@ -366,7 +365,6 @@ describe('ResumeAnalyzer', () => {
       fixture.detectChanges();
       tick();
 
-      // After ngZone.run and observable completion
       expect(component.isLoading).toBeFalse();
       expect(component.analysisResult).toEqual(mockAnalysisResponse);
       expect(component.error).toBe('');

@@ -13,10 +13,13 @@ import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoogleGenAI, Type } from '@google/genai';
 import { HeaderComponent } from '../../../core/layout/header/header';
-import { InterviewReport, InterviewService, SaveInterviewRequest } from '../services/interview.service';
+import {
+  InterviewReport,
+  InterviewService,
+  SaveInterviewRequest,
+} from '../services/interview.service';
 import { UserProfileService } from '../../../services/user-profile.service';
 import { environment } from '../../../../environments/environment';
-
 
 /**
  * Mock interview experience with speech recognition, TTS, and fullscreen.
@@ -90,7 +93,7 @@ export class MockInterview implements OnInit, OnDestroy {
       return;
     }
 
-    // Setup fullscreen change listener
+    // Setup fullscreen change listener - KEEP zone usage here
     this.fullscreenChangeHandler = () => {
       this.zone.run(() => {
         this.handleFullscreenChange();
@@ -111,7 +114,7 @@ export class MockInterview implements OnInit, OnDestroy {
       this.fullscreenChangeHandler
     );
 
-    // Setup Speech Recognition
+    // Speech Recognition setup - KEEP zone usage here
     const SpeechRecognitionImpl: any =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition;
@@ -148,7 +151,6 @@ export class MockInterview implements OnInit, OnDestroy {
             const text = (res[0]?.transcript ?? '').trim();
             if (text) {
               this.zone.run(() => {
-                // Stop listening to avoid capturing TTS or further noise
                 this.stopListening();
                 this.handleUserSpeech(text);
               });
