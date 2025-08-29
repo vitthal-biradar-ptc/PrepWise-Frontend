@@ -30,7 +30,7 @@ const getTitle = (lp: LearningPathItem) =>
  * Lists learning paths for a user with generator and delete actions.
  */
 @Component({
-  selector: 'app-learning-paths',
+  selector: 'app-learning-path-list',
   standalone: true,
   imports: [
     CommonModule,
