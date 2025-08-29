@@ -10,10 +10,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { GoogleGenAI, Type } from '@google/genai';
 import { HeaderComponent } from '../../core/layout/header/header';
 import {
+  InterviewReport,
   InterviewService,
   SaveInterviewRequest,
 } from './services/interview.service';
@@ -81,10 +83,10 @@ export class MockInterview implements OnInit, OnDestroy {
   public isFullscreen = false;
   public showFullscreenExitWarning = false;
   private fullscreenChangeHandler?: () => void;
-
   // Services
   private readonly interviewService = inject(InterviewService);
   private readonly userProfileService = inject(UserProfileService);
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     if (!this.isBrowser) {
@@ -359,7 +361,12 @@ export class MockInterview implements OnInit, OnDestroy {
       .then((rep) => {
         this.report = rep;
         // Save interview data after generating report
-        this.saveInterviewData(rep);
+        return this.saveInterviewData(rep);
+      }).then((report: InterviewReport | undefined) => {
+        // navigate to report view
+        if (report) {
+          this.router.navigate([ `/interview-reports/user/${report.userId}/report/${report.id}`]);
+        }
       })
       .catch((err) => {
         console.error('[MockInterview] generatePerformanceReport failed', err);
@@ -371,15 +378,17 @@ export class MockInterview implements OnInit, OnDestroy {
       });
   }
 
-  private async saveInterviewData(report: PerformanceReport): Promise<void> {
+  private async saveInterviewData(report: PerformanceReport): Promise<InterviewReport | undefined> {
     if (!this.interviewStartTime || !this.interviewEndTime) {
       console.warn('Interview start/end time not recorded');
-      return;
+      return Promise.resolve(undefined);
     }
 
     try {
       // Get user ID from profile service
-      const userId = await this.userProfileService.getUserIdCached().toPromise();
+      const userId = await this.userProfileService
+        .getUserIdCached()
+        .toPromise();
 
       if (!userId) {
         throw new Error('User ID not found');
@@ -435,14 +444,11 @@ export class MockInterview implements OnInit, OnDestroy {
         .saveInterview(saveRequest)
         .toPromise();
 
-      if (response?.success) {
-        console.log('Interview saved successfully:', response.interviewId);
-      } else {
-        console.warn('Failed to save interview:', response?.message);
-      }
+      return response;
     } catch (error) {
       console.error('Error saving interview data:', error);
       // Don't show error to user as the interview is already complete
+      return undefined;
     }
   }
 

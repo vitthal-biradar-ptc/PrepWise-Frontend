@@ -163,7 +163,13 @@ export class LearningPathService {
     return this.http.delete<void>(
       `${this.API_BASE}/api/learning-path/delete/${encodeURIComponent(
         String(userId)
-      )}/${encodeURIComponent(String(pathId))}`
+      )}/${encodeURIComponent(String(pathId))}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${this.authService.getToken()}`,
+        },
+      }
     );
   }
 }

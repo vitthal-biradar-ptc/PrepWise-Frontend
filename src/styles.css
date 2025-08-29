@@ -1,2 +1,291 @@
 @import "tailwindcss";
 @import "./styles/theme.css";
+
+/* Shared Learning Path Theme classes for reuse across pages (reports) */
+.learning-path-container {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-bg-50) 0%,
+    var(--color-bg-100) 100%
+  );
+  color: var(--color-text);
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  padding-top: 6rem;
+}
+
+.header-section {
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.time-estimate {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+.time-icon {
+  font-size: 1rem;
+}
+
+.progress-overview {
+  background: rgba(var(--rgb-primary), 0.1);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.progress-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+.progress-percentage {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.periods-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.period-card {
+  background: var(--color-bg-0);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.period-card:hover {
+  border-color: rgba(var(--rgb-primary), 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(var(--rgb-primary), 0.15);
+}
+.period-card.expanded {
+  border-color: rgba(var(--rgb-primary), 0.5);
+}
+.period-header {
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.period-header:hover {
+  background: rgba(var(--rgb-primary), 0.05);
+}
+.period-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.period-info {
+  flex: 1;
+  min-width: 0;
+}
+.period-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-primary);
+}
+.period-goal {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1rem;
+}
+.period-stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.period-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mini-progress-text {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  font-weight: 600;
+  min-width: 30px;
+}
+
+.period-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.period-content.expanded {
+  max-height: 2000px;
+}
+.period-content-inner {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  border-top: 1px solid rgba(var(--rgb-primary), 0.2);
+}
+
+.section {
+  margin-bottom: 1.25rem;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 1rem 0 0.75rem 0;
+  color: var(--color-text);
+}
+
+.focus-areas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.focus-area-item {
+  padding: 0.75rem 1rem;
+  background: rgba(var(--rgb-primary), 0.05);
+  border: 1px solid rgba(var(--rgb-primary), 0.1);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  transition: all 0.2s ease;
+}
+.focus-area-item:hover {
+  background: rgba(var(--rgb-primary), 0.1);
+  border-color: rgba(var(--rgb-primary), 0.2);
+  transform: translateX(4px);
+}
+.focus-area-item::before {
+  content: "•";
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.resources-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(var(--rgb-primary), 0.05);
+  border: 1px solid rgba(var(--rgb-primary), 0.1);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+.resource-item:hover {
+  background: rgba(var(--rgb-primary), 0.1);
+  border-color: rgba(var(--rgb-primary), 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(var(--rgb-primary), 0.1);
+}
+.resource-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+.resource-content {
+  flex: 1;
+  min-width: 0;
+}
+.resource-title {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.25rem;
+}
+.resource-type {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+  text-transform: none;
+}
+.external-link-icon {
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.empty-state-content {
+  max-width: 520px;
+  margin: 0 auto;
+}
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #2c3e50;
+}
+.empty-state-description {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #3498db, #6c5ce7);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(52, 152, 219, 0.3);
+}
+.cta-button.generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 24px rgba(52, 152, 219, 0.35);
+}

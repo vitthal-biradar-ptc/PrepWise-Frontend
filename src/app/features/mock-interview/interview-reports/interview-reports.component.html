@@ -1,0 +1,153 @@
+<app-header></app-header>
+
+<div class="learning-path-container">
+  <div class="main-content">
+    <div class="header-section">
+      <h1 class="page-title">Interview Reports</h1>
+      <div>
+        <button
+          (click)="startNewInterview()"
+          class="cta-button"
+        >
+          Start New Interview
+        </button>
+      </div>
+    </div>
+
+    <div class="progress-overview">
+    @if (isLoading) {
+    <div class="w-full h-96 flex flex-col items-center justify-center">
+      <div class="relative">
+        <div
+          class="w-16 h-16 border-4 border-gray-700 rounded-full animate-pulse"
+        ></div>
+        <div
+          class="absolute top-0 left-0 w-16 h-16 border-t-4 border-indigo-500 rounded-full animate-spin"
+        ></div>
+      </div>
+      <h4 class="text-2xl font-bold mt-6 theme-light">
+        Loading Your Reports...
+      </h4>
+      <p class="theme-muted mt-2 text-center max-w-md">
+        We're gathering your interview history and performance data.
+      </p>
+    </div>
+    } @else if (error) {
+    <div
+      class="w-full h-96 flex flex-col items-center justify-center text-center"
+    >
+      <div class="bg-red-500/10 border border-red-500/20 rounded-full p-4 mb-4">
+        <svg
+          class="w-12 h-12 text-red-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          ></path>
+        </svg>
+      </div>
+      <h4 class="text-2xl font-bold text-red-400 mb-2">
+        Unable to Load Reports
+      </h4>
+      <p class="theme-muted mb-6 max-w-md">{{ error }}</p>
+      <div class="flex gap-3">
+        <button
+          (click)="loadReports()"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300"
+        >
+          Try Again
+        </button>
+        <button
+          (click)="startNewInterview()"
+          class="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-xl transition-all duration-300"
+        >
+          Start New Interview
+        </button>
+      </div>
+    </div>
+    } @else if (reports.length === 0) {
+    <div class="empty-state">
+      <div class="empty-state-content">
+        <div class="empty-state-icon">📄</div>
+        <h3 class="empty-state-title">Ready to Start?</h3>
+        <p class="empty-state-description">
+          No interview reports yet. Complete your first mock interview to see your analytics here.
+        </p>
+        <button
+          (click)="startNewInterview()"
+          class="cta-button generate-btn"
+        >
+          Start Your First Interview
+        </button>
+      </div>
+    </div>
+    } @else {
+    <!-- Summary Stats -->
+    <div class="periods-container" style="margin-bottom: 1rem;">
+      <div class="progress-overview">
+        <div class="progress-header">
+          <h2 class="progress-title">Total Interviews</h2>
+          <span class="progress-percentage">{{ reports.length }}</span>
+        </div>
+      </div>
+      <div class="progress-overview">
+        <div class="progress-header">
+          <h2 class="progress-title">Average Score</h2>
+          <span class="progress-percentage">{{ getAverageScore() }}/10</span>
+        </div>
+      </div>
+      <div class="progress-overview">
+        <div class="progress-header">
+          <h2 class="progress-title">Best Score</h2>
+          <span class="progress-percentage">{{ getBestScore() }}/10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports List -->
+    <div class="periods-container">
+      <div class="period-header" style="padding: 0;">
+        <h3 class="period-title">Interviews history</h3>
+      </div>
+
+      @for (report of reports; track report.id) {
+      <div class="period-card" (click)="viewReport(report.id)" style="cursor: pointer;">
+        <div class="period-header">
+          <div class="period-header-content">
+            <div class="period-info">
+              <h3 class="period-title">{{ report.role }} Interview</h3>
+              <p class="period-goal">Level: {{ report.level }} • Score: {{ report.overallScore }}/10</p>
+            </div>
+            <div class="period-stats">
+              <div class="period-progress">
+                <span class="mini-progress-text">{{ report.duration }} mins</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="period-content expanded">
+          <div class="period-content-inner">
+            <div class="section">
+              <div class="time-estimate">
+                <span class="time-icon">📅</span>
+                {{ report.createdAt | date : "MMM dd, yyyy 'at' h:mm a" }}
+              </div>
+              @if (report.overallSummary) {
+              <p class="empty-state-description" style="margin-top: .5rem;">{{ report.overallSummary }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    }
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

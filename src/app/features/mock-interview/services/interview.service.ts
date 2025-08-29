@@ -25,10 +25,27 @@ export interface SaveInterviewRequest {
   overallScore: number;
 }
 
-export interface SaveInterviewResponse {
-  success: boolean;
-  interviewId: string;
-  message: string;
+export interface InterviewReport {
+  id: number;
+  userId: number;
+  role: string;
+  level: string;
+  startTime: string;
+  endTime: string;
+  duration: number;
+  transcript: Array<{
+    id: number;
+    speaker: string;
+    text: string;
+    timestamp: string;
+  }>;
+  overallScore: number;
+  overallSummary: string | null;
+  strengths: string[] | null;
+  areasForImprovement: string[] | null;
+  recommendations: string | null;
+  questionByQuestionAnalysis: any | null;
+  createdAt: string;
 }
 
 @Injectable({
@@ -43,12 +60,38 @@ export class InterviewService {
     private authService: AuthService
   ) {}
 
-  saveInterview(data: SaveInterviewRequest): Observable<SaveInterviewResponse> {
+  saveInterview(data: SaveInterviewRequest): Observable<InterviewReport> {
     const token = this.authService.getToken();
 
-    return this.http.post<SaveInterviewResponse>(
+    return this.http.post<InterviewReport>(
       `${this.apiUrl}/api/interviews/save`,
       data,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+  }
+
+  getUserReports(userId: string): Observable<InterviewReport[]> {
+    const token = this.authService.getToken();
+
+    return this.http.get<InterviewReport[]>(
+      `${this.apiUrl}/api/interviews/user/${userId}`,
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+  }
+
+  getReportById(userId: string, reportId: string): Observable<InterviewReport> {
+    const token = this.authService.getToken();
+
+    return this.http.get<InterviewReport>(
+      `${this.apiUrl}/api/interviews/user/${userId}/report/${reportId}`,
       {
         headers: {
           Authorization: `${token}`,
