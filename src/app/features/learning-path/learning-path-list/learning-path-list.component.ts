@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { HeaderComponent } from '../../core/layout/header/header';
-import { LearningPathService } from './services/learning-path.service';
+import { HeaderComponent } from '../../../core/layout/header/header';
+import { LearningPathService } from '../services/learning-path.service';
 import { finalize } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from '../../core/layout/footer/footer';
+import { FooterComponent } from '../../../core/layout/footer/footer';
 
 /** Minimal card data for listing user learning paths. */
 type LearningPathItem = {
@@ -40,8 +40,8 @@ const getTitle = (lp: LearningPathItem) =>
     FormsModule,
     FooterComponent,
   ],
-  templateUrl: './learning-paths.component.html',
-  styleUrls: ['./learning-paths.component.css'],
+  templateUrl: './learning-path-list.component.html',
+  styleUrls: ['./learning-path-list.component.css'],
 })
 export class LearningPathsComponent implements OnInit {
   paths: LearningPathItem[] = [];

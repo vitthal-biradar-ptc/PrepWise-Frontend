@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../core/layout/header/header';
 import { HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { LearningPathService } from './services/learning-path.service';
 import { finalize } from 'rxjs';
-import { FooterComponent } from '../../core/layout/footer/footer';
+import { HeaderComponent } from '../../../core/layout/header/header';
+import { FooterComponent } from '../../../core/layout/footer/footer';
+import { LearningPathService } from '../services/learning-path.service';
 
 /** Resource link shown inside a learning period. */
 interface Resource {

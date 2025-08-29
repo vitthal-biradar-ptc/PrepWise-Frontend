@@ -50,15 +50,15 @@ export const routes: Routes = [
   {
     path: 'learning-paths/user/:user_id',
     loadComponent: () =>
-      import('./features/learning-path/learning-paths.component').then(
-        (m) => m.LearningPathsComponent
-      ),
+      import(
+        './features/learning-path/learning-path-list/learning-path-list.component'
+      ).then((m) => m.LearningPathsComponent),
     canActivate: [AuthGuard],
   },
   {
     path: 'learning-paths/user/:user_id/learning-path/:path_id',
     loadComponent: () =>
-      import('./features/learning-path/learning-path.component').then(
+      import('./features/learning-path/learning-path/learning-path.component').then(
         (m) => m.LearningPathComponent
       ),
     canActivate: [AuthGuard],
@@ -66,7 +66,7 @@ export const routes: Routes = [
   {
     path: 'mock-interview',
     loadComponent: () =>
-      import('./features/mock-interview/mock-interview').then(
+      import('./features/mock-interview/mock-interview/mock-interview').then(
         (m) => m.MockInterview
       ),
     canActivate: [AuthGuard],
@@ -75,14 +75,14 @@ export const routes: Routes = [
     path: 'interview-reports/user/:user_id',
     loadComponent: () =>
       import(
-        './features/mock-interview/interview-reports/interview-reports.component'
+        './features/mock-interview/interview-report-list/interview-reports.component'
       ).then((m) => m.InterviewReportsComponent),
     canActivate: [AuthGuard],
   },
   {
     path: 'interview-reports/user/:user_id/report/:report_id',
     loadComponent: () =>
-      import('./features/mock-interview/report/report.component').then(
+      import('./features/mock-interview/interview-report/report.component').then(
         (m) => m.ReportComponent
       ),
     canActivate: [AuthGuard],

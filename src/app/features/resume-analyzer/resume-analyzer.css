@@ -25,7 +25,7 @@
   animation: gradient 3s ease infinite;
 }
 
-/* Custom scrollbar for suggestions */
+/* Custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
@@ -44,13 +44,11 @@
   background: linear-gradient(to bottom, #2980b9, #5a4fcf);
 }
 
-/* Firefox scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #3498db rgba(222, 226, 230, 0.3);
 }
 
-/* Progress animation */
 .progress-fill {
   animation: progressLoad 3s ease-in-out infinite;
 }
@@ -117,7 +115,7 @@
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
-  height: 48px; /* Fixed height */
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,7 +210,7 @@
   font-weight: 500;
   transition: all 0.3s ease;
   border: none;
-  height: 48px; /* Fixed height */
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -335,7 +333,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 56px; /* Fixed height */
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -361,7 +359,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 56px; /* Fixed height */
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -494,29 +492,7 @@
   line-height: 1.6;
 }
 
-/* Enhanced Responsive Design */
-.analyzer-header h1 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-}
-
-.analyzer-header p {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-}
-
-.file-drop-zone {
-  min-height: min(450px, 60vh);
-  padding: clamp(15px, 3vw, 40px) clamp(10px, 2vw, 20px);
-}
-
-.drop-text {
-  font-size: clamp(0.9rem, 3vw, 1.1rem);
-}
-
-.file-input-label {
-  padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
-}
-
-/* Extra large screens */
+/* Media Queries */
 @media (min-width: 1600px) {
   .resume-analyzer-container {
     max-width: 1600px;
@@ -527,14 +503,12 @@
   }
 }
 
-/* Large screens */
 @media (max-width: 1280px) {
   .analyzer-content {
     gap: 25px;
   }
 }
 
-/* Medium screens (tablets landscape) */
 @media (max-width: 1024px) {
   .analyzer-content {
     grid-template-columns: 1fr;
@@ -548,7 +522,6 @@
   }
 }
 
-/* Tablets (portrait) and large phones */
 @media (max-width: 768px) {
   .resume-analyzer-section {
     padding-top: 9rem !important;
@@ -594,7 +567,6 @@
   }
 }
 
-/* Small phones */
 @media (max-width: 480px) {
   .resume-analyzer-section {
     padding-top: 10rem !important;
@@ -760,6 +732,33 @@
     font-size: 2.5rem;
     margin-bottom: 10px;
   }
+}
+.analyzer-header {
+  margin-bottom: 15px;
+}
+
+.analyzer-header h1 {
+  font-size: 1.5rem;
+}
+
+.analyzer-header p {
+  font-size: 0.8rem;
+}
+
+.file-drop-zone,
+.resume-text-input {
+  min-height: 200px !important;
+}
+
+.loading-state,
+.no-results {
+  padding: 30px 20px;
+}
+
+.loading-icon,
+.no-results-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 /* Small phones */

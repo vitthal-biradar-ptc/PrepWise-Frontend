@@ -11,15 +11,12 @@ import { PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { GoogleGenAI, Type } from '@google/genai';
-import { HeaderComponent } from '../../core/layout/header/header';
-import {
-  InterviewReport,
-  InterviewService,
-  SaveInterviewRequest,
-} from './services/interview.service';
-import { UserProfileService } from '../../services/user-profile.service';
+import { HeaderComponent } from '../../../core/layout/header/header';
+import { InterviewReport, InterviewService, SaveInterviewRequest } from '../services/interview.service';
+import { UserProfileService } from '../../../services/user-profile.service';
+import { environment } from '../../../../environments/environment';
+
 
 /**
  * Mock interview experience with speech recognition, TTS, and fullscreen.

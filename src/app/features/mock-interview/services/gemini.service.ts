@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { TranscriptItem, PerformanceReport } from '../mock-interview';
+import { PerformanceReport, TranscriptItem } from '../mock-interview/mock-interview';
 
 /** Minimal next-step payload with feedback and follow-up question. */
 export interface NextStep {
