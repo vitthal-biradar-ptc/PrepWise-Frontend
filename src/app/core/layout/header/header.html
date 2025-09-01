@@ -17,7 +17,10 @@
     ></div>
 
     <!-- Logo -->
-    <a href="/" class="flex items-center justify-center relative z-10 border-none">
+    <a
+      href="/"
+      class="flex items-center justify-center relative z-10 border-none"
+    >
       <div
         class="h-8 w-8 bg-gradient-to-br from-[#3498DB] to-[#6C5CE7] rounded-lg flex items-center justify-center mr-3 shadow-lg"
       >
@@ -249,7 +252,7 @@
     <!-- Mobile Menu Button -->
     <button
       (click)="toggleMobileMenu()"
-      class="md:hidden relative z-10 p-2 rounded-lg text-[#2C3E50] hover:bg-[#3498DB]/10 transition-colors duration-200 ml-4"
+      class="md:hidden relative z-10 p-2 rounded-lg text-[#2C3E50] hover:bg-[#3498DB]/10 transition-colors duration-200 ml-auto"
       [attr.aria-expanded]="mobileMenuOpen"
       aria-label="Toggle mobile menu"
     >
@@ -358,7 +361,7 @@
 
         @if (userId) {
         <a
-          [href]="'/learning-paths/' + userId"
+          [href]="'/learning-paths/user/' + userId"
           class="flex items-center px-4 py-3 text-sm text-[#2C3E50] hover:bg-[#3498DB]/10 hover:text-[#2C3E50] rounded-xl transition-all duration-200 group"
         >
           <svg
@@ -385,7 +388,7 @@
         }
 
         <a
-          href="/interviews"
+          [href]="'/interview-reports/user/' + userId"
           class="flex items-center px-4 py-3 text-sm text-[#2C3E50] hover:bg-[#3498DB]/10 hover:text-[#2C3E50] rounded-xl transition-all duration-200 group"
         >
           <svg

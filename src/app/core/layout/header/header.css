@@ -11,13 +11,18 @@
 }
 
 .nav-link::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(var(--rgb-vivid-3), 0.1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(var(--rgb-vivid-3), 0.1),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -28,12 +33,19 @@
 /* Mobile menu animations */
 .mobile-menu {
   max-height: 0;
-  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+  display: none;
 }
 
 .mobile-menu-open {
   max-height: 400px;
-  opacity: 1;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: block;
 }
 
 /* Custom backdrop blur fallback */
@@ -45,7 +57,9 @@
 
 /* Smooth transitions for all interactive elements */
 * {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -59,8 +73,13 @@ a:focus {
 
 /* Loading animation for the logo */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(var(--rgb-vivid-1), 0.3); }
-  50% { box-shadow: 0 0 30px rgba(var(--rgb-vivid-2), 0.5); }
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(var(--rgb-vivid-1), 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(var(--rgb-vivid-2), 0.5);
+  }
 }
 
 header a:first-child div {
@@ -74,7 +93,9 @@ header a:first-child div {
   z-index: 100 !important;
   position: absolute !important;
   min-width: 12rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(var(--rgb-vivid-3), 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(var(--rgb-vivid-3), 0.1);
 }
 
 @keyframes dropdownSlideIn {
