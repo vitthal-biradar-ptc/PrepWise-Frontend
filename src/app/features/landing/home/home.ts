@@ -1,19 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HeroComponent } from "../components/hero/hero.component";
-import { FeaturesComponent } from "../components/feature-section/features";
-import { WorksComponent } from "../components/works/works";
-import { TestimonialsComponent } from "../components/testimonials/testimonials";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FooterComponent } from '../../../core/layout/footer/footer';
 import { HeaderComponent } from '../../../core/layout/header/header';
-import { AuthService } from '../../../services/authorization.service';
 import { AuthStateService } from '../../../services/auth-state.service';
-import { Subscription } from 'rxjs';
-import { ToastComponent } from "../../../shared/toast/toast.component";
+import { AuthService } from '../../../services/authorization.service';
+import { FeaturesComponent } from "../components/feature-section/features";
+import { HeroComponent } from "../components/hero/hero.component";
+import { TestimonialsComponent } from "../components/testimonials/testimonials";
+import { WorksComponent } from "../components/works/works";
 
 @Component({
   selector: 'home',
   standalone: true, 
-  imports: [HeroComponent, FeaturesComponent, WorksComponent, TestimonialsComponent, HeaderComponent, FooterComponent, ToastComponent],
+  imports: [HeroComponent, FeaturesComponent, WorksComponent, TestimonialsComponent, HeaderComponent, FooterComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
