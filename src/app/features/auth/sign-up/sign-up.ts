@@ -237,46 +237,14 @@ export class SignUp {
     let errorMessage = 'An error occurred during account creation';
 
     if (error.status === 400) {
-      if (error.error?.message) {
-        errorMessage = error.error.message;
+      if (error.error?.error) {
+        errorMessage = error.error.error;
       } else if (error.error?.errors) {
-        // Map backend validation errors to local form state
-        const backendErrors = error.error.errors;
-        if (backendErrors.email) {
-          this.formErrors['email'] = backendErrors.email[0];
-          this.touchedFields['email'] = true;
-        }
-        if (backendErrors.username) {
-          this.formErrors['username'] = backendErrors.username[0];
-          this.touchedFields['username'] = true;
-        }
-        errorMessage = 'Please fix the highlighted errors';
+        errorMessage = error.error.errors;
       } else {
         errorMessage = 'Please check your input and try again';
       }
-    } else if (error.status === 409) {
-      if (error.error?.message?.includes('email')) {
-        this.formErrors['email'] = 'This email is already registered';
-        this.touchedFields['email'] = true;
-        errorMessage = 'Email already exists';
-      } else if (error.error?.message?.includes('username')) {
-        this.formErrors['username'] = 'This username is already taken';
-        this.touchedFields['username'] = true;
-        errorMessage = 'Username already exists';
-      } else {
-        errorMessage = 'Username or email already exists';
-      }
-    } else if (error.status === 422) {
-      errorMessage = 'Invalid data provided. Please check your information.';
-    } else if (error.status === 429) {
-      errorMessage = 'Too many attempts. Please try again later.';
-    } else if (error.status === 0) {
-      errorMessage =
-        'Unable to connect to server. Please check your internet connection.';
-    } else if (error.status >= 500) {
-      errorMessage = 'Server error. Please try again later.';
     }
-
     this.error = errorMessage;
     this.showError = true;
     console.error('Auth error:', errorMessage);
