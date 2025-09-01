@@ -161,6 +161,9 @@ describe('LearningPathComponent', () => {
   describe('Progress Calculation', () => {
     beforeEach(() => {
       component.learningPathData = mockLearningPathData;
+      // Set up component with user and path IDs for proper localStorage key generation
+      component['userId'] = 'user123';
+      component['pathId'] = 'path456';
     });
 
     it('should handle empty learning path', () => {

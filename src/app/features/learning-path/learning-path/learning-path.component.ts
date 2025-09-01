@@ -388,11 +388,21 @@ export class LearningPathComponent implements OnInit {
       });
   }
 
+  /** Generate unique task ID combining path and task IDs */
+  private getUniqueTaskId(taskId: string): string {
+    return `${this.userId}_${this.pathId}_${taskId}`;
+  }
+
+  /** Get path-specific localStorage key */
+  private getStorageKey(): string {
+    return `learning-path-progress_${this.userId}_${this.pathId}`;
+  }
+
   /** Load task completion markers from localStorage. */
   private loadCompletionState(): void {
     if (!this.learningPathData || !isPlatformBrowser(this.platformId)) return;
 
-    const savedState = localStorage.getItem('learning-path-progress');
+    const savedState = localStorage.getItem(this.getStorageKey());
     if (savedState) {
       try {
         const completedTasks: Set<string> = new Set(JSON.parse(savedState));
@@ -421,10 +431,7 @@ export class LearningPathComponent implements OnInit {
       });
     });
 
-    localStorage.setItem(
-      'learning-path-progress',
-      JSON.stringify(completedTasks)
-    );
+    localStorage.setItem(this.getStorageKey(), JSON.stringify(completedTasks));
   }
 
   togglePeriod(index: number): void {
