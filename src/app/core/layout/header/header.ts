@@ -5,6 +5,7 @@ import { AuthService } from '../../../services/authorization.service';
 import { AuthStateService } from '../../../services/auth-state.service';
 import { Subscription } from 'rxjs';
 import { UserProfileService } from '../../../services/user-profile.service';
+import { ToastService } from '../../../services/toast.service';
 
 /**
  * Navigation item for header links.
@@ -27,7 +28,7 @@ interface NavItem {
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
@@ -38,26 +39,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
   private userIdSubscription?: Subscription;
   userId: string | null = null;
-  
+
   navItems: NavItem[] = [
     { title: 'Features', href: '/', icon: 'layout' },
     { title: 'Interviews', href: '/mock-interview', icon: 'interviews' },
     { title: 'Resume Analyzer', href: '/resume-analyzer', icon: 'book' },
-    { title: 'How It Works', href: '/', icon: 'help' }
+    { title: 'How It Works', href: '/', icon: 'help' },
   ];
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authService: AuthService,
     private authStateService: AuthStateService,
-    private profileService: UserProfileService
-  ) { }
+    private profileService: UserProfileService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.isAuthLoading = true;
 
     this.authSubscription = this.authStateService.isAuthenticated$.subscribe(
-      isAuth => {
+      (isAuth) => {
         this.isAuthenticated = isAuth;
         this.isAuthLoading = false;
         // Ensure menus reflect auth status changes
@@ -67,9 +69,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         } else if (!this.userId) {
           // Fetch once and cache in memory (no localStorage)
           this.userIdSubscription?.unsubscribe();
-          this.userIdSubscription = this.profileService.getUserIdCached().subscribe(id => {
-            this.userId = id;
-          });
+          this.userIdSubscription = this.profileService
+            .getUserIdCached()
+            .subscribe((id) => {
+              this.userId = id;
+            });
         }
       }
     );
@@ -102,7 +106,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       const target = event.target as HTMLElement;
       const profileButton = target.closest('.profile-button');
       const dropdown = target.closest('.profile-dropdown');
-      
+
       if (!profileButton && !dropdown) {
         this.profileDropdownOpen = false;
       }
@@ -155,17 +159,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.authService.logout();
-    this.profileService.clearCache(); // clear in-memory cached profile/id
+    this.profileService.clearCache();
     this.userId = null;
     this.closeMobileMenu();
     this.closeProfileDropdown();
-    // Redirect to home page after logout
-    this.router.navigate(['/']);
+
+    this.toastService.success('Successfully logged out. See you soon!', 3000);
+
+    // Navigate after a short delay
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 500);
   }
 
   handleNavClick(item: NavItem, event: MouseEvent): void {
     event.preventDefault();
-    
+
     if (item.href.startsWith('/')) {
       // Use Angular router for internal routes
       this.router.navigate([item.href]);

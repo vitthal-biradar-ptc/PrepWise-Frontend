@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import {
+  CanActivate,
+  Router,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { AuthStateService } from '../services/auth-state.service';
 import { AuthService } from '../services/authorization.service';
+import { ToastService } from '../services/toast.service';
 
 /**
  * Route guard ensuring a valid auth token before activating protected routes.
@@ -16,10 +23,18 @@ export class AuthGuard implements CanActivate {
   constructor(
     private authStateService: AuthStateService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
-  canActivate(): Observable<boolean> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
     // First check if there's a token and validate it
     const token = this.authService.getToken();
 

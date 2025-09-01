@@ -289,3 +289,45 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 8px 24px rgba(52, 152, 219, 0.35);
 }
+
+/* Toast Component Styles */
+.toast-item {
+  transition: all 0.2s ease-out;
+  will-change: transform, opacity;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.toast-item .flex {
+  min-height: inherit;
+}
+
+/* Ensure toast content is immediately visible */
+.toast-item p {
+  line-height: 1.4;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Prevent flash of unstyled content */
+.toast-item[class*="bg-"] {
+  background-color: var(--toast-bg, #fff) !important;
+}
+
+/* Toast type-specific background variables */
+.toast-item.bg-green-50\/95 {
+  --toast-bg: rgb(240 253 244 / 0.95);
+}
+
+.toast-item.bg-red-50\/95 {
+  --toast-bg: rgb(254 242 242 / 0.95);
+}
+
+.toast-item.bg-yellow-50\/95 {
+  --toast-bg: rgb(254 252 232 / 0.95);
+}
+
+.toast-item.bg-blue-50\/95 {
+  --toast-bg: rgb(239 246 255 / 0.95);
+}

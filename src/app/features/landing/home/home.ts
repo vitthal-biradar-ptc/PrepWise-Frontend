@@ -8,11 +8,12 @@ import { HeaderComponent } from '../../../core/layout/header/header';
 import { AuthService } from '../../../services/authorization.service';
 import { AuthStateService } from '../../../services/auth-state.service';
 import { Subscription } from 'rxjs';
+import { ToastComponent } from "../../../shared/toast/toast.component";
 
 @Component({
   selector: 'home',
   standalone: true, 
-  imports: [HeroComponent, FeaturesComponent, WorksComponent, TestimonialsComponent, HeaderComponent, FooterComponent],
+  imports: [HeroComponent, FeaturesComponent, WorksComponent, TestimonialsComponent, HeaderComponent, FooterComponent, ToastComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
